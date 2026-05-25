@@ -1,0 +1,51 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+sqlalchemy[asyncio]>=2.0.36
+asyncpg>=0.30.0
+alembic>=1.14.0
+pydantic>=2.9.0
+pydantic-settings>=2.6.0
+PyYAML>=6.0.2
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+# passlib 1.7.4 는 bcrypt ≥4 의 엄격한 길이 검증(>72 bytes)에 부딪혀 앱 시작 실패.
+# 관련 이슈: https://github.com/pyca/bcrypt/issues/684
+bcrypt<4.0
+python-multipart>=0.0.19
+email-validator>=2.2.0
+httpx>=0.27.0
+apscheduler>=3.10.4
+aiofiles>=24.1.0
+aiosmtplib>=3.0.2
+# 회의록 이메일 발송 시 사용자 BlockNote HTML sanitize.
+bleach>=6.1.0
+# 국세청 근로소득간이세액표 Excel 파싱용.
+openpyxl>=3.1.0
+# 사업공고 수집 HTML 파싱(IRIS·NIPA·IITP 등) — openapi 가 없는 소스 전용.
+beautifulsoup4>=4.12.0
+lxml>=5.1.0
+# PWA Web Push — 공지사항 발행 시 모바일에 푸시 알림.
+# VAPID 키는 config.yaml 의 push.{vapid_public_key,vapid_private_key,vapid_subject} 에 저장.
+pywebpush>=2.0.0
+# 시크릿 암호화 (Fernet) — settings 의 클라우드 자격증명 등 외부 키 보호.
+# python-jose[cryptography] 가 transitive 로 끌어오지만 명시적 핀 유지.
+cryptography>=42.0.0
+# 클라우드 비용 수집 — AWS Cost Explorer / Azure Cost Management / GCP BigQuery.
+# 각 SDK 는 cloud_cost 미사용 시 import 가 일어나지 않도록 provider 모듈 안에서 lazy import.
+boto3>=1.34.0
+azure-identity>=1.15.0
+azure-mgmt-costmanagement>=4.0.0
+google-cloud-bigquery>=3.17.0
+# AI 어시스턴트 (Gemini / Claude / OpenAI). 각 SDK 는 해당 provider 사용 시에만
+# provider/<name>.py 안에서 lazy import 되므로, 미사용 provider 의 의존성도 설치만 해두면
+# 런타임 비용은 없음. 신모델 출시에 빠르게 따라가기 위해 minor 버전 floor 만 핀.
+google-genai>=0.3.0
+anthropic>=0.40.0
+openai>=1.50.0
+# 시스템 정보 (SUPER_ADMIN 전용 /system/metrics) — CPU/메모리/디스크/프로세스.
+# 단일 호스트 운영이라 docker-compose 에서 /proc, /sys, / 를 read-only 마운트해
+# 호스트 metric 을 읽는다. 컨테이너 내부 metric 만 필요한 경우 마운트 제거.
+psutil>=5.9.0
+# 마케팅 이메일 — URL import 결과 HTML 의 CSS 를 인라인화 (이메일 클라이언트는
+# 외부 <style> 차단). pynliner 보다 큰 페이지 처리 안정적.
+premailer>=3.10.0

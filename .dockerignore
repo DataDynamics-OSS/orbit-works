@@ -1,0 +1,16 @@
+# docker-compose 가 context=. 로 바뀌면서 repo 루트의 불필요 파일이 이미지에
+# 올라가지 않도록 차단.
+**/.git
+**/.next
+**/node_modules
+**/dist
+**/.venv
+**/__pycache__
+**/.pytest_cache
+**/.DS_Store
+pgdata
+data
+logs
+*.log
+docs
+ops

@@ -1,0 +1,422 @@
+/* Pretendard Variable — 한글·라틴 통합 sans (라틴은 Roboto/Inter 와 잘 어울리는
+   humanist 디자인). 비-Retina 모니터에서 fallback OS 글꼴(Malgun/Apple SD 등)
+   보다 hinting 이 깔끔. variable font 단일 파일 + unicode-range 분할 로딩. */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.min.css");
+
+/* D2Coding — 네이버 D2 의 한글 monospace. JSON 편집기·코드 영역 전용.
+   Naver D2 OFL 라이선스. 폰트 파일은 frontend/public/fonts/ 에 self-host —
+   이전엔 jsDelivr GH 미러를 썼으나 운영 중 403 차단 사례가 있어 자체 호스팅. */
+@font-face {
+  font-family: "D2Coding";
+  src: url("/fonts/D2Coding-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "D2Coding";
+  src: url("/fonts/D2Coding-Bold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@import "tailwindcss";
+@config "../tailwind.config.mts";
+
+/* darkMode: ["class"] 호환 — v4 는 명시적 variant 등록 필요. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* monospace 전역 — 모든 <code>·<pre> 와 Tailwind `font-mono` 가 D2Coding 우선.
+   PostMarkdown(코멘트 뷰어) 처럼 명시 font-family 가 없는 곳에 자연 적용. */
+code,
+pre,
+.font-mono {
+  font-family: "D2Coding", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+/* rehype-prism-plus 줄번호 — react-markdown 으로 렌더된 코드블록에
+   `.code-line` 단위로 분리되고 첫 자식이 `.line-number-style` (숫자 텍스트). */
+pre code .code-line {
+  display: block;
+}
+pre code .line-number-style {
+  display: inline-block;
+  width: 2em;
+  margin-right: 1em;
+  padding-right: 0.5em;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  text-align: right;
+  color: #94a3b8;
+  user-select: none;
+}
+/* prism-tomorrow 가 pre 에 padding 0 으로 두는 경향 → 자체 보정. */
+pre[class*="language-"] {
+  padding: 0.8em 0.8em 0.8em 0.6em;
+  border-radius: 6px;
+}
+
+@layer base {
+  /* 비-Retina (1080p / 1440p) 모니터에서 한글·라틴 모두 또렷하게.
+     · antialiased: macOS 에서 grayscale 렌더 (sub-pixel 보다 가독성 안정).
+     · text-rendering: optimizeLegibility — 커닝/리거처 활성.
+     · font-feature-settings: 커닝(kern) + 표준 리거처(liga) + 문맥 리거처(calt)
+       명시 활성 — 일부 브라우저에서 text-rendering 만으론 안 켜지는 경우 대비.
+     · font-synthesis: none — 글꼴이 weight 를 안 가질 때 브라우저가 강제로
+       만든 가짜 bold/italic 차단 (1x 모니터에서 흐릿함의 주범).
+     · Windows 의 ClearType 은 OS 가 알아서 — CSS 로 건드리지 않음. */
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern", "liga", "calt";
+    font-synthesis: none;
+  }
+
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 210 40% 98%;
+    --radius: 0.5rem;
+
+    /* Sidebar: always-dark palette (argus-style) */
+    --sidebar: 222 20% 18%;
+    --sidebar-foreground: 210 20% 92%;
+    --sidebar-muted: 218 14% 62%;
+    --sidebar-border: 217 19% 27%;
+    --sidebar-accent: 220 22% 24%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-ring: 221.2 83.2% 53.3%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}
+
+/* 진행중 뱃지 전용 — 글로우가 부드럽게 박동 */
+@keyframes status-draft-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(245, 158, 11, 0);
+  }
+}
+
+.animate-status-draft {
+  animation: status-draft-pulse 1.8s ease-in-out infinite;
+}
+
+/* AG Grid 헤더 가운데 정렬 — headerClass="ag-center-aligned-header" 와 짝.
+   기본 헤더는 flex-start 라 정렬을 명시 지정. */
+.ag-theme-quartz .ag-header-cell.ag-center-aligned-header .ag-header-cell-label,
+.ag-theme-quartz .ag-header-group-cell.ag-center-aligned-header .ag-header-group-cell-label {
+  justify-content: center;
+  text-align: center;
+}
+
+/* AG Grid 셀 가운데 정렬 — cellClass="ag-cell-center" 와 짝.
+   AG Grid 의 셀은 flex container 라 text-align 만으론 부족 → justify-content 도. */
+.ag-theme-quartz .ag-cell.ag-cell-center,
+.ag-theme-quartz .ag-cell.ag-cell-center .ag-cell-value {
+  justify-content: center;
+  text-align: center;
+}
+
+/* 사이드바 스크롤바 — 어두운 배경에 맞춰 얇고 은은하게.
+   브라우저 기본 흰색 스크롤바가 사이드바 팔레트와 어긋나는 문제를 해결. */
+.sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--sidebar-border)) transparent;
+}
+.sidebar-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--sidebar-border));
+  border-radius: 3px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--sidebar-muted));
+}
+
+/* 백업 진행 표시 — pg_dump 가 진행률을 주지 않으므로 indeterminate bar.
+   폭 1/3 짜리 bar 를 좌우로 왕복시키는 단순 애니메이션. */
+@keyframes backup-progress {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(200%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-backup-progress {
+  animation: backup-progress 1.4s ease-in-out infinite;
+}
+
+/* 진행중 attendance 세션 표시용 사선 패턴 — 출퇴근 모니터링 일/주 모드. */
+.bg-stripes {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.18) 0,
+    rgba(255, 255, 255, 0.18) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+/* TipTap 게시판 에디터 — 화이트 테마 + 표 + 기본 콘텐츠 스타일.
+   부모 컨테이너 .tiptap-content 안에서만 적용. */
+.tiptap-content {
+  background: #fff;
+  color: #0f172a;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+/* 에디터 전용 — outline·min-height (viewer 는 ProseMirror 없음). */
+.tiptap-content .ProseMirror {
+  outline: none;
+  min-height: 280px;
+}
+
+/* 콘텐츠 스타일 — editor (.ProseMirror 안) + viewer (dangerouslySetInnerHTML)
+   양쪽 모두 적용되도록 .ProseMirror 셀렉터 제거. Tailwind preflight 가
+   list-style: none 등으로 리셋하므로 명시 복원 필요. */
+.tiptap-content p {
+  margin: 0.4em 0;
+}
+.tiptap-content h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0.8em 0 0.4em;
+}
+.tiptap-content h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0.7em 0 0.35em;
+}
+.tiptap-content h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0.6em 0 0.3em;
+}
+/* TOC 클릭 시 scrollIntoView 후 헤딩이 컨테이너 상단 경계에 딱 붙지 않도록
+   여백 확보. legacy markdown(.prose) fallback 도 동일 적용. */
+.tiptap-content :is(h1, h2, h3, h4, h5, h6),
+.prose :is(h1, h2, h3, h4, h5, h6) {
+  scroll-margin-top: 12px;
+}
+.tiptap-content ul,
+.tiptap-content ol {
+  padding-left: 1.5em;
+  margin: 0.4em 0;
+}
+.tiptap-content ul {
+  list-style: disc;
+}
+.tiptap-content ol {
+  list-style: decimal;
+}
+.tiptap-content ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+.tiptap-content ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5em;
+}
+.tiptap-content ul[data-type="taskList"] li > label {
+  flex: 0 0 auto;
+  margin-top: 0.2em;
+}
+.tiptap-content blockquote {
+  border-left: 4px solid #cbd5e1;
+  padding-left: 0.8em;
+  color: #475569;
+  font-style: italic;
+  margin: 0.6em 0;
+}
+.tiptap-content code {
+  background: #f1f5f9;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  font-family: "D2Coding", ui-monospace, "Roboto Mono", monospace;
+  /* 모노스페이스는 같은 em 에서도 시각적으로 작아 보임 → 본문 대비 살짝만 축소. */
+  font-size: 0.95em;
+}
+.tiptap-content pre {
+  background: #0f172a;
+  color: #f1f5f9;
+  padding: 0.8em 1em;
+  border-radius: 6px;
+  font-family: "D2Coding", ui-monospace, "Roboto Mono", monospace;
+  font-size: 0.95em;
+  overflow-x: auto;
+  margin: 0.6em 0;
+}
+.tiptap-content pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+.tiptap-content hr {
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+  margin: 1em 0;
+}
+.tiptap-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+.tiptap-content a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+.tiptap-content strong { font-weight: 700; }
+.tiptap-content em { font-style: italic; }
+
+/* 표 — TipTap @tiptap/extension-table.
+   `.ProseMirror` 없이도 매칭되게 단순화 — 에디터와 viewer 모두 적용.
+   Tailwind preflight 가 `border-width: 0` 을 모든 요소에 걸어두므로 명시적
+   border 지정 + !important 로 확실히 노출. */
+.tiptap-content table {
+  border-collapse: collapse;
+  margin: 0.6em 0;
+  table-layout: fixed;
+  width: 100%;
+  overflow: hidden;
+}
+.tiptap-content table th,
+.tiptap-content table td {
+  border: 1px solid #cbd5e1 !important;
+  padding: 0.4em 0.6em;
+  vertical-align: top;
+  position: relative;
+  min-width: 1em;
+}
+.tiptap-content table th {
+  background: #f1f5f9;
+  font-weight: 600;
+  text-align: left;
+}
+.tiptap-content .selectedCell::after {
+  background: rgba(59, 130, 246, 0.18);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+.tiptap-content table .column-resize-handle {
+  background-color: #93c5fd;
+  bottom: -2px;
+  pointer-events: none;
+  position: absolute;
+  right: -2px;
+  top: 0;
+  width: 4px;
+}
+.tiptap-content .resize-cursor {
+  cursor: ew-resize;
+}
+
+/* Placeholder — 빈 에디터 */
+.tiptap-content .ProseMirror p.is-editor-empty:first-child::before {
+  color: #94a3b8;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* 출장 일정 — 출발지(origin) 자정 / 근무시간 표식. slotLaneClassNames 가
+   슬롯 lane TD 자체에 부여 — 자식이 아니라 본 element 가 타깃. */
+.fc .origin-tz-dateline-row,
+.fc tr.origin-tz-dateline-row > td {
+  border-top: 1.5px dashed #ef4444 !important;
+}
+.fc .origin-tz-business-row,
+.fc tr.origin-tz-business-row > td {
+  background-color: rgba(245, 158, 11, 0.16) !important;
+}
+
+/* 헤더(요일·날짜 행) 의 본문 vertical scrollbar gutter 제거 — 헤더는 스크롤
+   불필요. 본문은 그대로 스크롤. */
+.fc .fc-scrollgrid-section-header .fc-scroller {
+  overflow: hidden !important;
+}
+
+/* AG Grid — 헤더 텍스트 가운데 정렬용 유틸 클래스. ColDef 의
+   headerClass: "ag-header-center" 로 지정. */
+.ag-theme-quartz .ag-header-cell.ag-header-center .ag-header-cell-label {
+  justify-content: center;
+}
+
+/* AG Grid — 헤더 텍스트 오른쪽 정렬용 유틸 클래스 (금액·수치 컬럼).
+   headerClass: "ag-header-right" 로 지정. */
+.ag-theme-quartz .ag-header-cell.ag-header-right .ag-header-cell-label {
+  justify-content: flex-end;
+}
+
+/* AG Grid — 모든 cell 을 세로 중앙 정렬. autoHeight 행에서 일반 텍스트 셀이
+   상단에 붙어 보이는 문제 해결. text-align (가로) 은 유지. */
+.ag-theme-quartz .ag-cell {
+  display: flex;
+  align-items: center;
+}
+/* wrapText 셀 — Quartz 기본 line-height 가 row-height 기준이라 wrapped 줄 사이
+   간격이 ~40px 로 벌어지는 문제. 본문 표준값(1.5)으로 좁힌다. 자식
+   `.ag-cell-value` 가 실제 텍스트 노드라 함께 명시. */
+.ag-theme-quartz .ag-cell.ag-cell-wrap-text,
+.ag-theme-quartz .ag-cell.ag-cell-wrap-text .ag-cell-value {
+  line-height: 1.5;
+}
+/* cellStyle textAlign:center 인 셀은 가로 가운데로 (flex container 에는
+   text-align 이 단일 텍스트 노드에는 잘 안 먹는 케이스가 있어 명시). */
+.ag-theme-quartz .ag-cell[style*="text-align: center"],
+.ag-theme-quartz .ag-cell[style*="text-align:center"] {
+  justify-content: center;
+}
+.ag-theme-quartz .ag-cell[style*="text-align: right"],
+.ag-theme-quartz .ag-cell[style*="text-align:right"] {
+  justify-content: flex-end;
+}
+/* AG Grid numericColumn — class 기반 right-align (`ag-right-aligned-cell`) 이
+   위 flex 중앙정렬에 덮여 동작 안 하던 문제 보완. 모든 numericColumn 셀이
+   기대대로 우측 정렬된다. */
+.ag-theme-quartz .ag-cell.ag-right-aligned-cell {
+  justify-content: flex-end;
+}

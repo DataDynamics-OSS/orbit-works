@@ -1,0 +1,195 @@
+/* D2Coding (네이버) — 한글 코드주석 정렬에 강한 monospace.
+ * 첫 BlockNote 인스턴스 마운트 시점에 1회만 fetch (브라우저 캐시 적용).
+ * 코드 블록·인라인 코드에서만 사용되므로 font-display: swap 으로 fallback 우선. */
+@font-face {
+  font-family: "D2Coding";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/D2Coding-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "D2Coding";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/D2Coding-Bold.woff2") format("woff2");
+}
+
+/* BlockNote 글꼴 크기 — 본문 base = 14px.
+ *
+ * 본 페이지 외 다른 BlockNote 인스턴스에 영향이 없도록 `.mn-bn-root` 클래스
+ * 아래에서만 적용. 헤딩은 18/16/14/13/12/11 (H1~H6), 본문/리스트/인용/토글
+ * 모두 14px. 코드 블록은 12px (본문보다 살짝 작게 — D2Coding 가독성 유지).
+ */
+
+/* 본문 글꼴 — 페이지 전체와 동일한 Pretendard stack.
+   BlockNote core/style.css 가 `.bn-default-styles { font-family: Inter, ... }`
+   를 자식 요소에 강제하므로 두 selector 모두 override 해야 자식 단락·헤딩이
+   Pretendard 로 inherit 된다. inter.css import 를 빼는 것만으로는 mantine 이
+   core CSS 를 transitive 로 끌어와 Inter 가 그대로 적용된다. */
+.mn-bn-root .bn-editor,
+.mn-bn-root .bn-default-styles {
+  font-family:
+    "Pretendard Variable",
+    Pretendard,
+    var(--font-noto-sans-kr),
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+.mn-bn-root .bn-editor {
+  font-size: 14px;            /* base = 14px */
+  line-height: 1.6;
+}
+
+/* 단락(default) 및 리스트 / 인용 / 토글 — 모두 14px */
+.mn-bn-root .bn-block-content[data-content-type="paragraph"],
+.mn-bn-root .bn-block-content[data-content-type="bulletListItem"],
+.mn-bn-root .bn-block-content[data-content-type="numberedListItem"],
+.mn-bn-root .bn-block-content[data-content-type="checkListItem"],
+.mn-bn-root .bn-block-content[data-content-type="quote"],
+.mn-bn-root .bn-block-content[data-content-type="toggleListItem"] {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* 헤딩 — BlockNote core 가 `font-size: var(--level)` 로 적용하므로 변수 자체를
+ * 픽셀 값으로 덮어쓴다.
+ *
+ * 주의: BlockNote 는 h1 마크업에 `data-level` 속성을 *생략*하고 (h1=default),
+ * h2~h6 에만 `data-level="2"` 같이 명시. 따라서 h1 은 `:not([data-level])` 로
+ * 잡아야 매치된다. 코어 default 룰 `[data-content-type=heading]{--level:3em}`
+ * (=36px) 보다 specificity 가 높아야 이김 — `.mn-bn-root` 클래스가 추가로 붙어
+ * 0,2,0 vs 0,1,0 이라 우리 룰이 우선.
+ */
+.mn-bn-root [data-content-type="heading"]:not([data-level]) { --level: 18px; }   /* h1 */
+.mn-bn-root [data-content-type="heading"][data-level="2"]    { --level: 16px; }
+.mn-bn-root [data-content-type="heading"][data-level="3"]    { --level: 15px; }
+.mn-bn-root [data-content-type="heading"][data-level="4"]    { --level: 14px; }   /* = 본문 (weight 으로 구분) */
+.mn-bn-root [data-content-type="heading"][data-level="5"]    { --level: 13px; }
+.mn-bn-root [data-content-type="heading"][data-level="6"]    { --level: 12px; }
+
+/* 헤딩 두께 / line-height 보강 — font-size 는 위 --level 가 책임 */
+.mn-bn-root [data-content-type="heading"]:not([data-level]),
+.mn-bn-root [data-content-type="heading"][data-level="2"] {
+  font-weight: 700;
+  line-height: 1.3;
+}
+.mn-bn-root [data-content-type="heading"][data-level="3"],
+.mn-bn-root [data-content-type="heading"][data-level="4"],
+.mn-bn-root [data-content-type="heading"][data-level="5"] {
+  font-weight: 600;
+  line-height: 1.4;
+}
+.mn-bn-root [data-content-type="heading"][data-level="6"] {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* 코드 — 인라인/블록 모두 D2Coding 우선.
+ * D2Coding 은 한글 폭이 ASCII 의 정확히 2배라 한글 코드주석 정렬이 깨지지 않는다.
+ * 라틴은 D2Coding 자체 글리프, 한글은 동일 폰트 내 한글 글리프, 그 외는 시스템 mono. */
+.mn-bn-root .bn-editor code,
+.mn-bn-root .bn-editor pre,
+.mn-bn-root .bn-block-content[data-content-type="codeBlock"],
+.mn-bn-root .bn-block-content[data-content-type="codeBlock"] * {
+  font-family:
+    "D2Coding",
+    ui-monospace,
+    "SF Mono",
+    "JetBrains Mono",
+    Menlo,
+    Consolas,
+    monospace;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+/* 인라인 코드 배경 미세 조정 — base 가 작아진 만큼 여백도 조절 */
+.mn-bn-root .bn-editor code {
+  padding: 0.1em 0.35em;
+  border-radius: 0.25em;
+}
+
+/* 코드 블록의 언어 선택 셀렉터 — BlockNote 기본은 opacity:0 + 1s 지연 hover 라
+ * 사용자가 못 찾는다. 항상 보이게 덮어쓰고 hover 시 또렷하게.
+ *
+ * 그리고 셀렉터는 코드 블록 좌상단에 absolute 로 깔리므로 코드 padding-top 을
+ * 살짝 더 줘서 첫 줄과 겹치지 않게.
+ */
+.mn-bn-root .bn-block-content[data-content-type="codeBlock"] > div > select {
+  opacity: 0.7 !important;
+  transition: opacity 0.15s ease !important;
+  font-size: 11px !important;
+  font-family:
+    "D2Coding", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  padding: 2px 6px;
+}
+.mn-bn-root .bn-block-content[data-content-type="codeBlock"]:hover > div > select,
+.mn-bn-root .bn-block-content[data-content-type="codeBlock"] > div > select:hover,
+.mn-bn-root .bn-block-content[data-content-type="codeBlock"] > div > select:focus {
+  opacity: 1 !important;
+}
+.mn-bn-root .bn-block-content[data-content-type="codeBlock"] > pre {
+  padding-top: 32px !important;     /* 셀렉터(top:8 + 높이 ~20)와 첫 줄 분리 */
+}
+
+/* 링크 hover 툴바 — 3 버튼 일관 표시.
+ *
+ * 기본:
+ *   - "링크 수정" = MantineButton (children=text) → 가운데 텍스트
+ *   - "새 탭으로 열기" / "링크 삭제" = MantineActionIcon (icon only) → 아이콘 + 별도 Tooltip
+ *
+ * 변경:
+ *   1) 아이콘 → 텍스트 (::after content)
+ *   2) Mantine Tooltip 제거 (별도 portal 의 .mantine-Tooltip-tooltip 숨김)
+ *   3) 3 버튼 동일 크기·정렬 (font 12px / height 28px / center align)
+ *
+ * 주의: 링크 툴바는 floating-ui popover 로 `.mn-bn-root` 밖 (document.body)
+ * 에 portal 된다. `.mn-bn-root` 로 scope 하면 매칭 안 됨 → `.bn-link-toolbar`
+ * 자체로 식별.
+ */
+
+/* 1) 아이콘 → 텍스트 라벨 (open/delete) */
+.bn-link-toolbar button[aria-label="새 탭으로 열기"] svg,
+.bn-link-toolbar button[aria-label="링크 삭제"] svg {
+  display: none !important;
+}
+.bn-link-toolbar button[aria-label="새 탭으로 열기"]::after {
+  content: "새 탭으로 열기";
+}
+.bn-link-toolbar button[aria-label="링크 삭제"]::after {
+  content: "링크 삭제";
+}
+
+/* 2) 3 버튼 동일 크기·정렬. !important 로 Mantine size="xs"/size=30 override.
+ *    font-weight 600 = "링크 수정"(MantineButton) 의 기본값 — 나머지 두 ::after
+ *    텍스트도 같이 bold 로 통일. */
+.bn-link-toolbar button {
+  width: auto !important;
+  min-width: 0 !important;
+  height: 28px !important;
+  padding: 0 10px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 4px !important;
+  white-space: nowrap !important;
+}
+/* ::after 텍스트도 줄바꿈 금지 (Mantine button 의 inner span 기본은 break 가능). */
+.bn-link-toolbar button[aria-label="새 탭으로 열기"]::after,
+.bn-link-toolbar button[aria-label="링크 삭제"]::after {
+  white-space: nowrap;
+}
+
+/* 3) Mantine Tooltip 제거 — 링크 툴바 버튼은 이미 텍스트라 tooltip 불필요.
+ *    Mantine 의 tooltip portal 안에 BlockNote 의 .bn-tooltip 가 들어가는 구조라
+ *    :has() 로 link-toolbar 전용 tooltip 만 정확히 노출 차단. */
+.mantine-Tooltip-tooltip:has(.bn-tooltip) {
+  display: none !important;
+}

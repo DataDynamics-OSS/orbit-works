@@ -1,0 +1,840 @@
+[
+  {
+    "kind": "EXPENSE",
+    "name": "지출결의서",
+    "icon": "Receipt",
+    "description": "일반 지출의 사전 결재. 카테고리·금액·증빙 첨부.",
+    "form_schema": {
+      "type": "object",
+      "required": ["amount", "category", "purpose", "spent_at"],
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "title": "금액 (원)",
+          "minimum": 0
+        },
+        "category": {
+          "type": "string",
+          "title": "분류",
+          "enum": ["식대", "교통", "사무용품", "통신", "회식", "기타"]
+        },
+        "vendor": { "type": "string", "title": "거래처" },
+        "spent_at": {
+          "type": "string",
+          "format": "date",
+          "title": "사용일"
+        },
+        "purpose": {
+          "type": "string",
+          "title": "사용 목적",
+          "minLength": 5
+        }
+      }
+    },
+    "ui_schema": {
+      "amount": { "ui:widget": "money" },
+      "purpose": { "ui:widget": "richText" }
+    },
+    "approval_rules": {
+      "rules": [
+        {
+          "name": "100만 이하 — 매니저 결재",
+          "when": { "form_data.amount": { "lte": 1000000 } },
+          "approvers": [{ "type": "manager", "step_name": "1차 결재" }]
+        },
+        {
+          "name": "100~500만 — 본부장급",
+          "when": { "form_data.amount": { "gt": 1000000, "lte": 5000000 } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" }
+          ]
+        },
+        {
+          "name": "500만 초과 — 대표 결재",
+          "when": { "form_data.amount": { "gt": 5000000 } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" },
+            { "type": "rank_min_level", "level": 1000, "step_name": "대표 결재" }
+          ]
+        }
+      ]
+    },
+    "attachment_slots": {
+      "slots": [
+        {
+          "slug": "receipt",
+          "label": "영수증",
+          "required": false,
+          "description": "법인카드/세금계산서/현금영수증 등 적격증빙."
+        }
+      ]
+    }
+  },
+
+  {
+    "kind": "LEAVE",
+    "name": "휴가 신청서",
+    "icon": "Plane",
+    "description": "연차·반차 등 휴가 사용 신청.",
+    "form_schema": {
+      "type": "object",
+      "required": ["leave_kind", "start_date", "end_date", "days", "reason"],
+      "properties": {
+        "leave_kind": {
+          "type": "string",
+          "title": "휴가 종류",
+          "enum": ["연차", "반차(오전)", "반차(오후)", "병가", "경조", "기타"]
+        },
+        "start_date": { "type": "string", "format": "date", "title": "시작일" },
+        "end_date": { "type": "string", "format": "date", "title": "종료일" },
+        "days": { "type": "number", "title": "사용 일수", "minimum": 0 },
+        "reason": { "type": "string", "title": "사유", "minLength": 2 }
+      }
+    },
+    "ui_schema": {
+      "reason": { "ui:widget": "textarea", "ui:options": { "rows": 3 } }
+    },
+    "approval_rules": {
+      "rules": [
+        {
+          "name": "휴가 — 5일 이하",
+          "when": { "form_data.days": { "lte": 5 } },
+          "approvers": [{ "type": "manager", "step_name": "1차 결재" }]
+        },
+        {
+          "name": "휴가 — 5일 초과 (HR 추가)",
+          "when": { "form_data.days": { "gt": 5 } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 700, "step_name": "임원 결재" }
+          ]
+        }
+      ]
+    }
+  },
+
+  {
+    "kind": "BUSINESS_TRIP",
+    "name": "출장 신청서",
+    "icon": "PlaneTakeoff",
+    "description": "국내·해외 출장 사전 신청. 사후 정산은 별도 결재.",
+    "form_schema": {
+      "type": "object",
+      "required": ["destination", "start_date", "end_date", "purpose"],
+      "properties": {
+        "destination": { "type": "string", "title": "행선지" },
+        "is_overseas": { "type": "boolean", "title": "해외 출장" },
+        "start_date": { "type": "string", "format": "date", "title": "시작일" },
+        "end_date": { "type": "string", "format": "date", "title": "종료일" },
+        "estimated_amount": {
+          "type": "integer",
+          "title": "예상 비용 (원)",
+          "minimum": 0
+        },
+        "advance_payment": {
+          "type": "integer",
+          "title": "가지급 신청액 (원)",
+          "minimum": 0
+        },
+        "purpose": { "type": "string", "title": "출장 목적", "minLength": 5 }
+      }
+    },
+    "ui_schema": {
+      "estimated_amount": { "ui:widget": "money" },
+      "purpose": { "ui:widget": "richText" }
+    },
+    "approval_rules": {
+      "rules": [
+        {
+          "name": "국내 출장 (100만 이하)",
+          "when": {
+            "form_data.is_overseas": { "eq": false },
+            "form_data.estimated_amount": { "lte": 1000000 }
+          },
+          "approvers": [{ "type": "manager", "step_name": "1차 결재" }]
+        },
+        {
+          "name": "국내 출장 (100만 초과)",
+          "when": {
+            "form_data.is_overseas": { "eq": false },
+            "form_data.estimated_amount": { "gt": 1000000 }
+          },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" }
+          ]
+        },
+        {
+          "name": "해외 출장",
+          "when": { "form_data.is_overseas": { "eq": true } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" },
+            { "type": "rank_min_level", "level": 1000, "step_name": "대표 결재" }
+          ]
+        }
+      ]
+    },
+    "attachment_slots": {
+      "slots": [
+        {
+          "slug": "itinerary",
+          "label": "일정·예산표",
+          "required": false,
+          "description": "출장 일정과 예상 비용 내역."
+        },
+        {
+          "slug": "ticket",
+          "label": "항공·교통권",
+          "required": false,
+          "description": "예약 확인서 또는 e-티켓."
+        }
+      ]
+    }
+  },
+
+  {
+    "kind": "PURCHASE",
+    "name": "물품 구매 요청서",
+    "icon": "ShoppingCart",
+    "description": "사무용품·자산·소모품 구매 신청. 자산 등록 대상은 별도 표기.",
+    "form_schema": {
+      "type": "object",
+      "required": ["item", "quantity", "unit_price", "total", "purpose"],
+      "properties": {
+        "item": { "type": "string", "title": "품목" },
+        "quantity": { "type": "integer", "title": "수량", "minimum": 1 },
+        "unit_price": { "type": "integer", "title": "단가 (원)", "minimum": 0 },
+        "total": { "type": "integer", "title": "총액 (원)", "minimum": 0 },
+        "vendor": { "type": "string", "title": "구매처" },
+        "is_asset": {
+          "type": "boolean",
+          "title": "자산 등록 대상",
+          "default": false
+        },
+        "purpose": { "type": "string", "title": "구매 목적", "minLength": 5 }
+      }
+    },
+    "ui_schema": {
+      "unit_price": { "ui:widget": "money" },
+      "total": { "ui:widget": "money" },
+      "purpose": { "ui:widget": "richText" }
+    },
+    "approval_rules": {
+      "rules": [
+        {
+          "name": "100만 이하 — 매니저",
+          "when": { "form_data.total": { "lte": 1000000 } },
+          "approvers": [{ "type": "manager", "step_name": "1차 결재" }]
+        },
+        {
+          "name": "100만 초과 — 본부장",
+          "when": { "form_data.total": { "gt": 1000000 } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" }
+          ]
+        }
+      ]
+    },
+    "attachment_slots": {
+      "slots": [
+        {
+          "slug": "quote",
+          "label": "견적서",
+          "required": false,
+          "description": "공급업체 견적서 PDF."
+        },
+        {
+          "slug": "spec",
+          "label": "사양서",
+          "required": false,
+          "description": "제품/서비스 사양·카탈로그."
+        }
+      ]
+    }
+  },
+
+  {
+    "kind": "REMOTE_WORK",
+    "name": "재택근무 신청",
+    "icon": "Home",
+    "description": "재택근무 기간 신청. 30일 초과 시 본부장급 추가 결재.",
+    "form_schema": {
+      "type": "object",
+      "required": ["start_date", "end_date", "reason"],
+      "properties": {
+        "start_date": { "type": "string", "format": "date", "title": "시작일" },
+        "end_date": { "type": "string", "format": "date", "title": "종료일" },
+        "weekly_pattern": {
+          "type": "string",
+          "title": "주간 패턴",
+          "enum": ["전일", "월/수/금", "화/목", "주 1회", "기타"]
+        },
+        "reason": { "type": "string", "title": "사유", "minLength": 5 }
+      }
+    },
+    "ui_schema": {
+      "reason": { "ui:widget": "textarea", "ui:options": { "rows": 3 } }
+    },
+    "approval_rules": {
+      "rules": [
+        {
+          "name": "재택근무 — 기본",
+          "when": null,
+          "approvers": [{ "type": "manager", "step_name": "1차 결재" }]
+        }
+      ]
+    }
+  },
+
+  {
+    "kind": "OVERTIME",
+    "name": "야근/휴일근무 신청",
+    "icon": "Clock",
+    "description": "야근·휴일근무 사전 신청. 정해진 시간 외 근무 보상에 사용.",
+    "form_schema": {
+      "type": "object",
+      "required": ["work_date", "start_time", "end_time", "reason"],
+      "properties": {
+        "work_date": { "type": "string", "format": "date", "title": "근무일" },
+        "is_holiday": { "type": "boolean", "title": "휴일 근무", "default": false },
+        "start_time": { "type": "string", "title": "시작 시각 (HH:MM)" },
+        "end_time": { "type": "string", "title": "종료 시각 (HH:MM)" },
+        "hours": { "type": "number", "title": "총 시간", "minimum": 0 },
+        "reason": { "type": "string", "title": "사유", "minLength": 5 }
+      }
+    },
+    "ui_schema": {
+      "reason": { "ui:widget": "richText" }
+    },
+    "approval_rules": {
+      "rules": [
+        {
+          "name": "야근/휴일 — 기본",
+          "when": null,
+          "approvers": [{ "type": "manager", "step_name": "1차 결재" }]
+        }
+      ]
+    }
+  },
+
+  {
+    "kind": "CARD_USAGE",
+    "name": "법인카드 사용 신고",
+    "icon": "CreditCard",
+    "description": "법인카드 사용 후 사후 보고. 50만 초과 시 본부장 추가.",
+    "form_schema": {
+      "type": "object",
+      "required": ["card_last4", "amount", "vendor", "used_at", "purpose"],
+      "properties": {
+        "card_last4": {
+          "type": "string",
+          "title": "카드 끝 4자리",
+          "pattern": "^[0-9]{4}$"
+        },
+        "amount": { "type": "integer", "title": "금액 (원)", "minimum": 0 },
+        "vendor": { "type": "string", "title": "사용처" },
+        "used_at": { "type": "string", "format": "date", "title": "사용일" },
+        "purpose": { "type": "string", "title": "사용 목적", "minLength": 3 }
+      }
+    },
+    "ui_schema": {
+      "amount": { "ui:widget": "money" }
+    },
+    "approval_rules": {
+      "rules": [
+        {
+          "name": "50만 이하 — 매니저",
+          "when": { "form_data.amount": { "lte": 500000 } },
+          "approvers": [{ "type": "manager", "step_name": "1차 결재" }]
+        },
+        {
+          "name": "50만 초과 — 본부장",
+          "when": { "form_data.amount": { "gt": 500000 } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" }
+          ]
+        }
+      ]
+    },
+    "attachment_slots": {
+      "slots": [
+        {
+          "slug": "receipt",
+          "label": "영수증",
+          "required": false,
+          "description": "법인카드 사용 영수증."
+        }
+      ]
+    }
+  },
+
+  {
+    "kind": "SUBSCRIPTION",
+    "name": "SaaS·라이센스 구독",
+    "icon": "Cloud",
+    "description": "정기 구독 결재. 월 결제 환산으로 임계 적용.",
+    "form_schema": {
+      "type": "object",
+      "required": ["service_name", "monthly_amount", "start_date", "purpose"],
+      "properties": {
+        "service_name": { "type": "string", "title": "서비스명" },
+        "plan": { "type": "string", "title": "플랜" },
+        "monthly_amount": {
+          "type": "integer",
+          "title": "월 결제액 (원)",
+          "minimum": 0
+        },
+        "annual_amount": {
+          "type": "integer",
+          "title": "연 결제액 (원)",
+          "minimum": 0
+        },
+        "start_date": { "type": "string", "format": "date", "title": "시작일" },
+        "end_date": { "type": "string", "format": "date", "title": "종료일" },
+        "owner": { "type": "string", "title": "관리 담당자" },
+        "purpose": { "type": "string", "title": "도입 목적", "minLength": 5 }
+      }
+    },
+    "ui_schema": {
+      "monthly_amount": { "ui:widget": "money" },
+      "annual_amount": { "ui:widget": "money" },
+      "purpose": { "ui:widget": "richText" }
+    },
+    "approval_rules": {
+      "rules": [
+        {
+          "name": "월 50만 이하 — 매니저",
+          "when": { "form_data.monthly_amount": { "lte": 500000 } },
+          "approvers": [{ "type": "manager", "step_name": "1차 결재" }]
+        },
+        {
+          "name": "월 50만 초과 — 임원",
+          "when": { "form_data.monthly_amount": { "gt": 500000 } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 700, "step_name": "임원 결재" }
+          ]
+        }
+      ]
+    },
+    "attachment_slots": {
+      "slots": [
+        {
+          "slug": "contract",
+          "label": "계약서/구독 화면",
+          "required": false,
+          "description": "구독 계약서 또는 plan 화면 캡처."
+        },
+        {
+          "slug": "quote",
+          "label": "견적서",
+          "required": false,
+          "description": "공급사 견적서."
+        }
+      ]
+    }
+  },
+
+  {
+    "kind": "OUTSOURCING",
+    "name": "외주/용역 계약",
+    "icon": "Handshake",
+    "description": "외주 용역 계약 체결 결재. 1천만 초과 시 대표 결재.",
+    "form_schema": {
+      "type": "object",
+      "required": ["vendor", "scope", "amount", "start_date", "end_date"],
+      "properties": {
+        "vendor": { "type": "string", "title": "거래처" },
+        "scope": { "type": "string", "title": "용역 범위" },
+        "amount": { "type": "integer", "title": "계약 금액 (원)", "minimum": 0 },
+        "start_date": { "type": "string", "format": "date", "title": "시작일" },
+        "end_date": { "type": "string", "format": "date", "title": "종료일" },
+        "payment_terms": { "type": "string", "title": "지급 조건" }
+      }
+    },
+    "ui_schema": {
+      "amount": { "ui:widget": "money" },
+      "scope": { "ui:widget": "richText" }
+    },
+    "approval_rules": {
+      "rules": [
+        {
+          "name": "1천만 이하",
+          "when": { "form_data.amount": { "lte": 10000000 } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" }
+          ]
+        },
+        {
+          "name": "1천만 초과 — 대표 결재",
+          "when": { "form_data.amount": { "gt": 10000000 } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" },
+            { "type": "rank_min_level", "level": 1000, "step_name": "대표 결재" }
+          ]
+        }
+      ]
+    },
+    "attachment_slots": {
+      "slots": [
+        {
+          "slug": "contract",
+          "label": "계약서",
+          "required": false,
+          "description": "외주/용역 계약서 PDF."
+        },
+        {
+          "slug": "quote",
+          "label": "견적서",
+          "required": false,
+          "description": "공급업체 견적서."
+        }
+      ]
+    }
+  },
+
+  {
+    "kind": "PERSONNEL",
+    "name": "휴직/복직/사직서",
+    "icon": "UserMinus",
+    "description": "휴직(육아·무급·병가)·복직·사직 등 인사 관련 결재.",
+    "form_schema": {
+      "type": "object",
+      "required": ["sub_kind", "effective_date", "reason"],
+      "properties": {
+        "sub_kind": {
+          "type": "string",
+          "title": "구분",
+          "enum": ["육아휴직", "무급휴직", "병가휴직", "복직", "사직"]
+        },
+        "effective_date": {
+          "type": "string",
+          "format": "date",
+          "title": "효력 발생일"
+        },
+        "expected_return_date": {
+          "type": "string",
+          "format": "date",
+          "title": "복직 예정일 (휴직 시)"
+        },
+        "reason": { "type": "string", "title": "사유", "minLength": 5 }
+      }
+    },
+    "ui_schema": {
+      "reason": { "ui:widget": "richText" }
+    },
+    "approval_rules": {
+      "rules": [
+        {
+          "name": "휴직/복직 — 본부장 + HR",
+          "when": {
+            "form_data.sub_kind": { "in": ["육아휴직", "무급휴직", "병가휴직", "복직"] }
+          },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" }
+          ]
+        },
+        {
+          "name": "사직서 — 대표 결재",
+          "when": { "form_data.sub_kind": { "eq": "사직" } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 1000, "step_name": "대표 결재" }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "kind": "BIZ_HOSPITALITY",
+    "name": "접대비 (기업업무추진비)",
+    "icon": "Utensils",
+    "description": "거래처 접대 — 식사·골프·경조·선물. 적격증빙(법인카드/세금계산서/현금영수증) 보유 여부에 따라 임원 결재 강제.",
+    "form_schema": {
+      "type": "object",
+      "required": [
+        "event_date", "customer_name", "customer_attendees", "our_attendees",
+        "head_count", "place", "category", "amount",
+        "payment_method", "purpose", "is_qualified_evidence"
+      ],
+      "properties": {
+        "event_date": { "type": "string", "format": "date", "title": "접대 일자" },
+        "customer_name": {
+          "type": "string",
+          "title": "거래처 (고객사·협력사)",
+          "description": "고객사 마스터에서 선택. 협력사도 같은 마스터에 등록되어 있습니다."
+        },
+        "customer_attendees": {
+          "type": "string",
+          "title": "거래처 동석자",
+          "description": "이름(직책) 콤마 구분 — 예: 김철수(과장), 박영희(부장)"
+        },
+        "our_attendees": {
+          "type": "string",
+          "title": "자사 동석자",
+          "description": "본인 포함. 이름(직책) 콤마 구분."
+        },
+        "head_count": {
+          "type": "integer", "title": "총 인원수", "minimum": 1
+        },
+        "place": { "type": "string", "title": "장소" },
+        "category": {
+          "type": "string",
+          "title": "유형",
+          "enum": ["식사", "음료", "골프", "경조", "선물", "공연·스포츠", "기타"]
+        },
+        "amount": {
+          "type": "integer", "title": "총 금액 (원)", "minimum": 0
+        },
+        "payment_method": {
+          "type": "string",
+          "title": "결제 방법",
+          "enum": [
+            "법인카드(공용)",
+            "법인카드(개인)",
+            "개인지출(환급)",
+            "세금계산서",
+            "현금영수증"
+          ]
+        },
+        "purpose": {
+          "type": "string",
+          "title": "사업 관련성·목적",
+          "minLength": 10,
+          "description": "적격증빙 입증 핵심 — 어떤 거래·계약·관계를 위한 접대인지 구체적으로 기재."
+        },
+        "is_qualified_evidence": {
+          "type": "boolean",
+          "title": "적격증빙 보유",
+          "description": "법인카드 / 세금계산서 / 현금영수증 (지출증빙용) 중 하나면 true. 비적격증빙은 손금산입 불인정 가능."
+        }
+      }
+    },
+    "ui_schema": {
+      "customer_name": { "ui:widget": "customerPicker" },
+      "amount": { "ui:widget": "money" },
+      "purpose": { "ui:widget": "richText" },
+      "customer_attendees": { "ui:widget": "textarea", "ui:options": { "rows": 2 } },
+      "our_attendees": { "ui:widget": "textarea", "ui:options": { "rows": 2 } },
+      "is_qualified_evidence": {
+        "ui:help": "비적격증빙(예: 일반영수증·간이영수증) 인 경우 임원 결재까지 강제됩니다."
+      }
+    },
+    "approval_rules": {
+      "rules": [
+        {
+          "name": "비적격증빙 — 임원 강제 결재",
+          "when": { "form_data.is_qualified_evidence": { "eq": false } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" },
+            { "type": "rank_min_level", "level": 700, "step_name": "임원 결재" }
+          ]
+        },
+        {
+          "name": "30만 이하 — 매니저 결재",
+          "when": { "form_data.amount": { "lte": 300000 } },
+          "approvers": [{ "type": "manager", "step_name": "1차 결재" }]
+        },
+        {
+          "name": "30~100만 — 본부장급",
+          "when": { "form_data.amount": { "gt": 300000, "lte": 1000000 } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" }
+          ]
+        },
+        {
+          "name": "100~300만 — 임원 결재",
+          "when": { "form_data.amount": { "gt": 1000000, "lte": 3000000 } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" },
+            { "type": "rank_min_level", "level": 700, "step_name": "임원 결재" }
+          ]
+        },
+        {
+          "name": "300만 초과 — 대표 결재",
+          "when": { "form_data.amount": { "gt": 3000000 } },
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" },
+            { "type": "rank_min_level", "level": 700, "step_name": "임원 결재" },
+            { "type": "rank_min_level", "level": 1000, "step_name": "대표 결재" }
+          ]
+        }
+      ]
+    }
+  },
+
+  {
+    "kind": "POC",
+    "name": "PoC 수행",
+    "icon": "FlaskConical",
+    "description": "Proof of Concept 수행 결재 — 고객사·프로젝트·기간·예상 비용·본 사업비·세부내용·참가자·복구 방안. 지출 카테고리지만 1 kind = 1 template 제약 때문에 별도 kind. 모든 건이 대표이사 결재까지 진행.",
+    "form_schema": {
+      "type": "object",
+      "required": [
+        "customer_name", "project_name", "start_date", "end_date",
+        "expected_cost", "project_budget", "details", "participants",
+        "recovery_plan"
+      ],
+      "properties": {
+        "customer_name": {
+          "type": "string",
+          "title": "고객사",
+          "description": "고객사 마스터에서 선택."
+        },
+        "project_name": {
+          "type": "string",
+          "title": "프로젝트",
+          "description": "프로젝트 마스터에서 선택. 신규 프로젝트면 먼저 등록 후 선택."
+        },
+        "start_date": {
+          "type": "string", "format": "date", "title": "기간 시작일"
+        },
+        "end_date": {
+          "type": "string", "format": "date", "title": "기간 종료일"
+        },
+        "expected_cost": {
+          "type": "integer",
+          "title": "PoC 예상 비용 (원)",
+          "minimum": 0
+        },
+        "project_budget": {
+          "type": "integer",
+          "title": "본 사업의 사업비 (원)",
+          "minimum": 0,
+          "description": "PoC 성공 시 진행될 본 사업의 예상 사업비. 의사결정 가중치 참고."
+        },
+        "details": {
+          "type": "string",
+          "title": "세부 내용",
+          "minLength": 20,
+          "description": "PoC 의 목표 / 검증 항목 / 일정 / 산출물."
+        },
+        "participants": {
+          "type": "string",
+          "title": "PoC 참가자",
+          "description": "자사 인원 — 이름·역할 자유 기재."
+        },
+        "recovery_plan": {
+          "type": "string",
+          "title": "복구 방안",
+          "minLength": 10,
+          "description": "PoC 실패 / 일정 지연 / 예산 초과 시 대응 방안."
+        }
+      }
+    },
+    "ui_schema": {
+      "customer_name": { "ui:widget": "customerPicker" },
+      "project_name": { "ui:widget": "projectPicker" },
+      "details": { "ui:widget": "richText" },
+      "expected_cost": { "ui:widget": "money" },
+      "project_budget": { "ui:widget": "money" },
+      "recovery_plan": {
+        "ui:widget": "richText",
+        "ui:options": { "minHeight": 150 }
+      }
+    },
+    "approval_rules": {
+      "rules": [
+        {
+          "name": "PoC — 1차 → 본부장 → 대표 (전 건)",
+          "when": {},
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" },
+            { "type": "rank_min_level", "level": 1000, "step_name": "대표 결재" }
+          ]
+        }
+      ]
+    },
+    "attachment_slots": {
+      "slots": [
+        {
+          "slug": "proposal",
+          "label": "PoC 제안서",
+          "required": false,
+          "description": "PoC 범위·일정·산출물·KPI 등 정의서."
+        },
+        {
+          "slug": "mou_contract",
+          "label": "MOU / 계약서",
+          "required": false,
+          "description": "고객사와의 협약·NDA·계약 문서."
+        },
+        {
+          "slug": "cost_estimate",
+          "label": "비용 산정 자료",
+          "required": false,
+          "description": "PoC 비용·본 사업비 산정 근거."
+        },
+        {
+          "slug": "other",
+          "label": "기타",
+          "required": false,
+          "min": 0
+        }
+      ]
+    }
+  },
+
+  {
+    "kind": "ETC",
+    "name": "기타",
+    "icon": "FileQuestion",
+    "description": "지원하지 않는 결재 양식 — 자유 형식. 제목 + 세부 내용만 필수. 기본 결재선은 1차(매니저) → 본부장급. 필요 시 결재 양식 관리에서 조정.",
+    "form_schema": {
+      "type": "object",
+      "required": ["title", "details"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "제목",
+          "minLength": 2,
+          "maxLength": 200
+        },
+        "details": {
+          "type": "string",
+          "title": "세부 내용",
+          "minLength": 10,
+          "description": "결재 사유와 내용을 자유롭게 기재."
+        }
+      }
+    },
+    "ui_schema": {
+      "details": { "ui:widget": "richText" }
+    },
+    "approval_rules": {
+      "rules": [
+        {
+          "name": "기타 — 매니저 → 본부장",
+          "when": {},
+          "approvers": [
+            { "type": "manager", "step_name": "1차 결재" },
+            { "type": "rank_min_level", "level": 600, "step_name": "본부장급 결재" }
+          ]
+        }
+      ]
+    },
+    "attachment_slots": {
+      "slots": [
+        {
+          "slug": "other",
+          "label": "첨부",
+          "required": false,
+          "description": "필요 시 자유 첨부."
+        }
+      ]
+    }
+  }
+]

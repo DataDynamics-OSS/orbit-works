@@ -1,0 +1,253 @@
+# =============================================================================
+# Orbit Works - Runtime Configuration TEMPLATE
+# -----------------------------------------------------------------------------
+# 이 파일은 git 에 커밋되는 템플릿입니다. 실제 배포/개발에 사용하려면:
+#
+#   cp config.yaml.template config.yaml
+#   vi config.yaml                     # CHANGE_ME / 빈 문자열로 표시된 값을 채움
+#
+# `config.yaml` 은 .gitignore 에 등록되어 있어 시크릿이 레포에 유입되지 않습니다.
+#
+# 모든 키는 환경변수로도 override 가능 — nested 키는 `__` 로 표현:
+#   SERVER__PORT=5001 DATABASE__PASSWORD=secret uvicorn app.main:app
+# =============================================================================
+
+app:
+  name: Orbit Works
+  environment: development   # development | staging | production
+  api_v1_prefix: /api/v1
+
+server:
+  # Backend (FastAPI) bind address/port
+  host: 0.0.0.0
+  port: 4001
+
+  # Frontend (Next.js) - for documentation only; the Next.js runtime reads
+  # its port from the PORT env var in its container/Dockerfile.
+  frontend_host: 0.0.0.0
+  frontend_port: 4000
+
+  # 외부 접근 base URL — notify 서비스가 Slack/메일 링크에 사용.
+  # prod 에서는 반드시 https://<your-domain> 으로 설정.
+  public_url: http://localhost:4000
+
+  # Origins allowed by the backend CORS middleware.
+  cors_origins:
+    - http://localhost:4000
+    - http://127.0.0.1:4000
+
+database:
+  host: db
+  port: 5432
+  name: orbit
+  username: orbit
+  password: CHANGE_ME
+  pool_size: 10
+  pool_pre_ping: true
+
+# (선택) 백업 전용 SUPERUSER 자격증명. 비워두면 위 database.username 으로 pg_dump
+# 시도 → RLS 가 걸린 테이블에서 차단될 수 있음. RLS 가 적용된 prod 에서는 반드시
+# SUPERUSER (bootstrap 계정) 의 자격증명을 명시 권장.
+# backup_db:
+#   username: CHANGE_ME
+#   password: CHANGE_ME
+
+auth:
+  # 강한 시크릿 생성 예:
+  #   python -c "import secrets; print(secrets.token_urlsafe(48))"
+  jwt_secret: CHANGE_ME_TO_A_LONG_RANDOM_STRING
+  jwt_algorithm: HS256
+  jwt_expires_minutes: 1440   # 24h
+  initial_admin:
+    email: admin
+    password: CHANGE_ME
+
+upload:
+  # Base upload directory. Relative paths resolve against the backend working
+  # directory. Resource-specific files land under subfolders, e.g.
+  #   data/developers/<developer_id>/<file>
+  #   data/projects/<project_id>/<quote-file>
+  #   data/licenses/<license_id>/<quote-file>
+  #
+  # Docker compose 로 배포 시 docker-compose.yml 이 호스트의 ${DATA_DIR:-./data}
+  # 를 컨테이너의 /app/data 로 bind-mount 한다. 호스트 경로를 바꾸려면
+  # 프로젝트 루트의 `.env` 에 DATA_DIR=/srv/orbit-data 처럼 지정.
+  dir: data
+  max_size_mb: 100
+
+backup:
+  # 매월 1일 02:00 (timezone 기준)에 pg_dump 로 DB 전체 백업을 만들고
+  # dir/yyyymmdd-db.zip 파일로 저장한다. dir 은 upload.dir 과 같은 볼륨
+  # (호스트의 ${DATA_DIR} 아래) 에 위치하도록 설정되어 있다.
+  enabled: true
+  day_of_month: 1
+  hour: 2
+  minute: 0
+  dir: data/backups
+  # pg_dump 바이너리 경로. PATH 에서 찾을 수 없으면 절대경로로 지정.
+  pg_dump_bin: pg_dump
+  # 보관 일수 (0 = 영구 보관).
+  retention_days: 365
+
+scheduler:
+  # 매일 01:00 (timezone 기준)에 알림 job 실행. 끄려면 enabled: false.
+  enabled: true
+  timezone: Asia/Seoul
+  daily_alert_hour: 1
+  daily_alert_minute: 0
+  # D-day 리스트 — project.end_date / assignment.end_date / license.end_date 가
+  # 오늘로부터 정확히 이 일수만큼 남았을 때 Slack 알림 발사.
+  project_alert_days: [30]
+  assignment_alert_days: [30]
+  license_alert_days: [30]
+
+logging:
+  # Log directory (created if missing). Relative paths resolve against the
+  # backend working directory.
+  dir: logs
+
+  # Base filename for the rolling log. Actual files become e.g.
+  #   logs/app.log           (current day)
+  #   logs/app.log.2026-04-16 (previous day, after midnight rollover)
+  filename: app.log
+
+  # Root log level: DEBUG | INFO | WARNING | ERROR | CRITICAL
+  level: INFO
+
+  # Daily rotation at local midnight; keep N days of history (0 = keep all).
+  backup_count: 30
+
+  # Also emit to stdout (useful in dev / container logs).
+  console: true
+
+  # Standard logging format string. %(tenant)s 는 TenantLogFilter 가 주입 —
+  # 현재 ContextVar(current_tenant_id) 의 slug. 시스템·인증 이전 컨텍스트는 "-".
+  format: "%(asctime)s %(levelname)s [%(tenant)s] [%(name)s] %(message)s"
+  date_format: "%Y-%m-%d %H:%M:%S"
+
+exchange:
+  api_url: https://open.er-api.com/v6/latest/USD
+  base: USD
+  target: KRW
+  refresh_cron_hour: 9        # daily refresh hour (KST)
+  initial_backfill_days: 90   # 기동 시 frankfurter.app 히스토리 백필 일수
+  daily_backfill_days: 7      # 일일 cron 이 갱신하는 최근 일수 (단건 대신 범위)
+
+# 한국은행 경제통계시스템(ECOS) Open API — 국내 금리·주가지수 시계열.
+ecos:
+  enabled: false
+  api_key: ""
+  base_url: https://ecos.bok.or.kr/api
+
+# 세인트루이스 연준 FRED — 미국 주가지수(S&P500/NASDAQ/DJIA) 일별 시계열.
+# https://fred.stlouisfed.org 가입 후 무료 키 발급.
+fred:
+  enabled: false
+  api_key: ""
+  base_url: https://api.stlouisfed.org/fred
+
+# 알람 시스템 — provider 단일 선택 (slack 또는 mattermost). enabled=true 일 때만
+# 실제 발송. 각 provider 의 자격증명은 자기 sub-section 으로 격리되어 전환 시
+# 데이터 손실 없음. tenant 별로 Settings > 외부 연동 에서 오버라이드.
+notify:
+  enabled: false
+  provider: slack    # "slack" | "mattermost"
+
+  slack:
+    # Bot User OAuth token (xoxb-...). chat:write · users:read.email · im:write 스코프.
+    bot_token: ""
+    # Incoming Webhook URL (선택). bot_token 이 있으면 그게 우선.
+    default_webhook_url: ""
+    api_base_url: https://slack.com/api
+    timeout_seconds: 10
+    # 기본 대상: 채널은 #name 또는 채널 id, 사용자는 email 또는 user id.
+    default_channels:
+      - "#alert"
+    default_user_emails: []
+    default_user_ids: []
+    emoji_prefix: ":bell:"
+
+  mattermost:
+    # https://mm.example.com — 자체 호스팅 서버 URL. 끝의 / 자동 제거.
+    base_url: ""
+    # Bot Account Token 또는 Personal Access Token. Webhook 미지원.
+    bot_token: ""
+    timeout_seconds: 10
+    # 채널명 → channel id 해석에 필요. 채널 id 직접 입력 시 무관.
+    default_team: ""
+    default_channels: []
+    default_user_emails: []
+
+  notifications:
+    license_expiry_days_before: [30, 14, 7, 1]
+    license_renewal_prep: true
+
+mail:
+  # Toggle outgoing mail globally. When false, send() becomes a no-op so the
+  # app still works without SMTP credentials.
+  enabled: false
+
+  provider: gmail             # informational
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    use_tls: true             # STARTTLS on 587
+    use_ssl: false            # set true + port 465 for implicit SSL
+    timeout_seconds: 10
+
+  sender:
+    email: your-account@example.com
+    name: Orbit Works Notifier
+    # For Gmail, generate an App Password (2-Step Verification required):
+    # https://support.google.com/accounts/answer/185833
+    app_password: ""
+
+  # Default recipients (team inbox, license manager, etc.)
+  default_recipients: []
+
+  # License notification policy
+  notifications:
+    license_expiry_days_before: [30, 14, 7, 1]
+    license_renewal_prep: true
+    subject_prefix: "[Orbit Works]"
+
+push:
+  # PWA Web Push (VAPID). 활성화하려면 키쌍 생성 후 enabled: true.
+  # 키 생성 예:
+  #   python -c "from py_vapid import Vapid; v=Vapid(); v.generate_keys(); \
+  #              print(v.private_pem().decode()); print(v.public_key.to_string())"
+  enabled: false
+  vapid_subject: "mailto:admin@example.com"
+  vapid_public_key: ""
+  vapid_private_key: ""
+
+# 시크릿 암호화 마스터 키 — Fernet (AES-128-CBC + HMAC) base64 32-byte key.
+# 클라우드 자격증명(cloud_cost.{aws,azure,gcp}) 등이 DB 에 평문으로 남지 않게 보호.
+# 키 생성:
+#   python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+# ⚠️ 키 분실 시 암호화된 자격증명 영구 복구 불가. config.yaml 백업 정책 필수.
+security:
+  secrets_key: "CHANGE_ME_FERNET_KEY"
+
+# 클라우드 일별 비용 수집 — 운영자가 UI(설정 > 외부 연동 > 클라우드 비용) 에서
+# 자격증명을 입력하면 자동 암호화되어 app_settings 테이블에 저장된다.
+# 아래 default 는 OFF 상태 — 신규 tenant 가 빈값으로 시작하도록.
+cloud_cost:
+  enabled: false
+  fetch_interval_days: 1
+  service_top_n: 20
+  alert_threshold_krw: 0
+  auto_fetch:
+    enabled: true
+    hour: 4
+    minute: 0
+    catchup_days: 2
+
+# NHN Cloud SMS — SMS 발송 게이트웨이.
+# UI(설정 > 외부 연동 > NHN Cloud SMS) 에서 AppKey/SecretKey 입력.
+# 신규 tenant 는 enabled=false / 키 빈값으로 시작 (DEFAULT_DISABLE_KEYS·DEFAULT_CLEAR_KEYS).
+nhn_cloud_sms:
+  enabled: false
+  url: "https://sms.api.nhncloudservice.com"
+  app_key: ""
+  secret_key: ""

@@ -1,0 +1,99 @@
+# =============================================================================
+# Orbit Works - Docker Compose TEMPLATE
+# -----------------------------------------------------------------------------
+# 이 파일은 git 에 커밋되는 템플릿입니다. 실제 사용:
+#
+#   cp docker-compose.yml.template docker-compose.yml
+#   vi docker-compose.yml             # POSTGRES_PASSWORD 등 CHANGE_ME 항목 채움
+#
+# `docker-compose.yml` 은 .gitignore 에 등록되어 있어 시크릿이 레포에 유입되지
+# 않으며, 운영 환경에서 호스트별로 수정(예: 포트 바인딩 127.0.0.1 제한, db
+# 포트 노출 제거 등) 한 내용이 git pull 로 덮어쓰이지 않습니다.
+#
+# ⚠️ Postgres 자격증명은 config.yaml.template 의 database 섹션과 *반드시 일치*
+#    해야 합니다 — backend 가 asyncpg 로 같은 DB/유저/비번으로 접속합니다.
+#       POSTGRES_DB       ↔  database.name
+#       POSTGRES_USER     ↔  database.username
+#       POSTGRES_PASSWORD ↔  database.password    (단, compose 안에서는 `$` 를
+#                            `$$` 로 escape 해야 변수 보간을 피할 수 있음)
+#
+# 운영 환경 (호스트 PostgreSQL 과 5432 충돌 등) 에서는 db.ports 블록을
+# 제거하고 backend·frontend·drawio 의 host 바인딩을 127.0.0.1:<port>:<port>
+# 로 제한해 외부 노출을 차단하세요.
+# =============================================================================
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    # config.yaml 의 database 섹션과 반드시 일치시킬 것.
+    environment:
+      POSTGRES_DB: orbit
+      POSTGRES_USER: orbit
+      POSTGRES_PASSWORD: CHANGE_ME       # compose 안에서 `$` 는 `$$` 로 escape
+    volumes:
+      # 호스트의 ${PG_DATA_DIR:-./pgdata} 를 PostgreSQL 데이터 디렉터리로 bind-mount.
+      # 컨테이너/이미지 삭제와 무관하게 DB 가 호스트에 영속화된다.
+      - ${PG_DATA_DIR:-./pgdata}:/var/lib/postgresql/data
+    ports:
+      # 운영 환경에서 호스트 PostgreSQL 과 충돌하면 이 블록을 삭제하세요.
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orbit"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    # Runtime configuration lives in ./config.yaml (mounted read-only).
+    # Individual env vars (e.g. MAIL__SENDER__APP_PASSWORD) still override
+    # YAML values thanks to pydantic-settings.
+    #
+    # 호스트 metric 노출 — SUPER_ADMIN 의 시스템 정보 화면이 호스트 CPU·메모리·
+    # 디스크를 보도록 procfs 와 root fs 를 read-only 로 마운트하고 PID namespace
+    # 를 호스트와 공유한다. 단일 호스트 운영 (Compose) 가정. 컨테이너 격리가
+    # 약화되므로 멀티 테넌트 호스팅 환경에는 부적합.
+    pid: host
+    environment:
+      ORBIT_CONFIG_FILE: /app/config.yaml
+      HOST_PROC: /host/proc
+      HOST_ROOT: /host/root
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+      # 호스트의 DATA_DIR (기본 ./data) 를 컨테이너의 /app/data 로 bind-mount.
+      # 업로드 파일 (data/uploads), DB 백업 (data/backups) 이 여기에 영속화된다.
+      # 다른 호스트 경로를 쓰려면 `.env` 에 DATA_DIR=/srv/orbit-data 같이 지정.
+      - ${DATA_DIR:-./data}:/app/data
+      # 호스트 metric 용 read-only 마운트 — psutil 이 HOST_PROC/HOST_ROOT 환경변수
+      # 를 보면 컨테이너 namespace 가 아닌 호스트값을 보고한다.
+      - /proc:/host/proc:ro
+      - /:/host/root:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "4001:4001"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    restart: unless-stopped
+    environment:
+      API_PROXY_URL: http://backend:4001
+    depends_on:
+      - backend
+    ports:
+      - "4000:4000"
+
+  # drawio 다이어그램 에디터 — 자체 호스팅. 회의록 '다이어그램' 탭이 iframe
+  # (`/drawio/`) 으로 임베드. 외부 의존 0 (사내망 격리). 리버스 프록시가
+  # /drawio/ → 4003 으로 라우팅. 운영 환경에서는 host 바인딩을 127.0.0.1
+  # 로 제한해 외부 노출 차단.
+  drawio:
+    image: jgraph/drawio:latest
+    restart: unless-stopped
+    ports:
+      - "4003:8080"

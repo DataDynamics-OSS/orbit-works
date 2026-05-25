@@ -1,0 +1,373 @@
+{
+  "title": "정부 R&D 사업비 정산 시 제출 서류",
+  "관련근거": "과학기술정보통신부훈령",
+  "기준문서" : "기금사업비 산정 및 정산 등에 관한 지침 제297호",
+  "작성일": "2025-07-25",
+  "categories": [
+    {
+      "id": "personnel",
+      "label": "인건비",
+      "subcategories": [
+        {
+          "id": "personnel-salary",
+          "label": "보수",
+          "documents": [
+            {
+              "id": "personnel-salary-doc-001",
+              "title": "참여인력 현황표",
+              "note": "성명, 참여기간, 사업참여율, 현금·현물 구분, 변경사항 등"
+            },
+            {
+              "id": "personnel-salary-doc-002",
+              "title": "급여대장"
+            },
+            {
+              "id": "personnel-salary-doc-003",
+              "title": "근로소득 원천징수영수증"
+            },
+            {
+              "id": "personnel-salary-doc-004",
+              "title": "급여 계좌이체 증빙서류",
+              "note": "참여인력에 귀속되는 이체증명"
+            }
+          ]
+        },
+        {
+          "id": "personnel-regular-wage",
+          "label": "상용임금",
+          "sharesDocumentsWith": "personnel-salary",
+          "documents": []
+        },
+        {
+          "id": "personnel-daily-wage",
+          "label": "일용임금",
+          "sharesDocumentsWith": "personnel-salary",
+          "documents": []
+        },
+        {
+          "id": "personnel-research-allowance",
+          "label": "연구수당",
+          "documents": [
+            {
+              "id": "personnel-research-allowance-doc-001",
+              "title": "연구수당 지급 규정",
+              "note": "기관 내부 규정·근거 문서"
+            },
+            {
+              "id": "personnel-research-allowance-doc-002",
+              "title": "연구수당 지급 결의서",
+              "note": "참여인력별 평가 결과 및 지급액 산정 내역"
+            },
+            {
+              "id": "personnel-research-allowance-doc-003",
+              "title": "연구원 평가표",
+              "note": "참여 기여도·성과 우수성 평가 결과"
+            },
+            {
+              "id": "personnel-research-allowance-doc-004",
+              "title": "지급 계좌이체 증빙서류",
+              "note": "참여인력에 귀속되는 이체증명"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "operation",
+      "label": "운영비",
+      "subcategories": [
+        {
+          "id": "operation-general",
+          "label": "일반수용비",
+          "documents": [
+            {
+              "id": "operation-general-doc-001",
+              "title": "내부결재문서",
+              "note": "사용내역 및 예산 등 표기"
+            },
+            {
+              "id": "operation-general-doc-002",
+              "title": "카드매출전표",
+              "note": "세금계산서 또는 계좌이체증명"
+            },
+            {
+              "id": "operation-general-doc-003",
+              "title": "거래명세서"
+            }
+          ]
+        },
+        {
+          "id": "operation-utilities-tax",
+          "label": "공공요금및제세",
+          "documents": [
+            {
+              "id": "operation-utilities-tax-doc-001",
+              "title": "납입고지서"
+            },
+            {
+              "id": "operation-utilities-tax-doc-002",
+              "title": "배부기준 및 배부액",
+              "note": "총액이 아닌 공공요금 및 제세의 경우"
+            },
+            {
+              "id": "operation-utilities-tax-doc-003",
+              "title": "카드매출전표",
+              "note": "세금계산서 또는 계좌이체증명"
+            }
+          ]
+        },
+        {
+          "id": "operation-overtime-meal",
+          "label": "특근매식비",
+          "documents": [
+            {
+              "id": "operation-overtime-meal-doc-001",
+              "title": "카드매출전표"
+            },
+            {
+              "id": "operation-overtime-meal-doc-002",
+              "title": "지출결의서"
+            },
+            {
+              "id": "operation-overtime-meal-doc-003",
+              "title": "초과근무내역 확인서류",
+              "note": "일시, 근무자, 근무 시작과 끝 시간, 내용"
+            }
+          ]
+        },
+        {
+          "id": "operation-rental",
+          "label": "임차료",
+          "documents": [
+            {
+              "id": "operation-rental-doc-001",
+              "title": "내부결재문서",
+              "note": "임차사유, 일정 등 표기"
+            },
+            {
+              "id": "operation-rental-doc-002",
+              "title": "임대(차)계약서"
+            },
+            {
+              "id": "operation-rental-doc-003",
+              "title": "배부기준 및 배부액",
+              "note": "총액이 아닌 임차료의 경우"
+            },
+            {
+              "id": "operation-rental-doc-004",
+              "title": "카드매출전표",
+              "note": "세금계산서 또는 계좌이체증명"
+            }
+          ]
+        },
+        {
+          "id": "operation-facility-maintenance",
+          "label": "시설장비유지비",
+          "documents": [
+            {
+              "id": "operation-facility-maintenance-doc-001",
+              "title": "내부결재문서",
+              "note": "사용내역 및 예산 등 표기"
+            },
+            {
+              "id": "operation-facility-maintenance-doc-002",
+              "title": "카드매출전표",
+              "note": "세금계산서 또는 계좌이체증명"
+            },
+            {
+              "id": "operation-facility-maintenance-doc-003",
+              "title": "거래명세서"
+            }
+          ]
+        },
+        {
+          "id": "operation-fuel",
+          "label": "유류비",
+          "sharesDocumentsWith": "operation-facility-maintenance",
+          "documents": []
+        },
+        {
+          "id": "operation-welfare",
+          "label": "복리후생비",
+          "documents": [
+            {
+              "id": "operation-welfare-doc-001",
+              "title": "내부결재문서",
+              "note": "세부 지급내역 표기"
+            },
+            {
+              "id": "operation-welfare-doc-002",
+              "title": "계좌이체증명"
+            }
+          ]
+        },
+        {
+          "id": "operation-general-service",
+          "label": "일반용역비",
+          "documents": [
+            {
+              "id": "operation-general-service-doc-001",
+              "title": "내부결재문서",
+              "note": "사업내역 및 예산 등 표기"
+            },
+            {
+              "id": "operation-general-service-doc-002",
+              "title": "세금계산서 또는 계좌이체증명",
+              "note": "위탁용역사업비 입금증"
+            },
+            {
+              "id": "operation-general-service-doc-003",
+              "title": "계약서",
+              "note": "계약에 의한 경우"
+            },
+            {
+              "id": "operation-general-service-doc-004",
+              "title": "외부인력 도급계약서 또는 프리랜서 계약서",
+              "note": "해당되는 경우"
+            }
+          ]
+        },
+        {
+          "id": "operation-management-service",
+          "label": "관리용역비",
+          "sharesDocumentsWith": "operation-general-service",
+          "documents": []
+        },
+        {
+          "id": "operation-etc",
+          "label": "기타운영비",
+          "documents": [
+            {
+              "id": "operation-etc-doc-001",
+              "title": "카드매출전표"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "travel",
+      "label": "여비",
+      "subcategories": [
+        {
+          "id": "travel-domestic",
+          "label": "국내여비",
+          "documents": [
+            {
+              "id": "travel-domestic-doc-001",
+              "title": "출장신청서 또는 출장복명서"
+            },
+            {
+              "id": "travel-domestic-doc-002",
+              "title": "출장관련 증빙서류"
+            },
+            {
+              "id": "travel-domestic-doc-003",
+              "title": "카드매출전표",
+              "note": "통행료, 숙박비, 식비, 주차비 등"
+            }
+          ]
+        },
+        {
+          "id": "travel-overseas",
+          "label": "국외여비",
+          "documents": [
+            {
+              "id": "travel-overseas-doc-001",
+              "title": "내부결재문서",
+              "note": "출장목적, 기간, 장소, 출장자, 여비 등이 포함된 출장계획서 및 출장결과보고서"
+            },
+            {
+              "id": "travel-overseas-doc-002",
+              "title": "카드매출전표",
+              "note": "계좌이체증명 또는 세금계산서"
+            },
+            {
+              "id": "travel-overseas-doc-003",
+              "title": "출입국일 확인 가능한 서류",
+              "note": "여권 사본 등"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "business-promotion",
+      "label": "업무추진비",
+      "subcategories": [
+        {
+          "id": "business-promotion-project",
+          "label": "사업추진비",
+          "documents": [
+            {
+              "id": "business-promotion-project-doc-001",
+              "title": "내부결재문서",
+              "note": "회의목적, 일시, 장소, 참석자, 회의내용 등이 포함된 회의록"
+            },
+            {
+              "id": "business-promotion-project-doc-002",
+              "title": "카드매출전표"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "research-service",
+      "label": "연구용역비",
+      "subcategories": [
+        {
+          "id": "research-service-general",
+          "label": "일반연구비",
+          "documents": [
+            {
+              "id": "research-service-general-doc-001",
+              "title": "세금계산서 또는 계좌이체증명",
+              "note": "연구용역비 입금증"
+            },
+            {
+              "id": "research-service-general-doc-002",
+              "title": "연구용역계약서"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tangible-asset",
+      "label": "유형자산",
+      "subcategories": [
+        {
+          "id": "tangible-asset-acquisition",
+          "label": "자산취득비",
+          "documents": [
+            {
+              "id": "tangible-asset-acquisition-doc-001",
+              "title": "내부결재문서",
+              "note": "자산취득사유, 물품명, 소요예산 등 포함"
+            },
+            {
+              "id": "tangible-asset-acquisition-doc-002",
+              "title": "카드매출전표",
+              "note": "세금계산서 또는 계좌이체증명"
+            },
+            {
+              "id": "tangible-asset-acquisition-doc-003",
+              "title": "거래명세서"
+            },
+            {
+              "id": "tangible-asset-acquisition-doc-004",
+              "title": "구매의뢰서",
+              "note": "자산취득비"
+            },
+            {
+              "id": "tangible-asset-acquisition-doc-005",
+              "title": "계약서 및 검수(설치)완료 확인서",
+              "note": "계약에 의한 경우"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

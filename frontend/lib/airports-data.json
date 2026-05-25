@@ -1,0 +1,5602 @@
+[
+{
+"iata":"ATL",
+"name":"Hartsfield Jackson Atlanta International Airport",
+"city":"Atlanta",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"ORD",
+"name":"Chicago O'Hare International Airport",
+"city":"Chicago",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"PEK",
+"name":"Beijing Capital International Airport",
+"city":"Beijing",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"LHR",
+"name":"London Heathrow Airport",
+"city":"London",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"CDG",
+"name":"Charles de Gaulle International Airport",
+"city":"Paris",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"FRA",
+"name":"Frankfurt am Main Airport",
+"city":"Frankfurt",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"LAX",
+"name":"Los Angeles International Airport",
+"city":"Los Angeles",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"DFW",
+"name":"Dallas Fort Worth International Airport",
+"city":"Dallas-Fort Worth",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"JFK",
+"name":"John F Kennedy International Airport",
+"city":"New York",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"AMS",
+"name":"Amsterdam Airport Schiphol",
+"city":"Amsterdam",
+"country":"Netherlands",
+"tz":"Europe/Amsterdam"
+},
+{
+"iata":"PVG",
+"name":"Shanghai Pudong International Airport",
+"city":"Shanghai",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"SIN",
+"name":"Singapore Changi Airport",
+"city":"Singapore",
+"country":"Singapore",
+"tz":"Asia/Singapore"
+},
+{
+"iata":"BCN",
+"name":"Barcelona International Airport",
+"city":"Barcelona",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"ICN",
+"name":"Incheon International Airport",
+"city":"Seoul",
+"country":"South Korea",
+"tz":"Asia/Seoul"
+},
+{
+"iata":"DEN",
+"name":"Denver International Airport",
+"city":"Denver",
+"country":"United States",
+"tz":"America/Denver"
+},
+{
+"iata":"MIA",
+"name":"Miami International Airport",
+"city":"Miami",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"MUC",
+"name":"Munich Airport",
+"city":"Munich",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"DXB",
+"name":"Dubai International Airport",
+"city":"Dubai",
+"country":"United Arab Emirates",
+"tz":"Asia/Dubai"
+},
+{
+"iata":"HKG",
+"name":"Hong Kong International Airport",
+"city":"Hong Kong",
+"country":"Hong Kong",
+"tz":"Asia/Hong_Kong"
+},
+{
+"iata":"LGW",
+"name":"London Gatwick Airport",
+"city":"London",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"CAN",
+"name":"Guangzhou Baiyun International Airport",
+"city":"Guangzhou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"FCO",
+"name":"Leonardo da Vinci–Fiumicino Airport",
+"city":"Rome",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"MAD",
+"name":"Adolfo Suárez Madrid–Barajas Airport",
+"city":"Madrid",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"BKK",
+"name":"Suvarnabhumi Airport",
+"city":"Bangkok",
+"country":"Thailand",
+"tz":"Asia/Bangkok"
+},
+{
+"iata":"DME",
+"name":"Domodedovo International Airport",
+"city":"Moscow",
+"country":"Russia",
+"tz":"Europe/Moscow"
+},
+{
+"iata":"CTU",
+"name":"Chengdu Shuangliu International Airport",
+"city":"Chengdu",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"YYZ",
+"name":"Lester B. Pearson International Airport",
+"city":"Toronto",
+"country":"Canada",
+"tz":"America/Toronto"
+},
+{
+"iata":"BRU",
+"name":"Brussels Airport",
+"city":"Brussels",
+"country":"Belgium",
+"tz":"Europe/Brussels"
+},
+{
+"iata":"MAN",
+"name":"Manchester Airport",
+"city":"Manchester",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"VIE",
+"name":"Vienna International Airport",
+"city":"Vienna",
+"country":"Austria",
+"tz":"Europe/Vienna"
+},
+{
+"iata":"CLT",
+"name":"Charlotte Douglas International Airport",
+"city":"Charlotte",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"PHL",
+"name":"Philadelphia International Airport",
+"city":"Philadelphia",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"NRT",
+"name":"Narita International Airport",
+"city":"Tokyo",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"DUS",
+"name":"Düsseldorf Airport",
+"city":"Duesseldorf",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"XIY",
+"name":"Xi'an Xianyang International Airport",
+"city":"Xi'an",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"PMI",
+"name":"Palma De Mallorca Airport",
+"city":"Palma de Mallorca",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"KMG",
+"name":"Kunming Changshui International Airport",
+"city":"Kunming",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"CKG",
+"name":"Chongqing Jiangbei International Airport",
+"city":"Chongqing",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"DEL",
+"name":"Indira Gandhi International Airport",
+"city":"Delhi",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"TPE",
+"name":"Taiwan Taoyuan International Airport",
+"city":"Taipei",
+"country":"Taiwan",
+"tz":"Asia/Taipei"
+},
+{
+"iata":"KUL",
+"name":"Kuala Lumpur International Airport",
+"city":"Kuala Lumpur",
+"country":"Malaysia",
+"tz":"Asia/Kuala_Lumpur"
+},
+{
+"iata":"PHX",
+"name":"Phoenix Sky Harbor International Airport",
+"city":"Phoenix",
+"country":"United States",
+"tz":"America/Phoenix"
+},
+{
+"iata":"HGH",
+"name":"Hangzhou Xiaoshan International Airport",
+"city":"Hangzhou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"EWR",
+"name":"Newark Liberty International Airport",
+"city":"Newark",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"SFO",
+"name":"San Francisco International Airport",
+"city":"San Francisco",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"LAS",
+"name":"McCarran International Airport",
+"city":"Las Vegas",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"ZRH",
+"name":"Zürich Airport",
+"city":"Zurich",
+"country":"Switzerland",
+"tz":"Europe/Zurich"
+},
+{
+"iata":"IAH",
+"name":"George Bush Intercontinental Houston Airport",
+"city":"Houston",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"MEX",
+"name":"Licenciado Benito Juarez International Airport",
+"city":"Mexico City",
+"country":"Mexico",
+"tz":"America/Mexico_City"
+},
+{
+"iata":"AUH",
+"name":"Abu Dhabi International Airport",
+"city":"Abu Dhabi",
+"country":"United Arab Emirates",
+"tz":"Asia/Dubai"
+},
+{
+"iata":"MCO",
+"name":"Orlando International Airport",
+"city":"Orlando",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"SZX",
+"name":"Shenzhen Bao'an International Airport",
+"city":"Shenzhen",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"XMN",
+"name":"Xiamen Gaoqi International Airport",
+"city":"Xiamen",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"CPH",
+"name":"Copenhagen Kastrup Airport",
+"city":"Copenhagen",
+"country":"Denmark",
+"tz":"Europe/Copenhagen"
+},
+{
+"iata":"BOM",
+"name":"Chhatrapati Shivaji International Airport",
+"city":"Mumbai",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"ARN",
+"name":"Stockholm-Arlanda Airport",
+"city":"Stockholm",
+"country":"Sweden",
+"tz":"Europe/Stockholm"
+},
+{
+"iata":"LIS",
+"name":"Humberto Delgado Airport (Lisbon Portela Airport)",
+"city":"Lisbon",
+"country":"Portugal",
+"tz":"Europe/Lisbon"
+},
+{
+"iata":"DTW",
+"name":"Detroit Metropolitan Wayne County Airport",
+"city":"Detroit",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"MSP",
+"name":"Minneapolis-St Paul International/Wold-Chamberlain Airport",
+"city":"Minneapolis",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"BOS",
+"name":"General Edward Lawrence Logan International Airport",
+"city":"Boston",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"TXL",
+"name":"Berlin-Tegel Airport",
+"city":"Berlin",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"DUB",
+"name":"Dublin Airport",
+"city":"Dublin",
+"country":"Ireland",
+"tz":"Europe/Dublin"
+},
+{
+"iata":"SHA",
+"name":"Shanghai Hongqiao International Airport",
+"city":"Shanghai",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"AGP",
+"name":"Málaga Airport",
+"city":"Malaga",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"SYD",
+"name":"Sydney Kingsford Smith International Airport",
+"city":"Sydney",
+"country":"Australia",
+"tz":"Australia/Sydney"
+},
+{
+"iata":"ORY",
+"name":"Paris-Orly Airport",
+"city":"Paris",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"ATH",
+"name":"Eleftherios Venizelos International Airport",
+"city":"Athens",
+"country":"Greece",
+"tz":"Europe/Athens"
+},
+{
+"iata":"SEA",
+"name":"Seattle Tacoma International Airport",
+"city":"Seattle",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"SVO",
+"name":"Sheremetyevo International Airport",
+"city":"Moscow",
+"country":"Russia",
+"tz":"Europe/Moscow"
+},
+{
+"iata":"DCA",
+"name":"Ronald Reagan Washington National Airport",
+"city":"Washington",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"GRU",
+"name":"Guarulhos - Governador André Franco Montoro International Airport",
+"city":"Sao Paulo",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"IAD",
+"name":"Washington Dulles International Airport",
+"city":"Washington",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"MNL",
+"name":"Ninoy Aquino International Airport",
+"city":"Manila",
+"country":"Philippines",
+"tz":"Asia/Manila"
+},
+{
+"iata":"MXP",
+"name":"Malpensa International Airport",
+"city":"Milano",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"CSX",
+"name":"Changsha Huanghua International Airport",
+"city":"Changcha",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"JED",
+"name":"King Abdulaziz International Airport",
+"city":"Jeddah",
+"country":"Saudi Arabia",
+"tz":"Asia/Riyadh"
+},
+{
+"iata":"TAO",
+"name":"Liuting Airport",
+"city":"Qingdao",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"FLL",
+"name":"Fort Lauderdale Hollywood International Airport",
+"city":"Fort Lauderdale",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"WUH",
+"name":"Wuhan Tianhe International Airport",
+"city":"Wuhan",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"YUL",
+"name":"Montreal / Pierre Elliott Trudeau International Airport",
+"city":"Montreal",
+"country":"Canada",
+"tz":"America/Toronto"
+},
+{
+"iata":"LED",
+"name":"Pulkovo Airport",
+"city":"St. Petersburg",
+"country":"Russia",
+"tz":"Europe/Moscow"
+},
+{
+"iata":"CGK",
+"name":"Soekarno-Hatta International Airport",
+"city":"Jakarta",
+"country":"Indonesia",
+"tz":"Asia/Jakarta"
+},
+{
+"iata":"OSL",
+"name":"Oslo Lufthavn",
+"city":"Oslo",
+"country":"Norway",
+"tz":"Europe/Oslo"
+},
+{
+"iata":"PRG",
+"name":"Václav Havel Airport Prague",
+"city":"Prague",
+"country":"Czech Republic",
+"tz":"Europe/Prague"
+},
+{
+"iata":"CGO",
+"name":"Zhengzhou Xinzheng International Airport",
+"city":"Zhengzhou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"STN",
+"name":"London Stansted Airport",
+"city":"London",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"NKG",
+"name":"Nanjing Lukou Airport",
+"city":"Nanjing",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"GVA",
+"name":"Geneva Cointrin International Airport",
+"city":"Geneva",
+"country":"Switzerland",
+"tz":"Europe/Paris"
+},
+{
+"iata":"HAM",
+"name":"Hamburg Airport",
+"city":"Hamburg",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"JNB",
+"name":"OR Tambo International Airport",
+"city":"Johannesburg",
+"country":"South Africa",
+"tz":"Africa/Johannesburg"
+},
+{
+"iata":"HEL",
+"name":"Helsinki Vantaa Airport",
+"city":"Helsinki",
+"country":"Finland",
+"tz":"Europe/Helsinki"
+},
+{
+"iata":"TFS",
+"name":"Tenerife South Airport",
+"city":"Tenerife",
+"country":"Spain",
+"tz":"Atlantic/Canary"
+},
+{
+"iata":"LGA",
+"name":"La Guardia Airport",
+"city":"New York",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"HND",
+"name":"Tokyo Haneda International Airport",
+"city":"Tokyo",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"YVR",
+"name":"Vancouver International Airport",
+"city":"Vancouver",
+"country":"Canada",
+"tz":"America/Vancouver"
+},
+{
+"iata":"ALC",
+"name":"Alicante International Airport",
+"city":"Alicante",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"CUN",
+"name":"Cancún International Airport",
+"city":"Cancun",
+"country":"Mexico",
+"tz":"America/Cancun"
+},
+{
+"iata":"LPA",
+"name":"Gran Canaria Airport",
+"city":"Gran Canaria",
+"country":"Spain",
+"tz":"Atlantic/Canary"
+},
+{
+"iata":"BOG",
+"name":"El Dorado International Airport",
+"city":"Bogota",
+"country":"Colombia",
+"tz":"America/Bogota"
+},
+{
+"iata":"URC",
+"name":"Ürümqi Diwopu International Airport",
+"city":"Urumqi",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"KIX",
+"name":"Kansai International Airport",
+"city":"Osaka",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"CAI",
+"name":"Cairo International Airport",
+"city":"Cairo",
+"country":"Egypt",
+"tz":"Africa/Cairo"
+},
+{
+"iata":"BNE",
+"name":"Brisbane International Airport",
+"city":"Brisbane",
+"country":"Australia",
+"tz":"Australia/Brisbane"
+},
+{
+"iata":"TSN",
+"name":"Tianjin Binhai International Airport",
+"city":"Tianjin",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"SAW",
+"name":"Sabiha Gökçen International Airport",
+"city":"Istanbul",
+"country":"Turkey",
+"tz":"Europe/Istanbul"
+},
+{
+"iata":"BWI",
+"name":"Baltimore/Washington International Thurgood Marshall Airport",
+"city":"Baltimore",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"DLC",
+"name":"Zhoushuizi Airport",
+"city":"Dalian",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"SLC",
+"name":"Salt Lake City International Airport",
+"city":"Salt Lake City",
+"country":"United States",
+"tz":"America/Denver"
+},
+{
+"iata":"RUH",
+"name":"King Khaled International Airport",
+"city":"Riyadh",
+"country":"Saudi Arabia",
+"tz":"Asia/Riyadh"
+},
+{
+"iata":"TPA",
+"name":"Tampa International Airport",
+"city":"Tampa",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"LYS",
+"name":"Lyon Saint-Exupéry Airport",
+"city":"Lyon",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"KWE",
+"name":"Longdongbao Airport",
+"city":"Guiyang",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"STR",
+"name":"Stuttgart Airport",
+"city":"Stuttgart",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"SHE",
+"name":"Taoxian Airport",
+"city":"Shenyang",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"MDW",
+"name":"Chicago Midway International Airport",
+"city":"Chicago",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"TLV",
+"name":"Ben Gurion International Airport",
+"city":"Tel-aviv",
+"country":"Israel",
+"tz":"Asia/Jerusalem"
+},
+{
+"iata":"TNA",
+"name":"Yaoqiang Airport",
+"city":"Jinan",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"MEL",
+"name":"Melbourne International Airport",
+"city":"Melbourne",
+"country":"Australia",
+"tz":"Australia/Hobart"
+},
+{
+"iata":"NCE",
+"name":"Nice-Côte d'Azur Airport",
+"city":"Nice",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"FOC",
+"name":"Fuzhou Changle International Airport",
+"city":"Fuzhou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"CGN",
+"name":"Cologne Bonn Airport",
+"city":"Cologne",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"MRS",
+"name":"Marseille Provence Airport",
+"city":"Marseille",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"BHX",
+"name":"Birmingham International Airport",
+"city":"Birmingham",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"HRB",
+"name":"Taiping Airport",
+"city":"Harbin",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"NBO",
+"name":"Jomo Kenyatta International Airport",
+"city":"Nairobi",
+"country":"Kenya",
+"tz":"Africa/Nairobi"
+},
+{
+"iata":"AYT",
+"name":"Antalya International Airport",
+"city":"Antalya",
+"country":"Turkey",
+"tz":"Europe/Istanbul"
+},
+{
+"iata":"CMN",
+"name":"Mohammed V International Airport",
+"city":"Casablanca",
+"country":"Morocco",
+"tz":"Africa/Casablanca"
+},
+{
+"iata":"MSY",
+"name":"Louis Armstrong New Orleans International Airport",
+"city":"New Orleans",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"VCE",
+"name":"Venice Marco Polo Airport",
+"city":"Venice",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"WAW",
+"name":"Warsaw Chopin Airport",
+"city":"Warsaw",
+"country":"Poland",
+"tz":"Europe/Warsaw"
+},
+{
+"iata":"KWI",
+"name":"Kuwait International Airport",
+"city":"Kuwait",
+"country":"Kuwait",
+"tz":"Asia/Kuwait"
+},
+{
+"iata":"SAN",
+"name":"San Diego International Airport",
+"city":"San Diego",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"EDI",
+"name":"Edinburgh Airport",
+"city":"Edinburgh",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"ACE",
+"name":"Lanzarote Airport",
+"city":"Arrecife",
+"country":"Spain",
+"tz":"Atlantic/Canary"
+},
+{
+"iata":"CTA",
+"name":"Catania-Fontanarossa Airport",
+"city":"Catania",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"HNL",
+"name":"Daniel K Inouye International Airport",
+"city":"Honolulu",
+"country":"United States",
+"tz":"Pacific/Honolulu"
+},
+{
+"iata":"LIM",
+"name":"Jorge Chávez International Airport",
+"city":"Lima",
+"country":"Peru",
+"tz":"America/Lima"
+},
+{
+"iata":"PDX",
+"name":"Portland International Airport",
+"city":"Portland",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"NNG",
+"name":"Nanning Wuxu Airport",
+"city":"Nanning",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"YYC",
+"name":"Calgary International Airport",
+"city":"Calgary",
+"country":"Canada",
+"tz":"America/Edmonton"
+},
+{
+"iata":"OTP",
+"name":"Henri Coandă International Airport",
+"city":"Bucharest",
+"country":"Romania",
+"tz":"Europe/Bucharest"
+},
+{
+"iata":"MLA",
+"name":"Malta International Airport",
+"city":"Malta",
+"country":"Malta",
+"tz":"Europe/Malta"
+},
+{
+"iata":"AMM",
+"name":"Queen Alia International Airport",
+"city":"Amman",
+"country":"Jordan",
+"tz":"Asia/Amman"
+},
+{
+"iata":"STL",
+"name":"St Louis Lambert International Airport",
+"city":"St. Louis",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"TYN",
+"name":"Taiyuan Wusu Airport",
+"city":"Taiyuan",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"HER",
+"name":"Heraklion International Nikos Kazantzakis Airport",
+"city":"Heraklion",
+"country":"Greece",
+"tz":"Europe/Athens"
+},
+{
+"iata":"SGN",
+"name":"Tan Son Nhat International Airport",
+"city":"Ho Chi Minh City",
+"country":"Vietnam",
+"tz":"Asia/Saigon"
+},
+{
+"iata":"SYX",
+"name":"Sanya Phoenix International Airport",
+"city":"Sanya",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"HAK",
+"name":"Haikou Meilan International Airport",
+"city":"Haikou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"ADD",
+"name":"Addis Ababa Bole International Airport",
+"city":"Addis Ababa",
+"country":"Ethiopia",
+"tz":"Africa/Addis_Ababa"
+},
+{
+"iata":"KWL",
+"name":"Guilin Liangjiang International Airport",
+"city":"Guilin",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"LTN",
+"name":"London Luton Airport",
+"city":"London",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"AKL",
+"name":"Auckland International Airport",
+"city":"Auckland",
+"country":"New Zealand",
+"tz":"Pacific/Auckland"
+},
+{
+"iata":"PTY",
+"name":"Tocumen International Airport",
+"city":"Panama City",
+"country":"Panama",
+"tz":"America/Panama"
+},
+{
+"iata":"FAO",
+"name":"Faro Airport",
+"city":"Faro",
+"country":"Portugal",
+"tz":"Europe/Lisbon"
+},
+{
+"iata":"MAA",
+"name":"Chennai International Airport",
+"city":"Madras",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"MCT",
+"name":"Muscat International Airport",
+"city":"Muscat",
+"country":"Oman",
+"tz":"Asia/Muscat"
+},
+{
+"iata":"SJU",
+"name":"Luis Munoz Marin International Airport",
+"city":"San Juan",
+"country":"Puerto Rico",
+"tz":"America/Puerto_Rico"
+},
+{
+"iata":"CMB",
+"name":"Bandaranaike International Colombo Airport",
+"city":"Colombo",
+"country":"Sri Lanka",
+"tz":"Asia/Colombo"
+},
+{
+"iata":"IBZ",
+"name":"Ibiza Airport",
+"city":"Ibiza",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"KBP",
+"name":"Boryspil International Airport",
+"city":"Kiev",
+"country":"Ukraine",
+"tz":"Europe/Kiev"
+},
+{
+"iata":"OPO",
+"name":"Francisco de Sá Carneiro Airport",
+"city":"Porto",
+"country":"Portugal",
+"tz":"Europe/Lisbon"
+},
+{
+"iata":"RIX",
+"name":"Riga International Airport",
+"city":"Riga",
+"country":"Latvia",
+"tz":"Europe/Riga"
+},
+{
+"iata":"DPS",
+"name":"Ngurah Rai (Bali) International Airport",
+"city":"Denpasar",
+"country":"Indonesia",
+"tz":"Asia/Makassar"
+},
+{
+"iata":"BRS",
+"name":"Bristol Airport",
+"city":"Bristol",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"SVX",
+"name":"Koltsovo Airport",
+"city":"Yekaterinburg",
+"country":"Russia",
+"tz":"Asia/Yekaterinburg"
+},
+{
+"iata":"BSB",
+"name":"Presidente Juscelino Kubistschek International Airport",
+"city":"Brasilia",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"GLA",
+"name":"Glasgow International Airport",
+"city":"Glasgow",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"BLR",
+"name":"Kempegowda International Airport",
+"city":"Bangalore",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"BUD",
+"name":"Budapest Liszt Ferenc International Airport",
+"city":"Budapest",
+"country":"Hungary",
+"tz":"Europe/Budapest"
+},
+{
+"iata":"SHJ",
+"name":"Sharjah International Airport",
+"city":"Sharjah",
+"country":"United Arab Emirates",
+"tz":"Asia/Dubai"
+},
+{
+"iata":"CCU",
+"name":"Netaji Subhash Chandra Bose International Airport",
+"city":"Kolkata",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"GIG",
+"name":"Rio Galeão – Tom Jobim International Airport",
+"city":"Rio De Janeiro",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"EMA",
+"name":"East Midlands Airport",
+"city":"East Midlands",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"FUE",
+"name":"Fuerteventura Airport",
+"city":"Fuerteventura",
+"country":"Spain",
+"tz":"Atlantic/Canary"
+},
+{
+"iata":"LCA",
+"name":"Larnaca International Airport",
+"city":"Larnaca",
+"country":"Cyprus",
+"tz":"Asia/Nicosia"
+},
+{
+"iata":"BSL",
+"name":"EuroAirport Basel-Mulhouse-Freiburg Airport",
+"city":"Mulhouse",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"GDL",
+"name":"Don Miguel Hidalgo Y Costilla International Airport",
+"city":"Guadalajara",
+"country":"Mexico",
+"tz":"America/Mexico_City"
+},
+{
+"iata":"NTE",
+"name":"Nantes Atlantique Airport",
+"city":"Nantes",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"PER",
+"name":"Perth International Airport",
+"city":"Perth",
+"country":"Australia",
+"tz":"Australia/Perth"
+},
+{
+"iata":"CCS",
+"name":"Simón Bolívar International Airport",
+"city":"Caracas",
+"country":"Venezuela",
+"tz":"America/Caracas"
+},
+{
+"iata":"OVB",
+"name":"Tolmachevo Airport",
+"city":"Novosibirsk",
+"country":"Russia",
+"tz":"Asia/Krasnoyarsk"
+},
+{
+"iata":"ALG",
+"name":"Houari Boumediene Airport",
+"city":"Algier",
+"country":"Algeria",
+"tz":"Africa/Algiers"
+},
+{
+"iata":"BLQ",
+"name":"Bologna Guglielmo Marconi Airport",
+"city":"Bologna",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"TUN",
+"name":"Tunis Carthage International Airport",
+"city":"Tunis",
+"country":"Tunisia",
+"tz":"Africa/Tunis"
+},
+{
+"iata":"HAN",
+"name":"Noi Bai International Airport",
+"city":"Hanoi",
+"country":"Vietnam",
+"tz":"Asia/Saigon"
+},
+{
+"iata":"HET",
+"name":"Baita International Airport",
+"city":"Hohhot",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"SKG",
+"name":"Thessaloniki Macedonia International Airport",
+"city":"Thessaloniki",
+"country":"Greece",
+"tz":"Europe/Athens"
+},
+{
+"iata":"KHN",
+"name":"Nanchang Changbei International Airport",
+"city":"Nanchang",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"BEG",
+"name":"Belgrade Nikola Tesla Airport",
+"city":"Belgrade",
+"country":"Serbia",
+"tz":"Europe/Belgrade"
+},
+{
+"iata":"VKO",
+"name":"Vnukovo International Airport",
+"city":"Moscow",
+"country":"Russia",
+"tz":"Europe/Moscow"
+},
+{
+"iata":"BAH",
+"name":"Bahrain International Airport",
+"city":"Bahrain",
+"country":"Bahrain",
+"tz":"Asia/Bahrain"
+},
+{
+"iata":"FUK",
+"name":"Fukuoka Airport",
+"city":"Fukuoka",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"NGO",
+"name":"Chubu Centrair International Airport",
+"city":"Nagoya",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"CRL",
+"name":"Brussels South Charleroi Airport",
+"city":"Charleroi",
+"country":"Belgium",
+"tz":"Europe/Brussels"
+},
+{
+"iata":"LHW",
+"name":"Lanzhou Zhongchuan Airport",
+"city":"Lanzhou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"NGB",
+"name":"Ningbo Lishe International Airport",
+"city":"Ninbo",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"RHO",
+"name":"Diagoras Airport",
+"city":"Rhodos",
+"country":"Greece",
+"tz":"Europe/Athens"
+},
+{
+"iata":"AUS",
+"name":"Austin Bergstrom International Airport",
+"city":"Austin",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"RDU",
+"name":"Raleigh Durham International Airport",
+"city":"Raleigh-durham",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"NCL",
+"name":"Newcastle Airport",
+"city":"Newcastle",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"SXF",
+"name":"Berlin-Schönefeld Airport",
+"city":"Berlin",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"BNA",
+"name":"Nashville International Airport",
+"city":"Nashville",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"DMM",
+"name":"King Fahd International Airport",
+"city":"Dammam",
+"country":"Saudi Arabia",
+"tz":"Asia/Riyadh"
+},
+{
+"iata":"SJW",
+"name":"Shijiazhuang Daguocun International Airport",
+"city":"Shijiazhuang",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"VLC",
+"name":"Valencia Airport",
+"city":"Valencia",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"BGY",
+"name":"Il Caravaggio International Airport",
+"city":"Bergamo",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"CTS",
+"name":"New Chitose Airport",
+"city":"Sapporo",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"WNZ",
+"name":"Wenzhou Longwan International Airport",
+"city":"Wenzhou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"CLE",
+"name":"Cleveland Hopkins International Airport",
+"city":"Cleveland",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"TLS",
+"name":"Toulouse-Blagnac Airport",
+"city":"Toulouse",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"LBA",
+"name":"Leeds Bradford Airport",
+"city":"Leeds",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"NAY",
+"name":"Beijing Nanyuan Airport",
+"city":"Beijing",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"PUS",
+"name":"Gimhae International Airport",
+"city":"Busan",
+"country":"South Korea",
+"tz":"Asia/Seoul"
+},
+{
+"iata":"TAS",
+"name":"Tashkent International Airport",
+"city":"Tashkent",
+"country":"Uzbekistan",
+"tz":"Asia/Samarkand"
+},
+{
+"iata":"MCI",
+"name":"Kansas City International Airport",
+"city":"Kansas City",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"MFM",
+"name":"Macau International Airport",
+"city":"Macau",
+"country":"Macau",
+"tz":"Asia/Macau"
+},
+{
+"iata":"NAP",
+"name":"Naples International Airport",
+"city":"Naples",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"SCL",
+"name":"Comodoro Arturo Merino Benítez International Airport",
+"city":"Santiago",
+"country":"Chile",
+"tz":"America/Santiago"
+},
+{
+"iata":"HFE",
+"name":"Hefei Luogang International Airport",
+"city":"Hefei",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"HAJ",
+"name":"Hannover Airport",
+"city":"Hannover",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"PSA",
+"name":"Pisa International Airport",
+"city":"Pisa",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"CVG",
+"name":"Cincinnati Northern Kentucky International Airport",
+"city":"Cincinnati",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"EZE",
+"name":"Ministro Pistarini International Airport",
+"city":"Buenos Aires",
+"country":"Argentina",
+"tz":"America/Buenos_Aires"
+},
+{
+"iata":"HOU",
+"name":"William P Hobby Airport",
+"city":"Houston",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"SJO",
+"name":"Juan Santamaria International Airport",
+"city":"San Jose",
+"country":"Costa Rica",
+"tz":"America/Costa_Rica"
+},
+{
+"iata":"DAC",
+"name":"Hazrat Shahjalal International Airport",
+"city":"Dhaka",
+"country":"Bangladesh",
+"tz":"Asia/Dhaka"
+},
+{
+"iata":"PIT",
+"name":"Pittsburgh International Airport",
+"city":"Pittsburgh",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"MTY",
+"name":"General Mariano Escobedo International Airport",
+"city":"Monterrey",
+"country":"Mexico",
+"tz":"America/Mexico_City"
+},
+{
+"iata":"RAK",
+"name":"Menara Airport",
+"city":"Marrakech",
+"country":"Morocco",
+"tz":"Africa/Casablanca"
+},
+{
+"iata":"PUJ",
+"name":"Punta Cana International Airport",
+"city":"Punta Cana",
+"country":"Dominican Republic",
+"tz":"America/Santo_Domingo"
+},
+{
+"iata":"LUX",
+"name":"Luxembourg-Findel International Airport",
+"city":"Luxemburg",
+"country":"Luxembourg",
+"tz":"Europe/Luxembourg"
+},
+{
+"iata":"YEG",
+"name":"Edmonton International Airport",
+"city":"Edmonton",
+"country":"Canada",
+"tz":"America/Edmonton"
+},
+{
+"iata":"HKT",
+"name":"Phuket International Airport",
+"city":"Phuket",
+"country":"Thailand",
+"tz":"Asia/Bangkok"
+},
+{
+"iata":"IND",
+"name":"Indianapolis International Airport",
+"city":"Indianapolis",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"BGO",
+"name":"Bergen Airport Flesland",
+"city":"Bergen",
+"country":"Norway",
+"tz":"Europe/Oslo"
+},
+{
+"iata":"SAT",
+"name":"San Antonio International Airport",
+"city":"San Antonio",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"EIN",
+"name":"Eindhoven Airport",
+"city":"Eindhoven",
+"country":"Netherlands",
+"tz":"Europe/Amsterdam"
+},
+{
+"iata":"NAS",
+"name":"Lynden Pindling International Airport",
+"city":"Nassau",
+"country":"Bahamas",
+"tz":"America/Nassau"
+},
+{
+"iata":"ALA",
+"name":"Almaty Airport",
+"city":"Alma-ata",
+"country":"Kazakhstan",
+"tz":"Asia/Qyzylorda"
+},
+{
+"iata":"BOD",
+"name":"Bordeaux-Mérignac Airport",
+"city":"Bordeaux",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"DKR",
+"name":"Léopold Sédar Senghor International Airport",
+"city":"Dakar",
+"country":"Senegal",
+"tz":"Africa/Dakar"
+},
+{
+"iata":"DMK",
+"name":"Don Mueang International Airport",
+"city":"Bangkok",
+"country":"Thailand",
+"tz":"Asia/Bangkok"
+},
+{
+"iata":"ADB",
+"name":"Adnan Menderes International Airport",
+"city":"Izmir",
+"country":"Turkey",
+"tz":"Europe/Istanbul"
+},
+{
+"iata":"BEY",
+"name":"Beirut Rafic Hariri International Airport",
+"city":"Beirut",
+"country":"Lebanon",
+"tz":"Asia/Beirut"
+},
+{
+"iata":"SOF",
+"name":"Sofia Airport",
+"city":"Sofia",
+"country":"Bulgaria",
+"tz":"Europe/Sofia"
+},
+{
+"iata":"CGQ",
+"name":"Longjia Airport",
+"city":"Changchun",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"SUB",
+"name":"Juanda International Airport",
+"city":"Surabaya",
+"country":"Indonesia",
+"tz":"Asia/Jakarta"
+},
+{
+"iata":"KHH",
+"name":"Kaohsiung International Airport",
+"city":"Kaohsiung",
+"country":"Taiwan",
+"tz":"Asia/Taipei"
+},
+{
+"iata":"LJG",
+"name":"Lijiang Airport",
+"city":"Lijiang",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"AEP",
+"name":"Jorge Newbery Airpark",
+"city":"Buenos Aires",
+"country":"Argentina",
+"tz":"America/Buenos_Aires"
+},
+{
+"iata":"BIO",
+"name":"Bilbao Airport",
+"city":"Bilbao",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"CMH",
+"name":"John Glenn Columbus International Airport",
+"city":"Columbus",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"GYD",
+"name":"Heydar Aliyev International Airport",
+"city":"Baku",
+"country":"Azerbaijan",
+"tz":"Asia/Baku"
+},
+{
+"iata":"LCY",
+"name":"London City Airport",
+"city":"London",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"MHD",
+"name":"Mashhad International Airport",
+"city":"Mashhad",
+"country":"Iran",
+"tz":"Asia/Tehran"
+},
+{
+"iata":"RSW",
+"name":"Southwest Florida International Airport",
+"city":"Fort Myers",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"SVQ",
+"name":"Sevilla Airport",
+"city":"Sevilla",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"PMO",
+"name":"Falcone–Borsellino Airport",
+"city":"Palermo",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"KHI",
+"name":"Jinnah International Airport",
+"city":"Karachi",
+"country":"Pakistan",
+"tz":"Asia/Karachi"
+},
+{
+"iata":"MKE",
+"name":"General Mitchell International Airport",
+"city":"Milwaukee",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"THR",
+"name":"Mehrabad International Airport",
+"city":"Teheran",
+"country":"Iran",
+"tz":"Asia/Tehran"
+},
+{
+"iata":"OKA",
+"name":"Naha Airport",
+"city":"Okinawa",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"IKA",
+"name":"Imam Khomeini International Airport",
+"city":"Tehran",
+"country":"Iran",
+"tz":"Asia/Tehran"
+},
+{
+"iata":"DBV",
+"name":"Dubrovnik Airport",
+"city":"Dubrovnik",
+"country":"Croatia",
+"tz":"Europe/Zagreb"
+},
+{
+"iata":"BVA",
+"name":"Paris Beauvais Tillé Airport",
+"city":"Beauvais",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"LIN",
+"name":"Milano Linate Airport",
+"city":"Milan",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"SJC",
+"name":"Norman Y. Mineta San Jose International Airport",
+"city":"San Jose",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"LOS",
+"name":"Murtala Muhammed International Airport",
+"city":"Lagos",
+"country":"Nigeria",
+"tz":"Africa/Lagos"
+},
+{
+"iata":"ZUH",
+"name":"Zhuhai Jinwan Airport",
+"city":"Zhuhai",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"ANC",
+"name":"Ted Stevens Anchorage International Airport",
+"city":"Anchorage",
+"country":"United States",
+"tz":"America/Anchorage"
+},
+{
+"iata":"CJU",
+"name":"Jeju International Airport",
+"city":"Cheju",
+"country":"South Korea",
+"tz":"Asia/Seoul"
+},
+{
+"iata":"COK",
+"name":"Cochin International Airport",
+"city":"Kochi",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"DLM",
+"name":"Dalaman International Airport",
+"city":"Dalaman",
+"country":"Turkey",
+"tz":"Europe/Istanbul"
+},
+{
+"iata":"LPL",
+"name":"Liverpool John Lennon Airport",
+"city":"Liverpool",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"SSA",
+"name":"Deputado Luiz Eduardo Magalhães International Airport",
+"city":"Salvador",
+"country":"Brazil",
+"tz":"America/Fortaleza"
+},
+{
+"iata":"VNO",
+"name":"Vilnius International Airport",
+"city":"Vilnius",
+"country":"Lithuania",
+"tz":"Europe/Vilnius"
+},
+{
+"iata":"KRK",
+"name":"Kraków John Paul II International Airport",
+"city":"Krakow",
+"country":"Poland",
+"tz":"Europe/Warsaw"
+},
+{
+"iata":"SXM",
+"name":"Princess Juliana International Airport",
+"city":"Philipsburg",
+"country":"Netherlands Antilles",
+"tz":"America/Curacao"
+},
+{
+"iata":"VCP",
+"name":"Viracopos International Airport",
+"city":"Campinas",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"MEM",
+"name":"Memphis International Airport",
+"city":"Memphis",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"UPG",
+"name":"Hasanuddin International Airport",
+"city":"Ujung Pandang",
+"country":"Indonesia",
+"tz":"Asia/Makassar"
+},
+{
+"iata":"YNT",
+"name":"Yantai Laishan Airport",
+"city":"Yantai",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"LHE",
+"name":"Alama Iqbal International Airport",
+"city":"Lahore",
+"country":"Pakistan",
+"tz":"Asia/Karachi"
+},
+{
+"iata":"OAK",
+"name":"Metropolitan Oakland International Airport",
+"city":"Oakland",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"CNF",
+"name":"Tancredo Neves International Airport",
+"city":"Belo Horizonte",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"CNS",
+"name":"Cairns International Airport",
+"city":"Cairns",
+"country":"Australia",
+"tz":"Australia/Brisbane"
+},
+{
+"iata":"MSQ",
+"name":"Minsk National Airport",
+"city":"Minsk 2",
+"country":"Belarus",
+"tz":"Europe/Minsk"
+},
+{
+"iata":"SMF",
+"name":"Sacramento International Airport",
+"city":"Sacramento",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"ACC",
+"name":"Kotoka International Airport",
+"city":"Accra",
+"country":"Ghana",
+"tz":"Africa/Accra"
+},
+{
+"iata":"DYU",
+"name":"Dushanbe Airport",
+"city":"Dushanbe",
+"country":"Tajikistan",
+"tz":"Asia/Dushanbe"
+},
+{
+"iata":"FLR",
+"name":"Peretola Airport",
+"city":"Florence",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"GOT",
+"name":"Gothenburg-Landvetter Airport",
+"city":"Gothenborg",
+"country":"Sweden",
+"tz":"Europe/Stockholm"
+},
+{
+"iata":"SVG",
+"name":"Stavanger Airport Sola",
+"city":"Stavanger",
+"country":"Norway",
+"tz":"Europe/Oslo"
+},
+{
+"iata":"ESB",
+"name":"Esenboğa International Airport",
+"city":"Ankara",
+"country":"Turkey",
+"tz":"Europe/Istanbul"
+},
+{
+"iata":"SAL",
+"name":"Monseñor Óscar Arnulfo Romero International Airport",
+"city":"San Salvador",
+"country":"El Salvador",
+"tz":"America/El_Salvador"
+},
+{
+"iata":"BKI",
+"name":"Kota Kinabalu International Airport",
+"city":"Kota Kinabalu",
+"country":"Malaysia",
+"tz":"Asia/Kuala_Lumpur"
+},
+{
+"iata":"FNC",
+"name":"Madeira Airport",
+"city":"Funchal",
+"country":"Portugal",
+"tz":"Europe/Lisbon"
+},
+{
+"iata":"OLB",
+"name":"Olbia Costa Smeralda Airport",
+"city":"Olbia",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"TSE",
+"name":"Astana International Airport",
+"city":"Tselinograd",
+"country":"Kazakhstan",
+"tz":"Asia/Qyzylorda"
+},
+{
+"iata":"BDL",
+"name":"Bradley International Airport",
+"city":"Windsor Locks",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"CFU",
+"name":"Ioannis Kapodistrias International Airport",
+"city":"Kerkyra/corfu",
+"country":"Greece",
+"tz":"Europe/Athens"
+},
+{
+"iata":"ABJ",
+"name":"Port Bouet Airport",
+"city":"Abidjan",
+"country":"Cote d'Ivoire",
+"tz":"Africa/Abidjan"
+},
+{
+"iata":"ADL",
+"name":"Adelaide International Airport",
+"city":"Adelaide",
+"country":"Australia",
+"tz":"Australia/Adelaide"
+},
+{
+"iata":"POM",
+"name":"Port Moresby Jacksons International Airport",
+"city":"Port Moresby",
+"country":"Papua New Guinea",
+"tz":"Pacific/Port_Moresby"
+},
+{
+"iata":"GDN",
+"name":"Gdańsk Lech Wałęsa Airport",
+"city":"Gdansk",
+"country":"Poland",
+"tz":"Europe/Warsaw"
+},
+{
+"iata":"SJD",
+"name":"Los Cabos International Airport",
+"city":"San Jose Del Cabo",
+"country":"Mexico",
+"tz":"America/Mazatlan"
+},
+{
+"iata":"BRE",
+"name":"Bremen Airport",
+"city":"Bremen",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"BRI",
+"name":"Bari Karol Wojtyła Airport",
+"city":"Bari",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"CIA",
+"name":"Ciampino–G. B. Pastine International Airport",
+"city":"Rome",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"RGN",
+"name":"Yangon International Airport",
+"city":"Yangon",
+"country":"Burma",
+"tz":"Asia/Rangoon"
+},
+{
+"iata":"XNN",
+"name":"Xining Caojiabu Airport",
+"city":"Xining",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"DLA",
+"name":"Douala International Airport",
+"city":"Douala",
+"country":"Cameroon",
+"tz":"Africa/Douala"
+},
+{
+"iata":"GRO",
+"name":"Girona Airport",
+"city":"Gerona",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"MED",
+"name":"Prince Mohammad Bin Abdulaziz Airport",
+"city":"Madinah",
+"country":"Saudi Arabia",
+"tz":"Asia/Riyadh"
+},
+{
+"iata":"CEB",
+"name":"Mactan Cebu International Airport",
+"city":"Cebu",
+"country":"Philippines",
+"tz":"Asia/Manila"
+},
+{
+"iata":"SFB",
+"name":"Orlando Sanford International Airport",
+"city":"Sanford",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"SPU",
+"name":"Split Airport",
+"city":"Split",
+"country":"Croatia",
+"tz":"Europe/Zagreb"
+},
+{
+"iata":"CNX",
+"name":"Chiang Mai International Airport",
+"city":"Chiang Mai",
+"country":"Thailand",
+"tz":"Asia/Bangkok"
+},
+{
+"iata":"NUE",
+"name":"Nuremberg Airport",
+"city":"Nuernberg",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"TIP",
+"name":"Tripoli International Airport",
+"city":"Tripoli",
+"country":"Libya",
+"tz":"Africa/Tripoli"
+},
+{
+"iata":"YHZ",
+"name":"Halifax / Stanfield International Airport",
+"city":"Halifax",
+"country":"Canada",
+"tz":"America/Halifax"
+},
+{
+"iata":"BLL",
+"name":"Billund Airport",
+"city":"Billund",
+"country":"Denmark",
+"tz":"Europe/Copenhagen"
+},
+{
+"iata":"CGH",
+"name":"Congonhas Airport",
+"city":"Sao Paulo",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"HHN",
+"name":"Frankfurt-Hahn Airport",
+"city":"Hahn",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"WUX",
+"name":"Sunan Shuofang International Airport",
+"city":"Wuxi",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"SDQ",
+"name":"Las Américas International Airport",
+"city":"Santo Domingo",
+"country":"Dominican Republic",
+"tz":"America/Santo_Domingo"
+},
+{
+"iata":"DWC",
+"name":"Al Maktoum International Airport",
+"city":"Dubai",
+"country":"United Arab Emirates",
+"tz":"Asia/Dubai"
+},
+{
+"iata":"KJA",
+"name":"Yemelyanovo Airport",
+"city":"Krasnoyarsk",
+"country":"Russia",
+"tz":"Asia/Krasnoyarsk"
+},
+{
+"iata":"LAD",
+"name":"Quatro de Fevereiro Airport",
+"city":"Luanda",
+"country":"Angola",
+"tz":"Africa/Luanda"
+},
+{
+"iata":"PVR",
+"name":"Licenciado Gustavo Díaz Ordaz International Airport",
+"city":"Puerto Vallarta",
+"country":"Mexico",
+"tz":"America/Mexico_City"
+},
+{
+"iata":"JAX",
+"name":"Jacksonville International Airport",
+"city":"Jacksonville",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"KEF",
+"name":"Keflavik International Airport",
+"city":"Keflavik",
+"country":"Iceland",
+"tz":"Atlantic/Reykjavik"
+},
+{
+"iata":"KRR",
+"name":"Krasnodar Pashkovsky International Airport",
+"city":"Krasnodar",
+"country":"Russia",
+"tz":"Europe/Moscow"
+},
+{
+"iata":"AUA",
+"name":"Queen Beatrix International Airport",
+"city":"Oranjestad",
+"country":"Aruba",
+"tz":"America/Aruba"
+},
+{
+"iata":"CHQ",
+"name":"Chania International Airport",
+"city":"Chania",
+"country":"Greece",
+"tz":"Europe/Athens"
+},
+{
+"iata":"DRW",
+"name":"Darwin International Airport",
+"city":"Darwin",
+"country":"Australia",
+"tz":"Australia/Darwin"
+},
+{
+"iata":"EVN",
+"name":"Zvartnots International Airport",
+"city":"Yerevan",
+"country":"Armenia",
+"tz":"Asia/Yerevan"
+},
+{
+"iata":"FRU",
+"name":"Manas International Airport",
+"city":"Bishkek",
+"country":"Kyrgyzstan",
+"tz":"Asia/Bishkek"
+},
+{
+"iata":"KGS",
+"name":"Kos Airport",
+"city":"Kos",
+"country":"Greece",
+"tz":"Europe/Athens"
+},
+{
+"iata":"NBE",
+"name":"Enfidha - Hammamet International Airport",
+"city":"Enfidha",
+"country":"Tunisia",
+"tz":"Africa/Tunis"
+},
+{
+"iata":"MBJ",
+"name":"Sangster International Airport",
+"city":"Montego Bay",
+"country":"Jamaica",
+"tz":"America/Jamaica"
+},
+{
+"iata":"YOW",
+"name":"Ottawa Macdonald-Cartier International Airport",
+"city":"Ottawa",
+"country":"Canada",
+"tz":"America/Toronto"
+},
+{
+"iata":"JJN",
+"name":"Quanzhou Jinjiang International Airport",
+"city":"Quanzhou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"KTM",
+"name":"Tribhuvan International Airport",
+"city":"Kathmandu",
+"country":"Nepal",
+"tz":"Asia/Katmandu"
+},
+{
+"iata":"PBI",
+"name":"Palm Beach International Airport",
+"city":"West Palm Beach",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"HAV",
+"name":"José Martí International Airport",
+"city":"Havana",
+"country":"Cuba",
+"tz":"America/Havana"
+},
+{
+"iata":"CAG",
+"name":"Cagliari Elmas Airport",
+"city":"Cagliari",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"CPT",
+"name":"Cape Town International Airport",
+"city":"Cape Town",
+"country":"South Africa",
+"tz":"Africa/Johannesburg"
+},
+{
+"iata":"CWB",
+"name":"Afonso Pena Airport",
+"city":"Curitiba",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"POA",
+"name":"Salgado Filho Airport",
+"city":"Porto Alegre",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"SNA",
+"name":"John Wayne Airport-Orange County Airport",
+"city":"Santa Ana",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"TRD",
+"name":"Trondheim Airport Værnes",
+"city":"Trondheim",
+"country":"Norway",
+"tz":"Europe/Oslo"
+},
+{
+"iata":"TRN",
+"name":"Turin Airport",
+"city":"Torino",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"MLE",
+"name":"Malé International Airport",
+"city":"Male",
+"country":"Maldives",
+"tz":"Indian/Maldives"
+},
+{
+"iata":"PFO",
+"name":"Paphos International Airport",
+"city":"Paphos",
+"country":"Cyprus",
+"tz":"Asia/Nicosia"
+},
+{
+"iata":"ZAG",
+"name":"Zagreb Airport",
+"city":"Zagreb",
+"country":"Croatia",
+"tz":"Europe/Zagreb"
+},
+{
+"iata":"ITM",
+"name":"Osaka International Airport",
+"city":"Osaka",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"OGG",
+"name":"Kahului Airport",
+"city":"Kahului",
+"country":"United States",
+"tz":"Pacific/Honolulu"
+},
+{
+"iata":"PEN",
+"name":"Penang International Airport",
+"city":"Penang",
+"country":"Malaysia",
+"tz":"Asia/Kuala_Lumpur"
+},
+{
+"iata":"TRV",
+"name":"Trivandrum International Airport",
+"city":"Trivandrum",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"ABQ",
+"name":"Albuquerque International Sunport",
+"city":"Albuquerque",
+"country":"United States",
+"tz":"America/Denver"
+},
+{
+"iata":"NAN",
+"name":"Nadi International Airport",
+"city":"Nandi",
+"country":"Fiji",
+"tz":"Pacific/Fiji"
+},
+{
+"iata":"SDF",
+"name":"Louisville International Standiford Field",
+"city":"Louisville",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"TIJ",
+"name":"General Abelardo L. Rodríguez International Airport",
+"city":"Tijuana",
+"country":"Mexico",
+"tz":"America/Tijuana"
+},
+{
+"iata":"ABZ",
+"name":"Aberdeen Dyce Airport",
+"city":"Aberdeen",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"IKT",
+"name":"Irkutsk Airport",
+"city":"Irkutsk",
+"country":"Russia",
+"tz":"Asia/Irkutsk"
+},
+{
+"iata":"MRU",
+"name":"Sir Seewoosagur Ramgoolam International Airport",
+"city":"Plaisance",
+"country":"Mauritius",
+"tz":"Indian/Mauritius"
+},
+{
+"iata":"HBE",
+"name":"Borg El Arab International Airport",
+"city":"Alexandria",
+"country":"Egypt",
+"tz":"Africa/Cairo"
+},
+{
+"iata":"KRT",
+"name":"Khartoum International Airport",
+"city":"Khartoum",
+"country":"Sudan",
+"tz":"Africa/Khartoum"
+},
+{
+"iata":"OKC",
+"name":"Will Rogers World Airport",
+"city":"Oklahoma City",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"REP",
+"name":"Siem Reap International Airport",
+"city":"Siem-reap",
+"country":"Cambodia",
+"tz":"Asia/Phnom_Penh"
+},
+{
+"iata":"YWG",
+"name":"Winnipeg / James Armstrong Richardson International Airport",
+"city":"Winnipeg",
+"country":"Canada",
+"tz":"America/Winnipeg"
+},
+{
+"iata":"COO",
+"name":"Cadjehoun Airport",
+"city":"Cotonou",
+"country":"Benin",
+"tz":"Africa/Porto-Novo"
+},
+{
+"iata":"LIL",
+"name":"Lille-Lesquin Airport",
+"city":"Lille",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"TSA",
+"name":"Taipei Songshan Airport",
+"city":"Taipei",
+"country":"Taiwan",
+"tz":"Asia/Taipei"
+},
+{
+"iata":"HRG",
+"name":"Hurghada International Airport",
+"city":"Hurghada",
+"country":"Egypt",
+"tz":"Africa/Cairo"
+},
+{
+"iata":"LEJ",
+"name":"Leipzig/Halle Airport",
+"city":"Leipzig",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"AJA",
+"name":"Ajaccio-Napoléon Bonaparte Airport",
+"city":"Ajaccio",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"GMP",
+"name":"Gimpo International Airport",
+"city":"Seoul",
+"country":"South Korea",
+"tz":"Asia/Seoul"
+},
+{
+"iata":"KGL",
+"name":"Kigali International Airport",
+"city":"Kigali",
+"country":"Rwanda",
+"tz":"Africa/Kigali"
+},
+{
+"iata":"SYZ",
+"name":"Shiraz Shahid Dastghaib International Airport",
+"city":"Shiraz",
+"country":"Iran",
+"tz":"Asia/Tehran"
+},
+{
+"iata":"UIO",
+"name":"Mariscal Sucre International Airport",
+"city":"Quito",
+"country":"Ecuador",
+"tz":"America/Guayaquil"
+},
+{
+"iata":"GUA",
+"name":"La Aurora Airport",
+"city":"Guatemala City",
+"country":"Guatemala",
+"tz":"America/Guatemala"
+},
+{
+"iata":"PPT",
+"name":"Faa'a International Airport",
+"city":"Papeete",
+"country":"French Polynesia",
+"tz":"Pacific/Tahiti"
+},
+{
+"iata":"SSH",
+"name":"Sharm El Sheikh International Airport",
+"city":"Sharm El Sheikh",
+"country":"Egypt",
+"tz":"Africa/Cairo"
+},
+{
+"iata":"VRN",
+"name":"Verona Villafranca Airport",
+"city":"Villafranca",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"JER",
+"name":"Jersey Airport",
+"city":"Jersey",
+"country":"Jersey",
+"tz":"Europe/Jersey"
+},
+{
+"iata":"NRN",
+"name":"Weeze Airport",
+"city":"Weeze",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"RIC",
+"name":"Richmond International Airport",
+"city":"Richmond",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"TLL",
+"name":"Lennart Meri Tallinn Airport",
+"city":"Tallinn-ulemiste International",
+"country":"Estonia",
+"tz":"Europe/Tallinn"
+},
+{
+"iata":"TSF",
+"name":"Treviso-Sant'Angelo Airport",
+"city":"Treviso",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"YKS",
+"name":"Yakutsk Airport",
+"city":"Yakutsk",
+"country":"Russia",
+"tz":"Asia/Yakutsk"
+},
+{
+"iata":"DAL",
+"name":"Dallas Love Field",
+"city":"Dallas",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"KHV",
+"name":"Khabarovsk-Novy Airport",
+"city":"Khabarovsk",
+"country":"Russia",
+"tz":"Asia/Vladivostok"
+},
+{
+"iata":"SAH",
+"name":"Sana'a International Airport",
+"city":"Sanaa",
+"country":"Yemen",
+"tz":"Asia/Aden"
+},
+{
+"iata":"CZX",
+"name":"Changzhou Benniu Airport",
+"city":"Changzhou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"ORF",
+"name":"Norfolk International Airport",
+"city":"Norfolk",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"RYG",
+"name":"Moss Airport, Rygge",
+"city":"Rygge",
+"country":"Norway",
+"tz":"Europe/Oslo"
+},
+{
+"iata":"TRF",
+"name":"Sandefjord Airport, Torp",
+"city":"Sandefjord",
+"country":"Norway",
+"tz":"Europe/Oslo"
+},
+{
+"iata":"DJE",
+"name":"Djerba Zarzis International Airport",
+"city":"Djerba",
+"country":"Tunisia",
+"tz":"Africa/Tunis"
+},
+{
+"iata":"BIA",
+"name":"Bastia-Poretta Airport",
+"city":"Bastia",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"BPN",
+"name":"Sultan Aji Muhamad Sulaiman Airport",
+"city":"Balikpapan",
+"country":"Indonesia",
+"tz":"Asia/Makassar"
+},
+{
+"iata":"CHC",
+"name":"Christchurch International Airport",
+"city":"Christchurch",
+"country":"New Zealand",
+"tz":"Pacific/Auckland"
+},
+{
+"iata":"REC",
+"name":"Guararapes - Gilberto Freyre International Airport",
+"city":"Recife",
+"country":"Brazil",
+"tz":"America/Fortaleza"
+},
+{
+"iata":"TIA",
+"name":"Tirana International Airport Mother Teresa",
+"city":"Tirana",
+"country":"Albania",
+"tz":"Europe/Tirane"
+},
+{
+"iata":"BHM",
+"name":"Birmingham-Shuttlesworth International Airport",
+"city":"Birmingham",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"BUF",
+"name":"Buffalo Niagara International Airport",
+"city":"Buffalo",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"FOR",
+"name":"Pinto Martins International Airport",
+"city":"Fortaleza",
+"country":"Brazil",
+"tz":"America/Fortaleza"
+},
+{
+"iata":"GYE",
+"name":"José Joaquín de Olmedo International Airport",
+"city":"Guayaquil",
+"country":"Ecuador",
+"tz":"America/Guayaquil"
+},
+{
+"iata":"SWA",
+"name":"Jieyang Chaoshan International Airport",
+"city":"Shantou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"AMD",
+"name":"Sardar Vallabhbhai Patel International Airport",
+"city":"Ahmedabad",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"BEL",
+"name":"Val de Cans/Júlio Cezar Ribeiro International Airport",
+"city":"Belem",
+"country":"Brazil",
+"tz":"America/Belem"
+},
+{
+"iata":"BFS",
+"name":"Belfast International Airport",
+"city":"Belfast",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"GUM",
+"name":"Antonio B. Won Pat International Airport",
+"city":"Agana",
+"country":"Guam",
+"tz":"Pacific/Guam"
+},
+{
+"iata":"MAH",
+"name":"Menorca Airport",
+"city":"Menorca",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"POS",
+"name":"Piarco International Airport",
+"city":"Port-of-spain",
+"country":"Trinidad and Tobago",
+"tz":"America/Port_of_Spain"
+},
+{
+"iata":"SCQ",
+"name":"Santiago de Compostela Airport",
+"city":"Santiago",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"ANU",
+"name":"V.C. Bird International Airport",
+"city":"Antigua",
+"country":"Antigua and Barbuda",
+"tz":"America/Antigua"
+},
+{
+"iata":"CHS",
+"name":"Charleston Air Force Base-International Airport",
+"city":"Charleston",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"OMA",
+"name":"Eppley Airfield",
+"city":"Omaha",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"SXB",
+"name":"Strasbourg Airport",
+"city":"Strasbourg",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"SZG",
+"name":"Salzburg Airport",
+"city":"Salzburg",
+"country":"Austria",
+"tz":"Europe/Vienna"
+},
+{
+"iata":"TBS",
+"name":"Tbilisi International Airport",
+"city":"Tbilisi",
+"country":"Georgia",
+"tz":"Asia/Tbilisi"
+},
+{
+"iata":"KIV",
+"name":"Chişinău International Airport",
+"city":"Chisinau",
+"country":"Moldova",
+"tz":"Europe/Chisinau"
+},
+{
+"iata":"MYR",
+"name":"Myrtle Beach International Airport",
+"city":"Myrtle Beach",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"ORK",
+"name":"Cork Airport",
+"city":"Cork",
+"country":"Ireland",
+"tz":"Europe/Dublin"
+},
+{
+"iata":"ORN",
+"name":"Es Senia Airport",
+"city":"Oran",
+"country":"Algeria",
+"tz":"Africa/Algiers"
+},
+{
+"iata":"PNQ",
+"name":"Pune Airport",
+"city":"Pune",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"DAR",
+"name":"Julius Nyerere International Airport",
+"city":"Dar Es Salaam",
+"country":"Tanzania",
+"tz":"Africa/Dar_es_Salaam"
+},
+{
+"iata":"DTM",
+"name":"Dortmund Airport",
+"city":"Dortmund",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"EBB",
+"name":"Entebbe International Airport",
+"city":"Entebbe",
+"country":"Uganda",
+"tz":"Africa/Kampala"
+},
+{
+"iata":"LUN",
+"name":"Kenneth Kaunda International Airport Lusaka",
+"city":"Lusaka",
+"country":"Zambia",
+"tz":"Africa/Lusaka"
+},
+{
+"iata":"CGB",
+"name":"Marechal Rondon Airport",
+"city":"Cuiaba",
+"country":"Brazil",
+"tz":"America/Campo_Grande"
+},
+{
+"iata":"DAD",
+"name":"Da Nang International Airport",
+"city":"Danang",
+"country":"Vietnam",
+"tz":"Asia/Saigon"
+},
+{
+"iata":"LBD",
+"name":"Khudzhand Airport",
+"city":"Khudzhand",
+"country":"Tajikistan",
+"tz":"Asia/Dushanbe"
+},
+{
+"iata":"LJU",
+"name":"Ljubljana Jože Pučnik Airport",
+"city":"Ljubljana",
+"country":"Slovenia",
+"tz":"Europe/Ljubljana"
+},
+{
+"iata":"OUA",
+"name":"Ouagadougou Airport",
+"city":"Ouagadougou",
+"country":"Burkina Faso",
+"tz":"Africa/Ouagadougou"
+},
+{
+"iata":"RTM",
+"name":"Rotterdam The Hague Airport",
+"city":"Rotterdam",
+"country":"Netherlands",
+"tz":"Europe/Amsterdam"
+},
+{
+"iata":"SOU",
+"name":"Southampton Airport",
+"city":"Southampton",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"STT",
+"name":"Cyril E. King Airport",
+"city":"St. Thomas",
+"country":"Virgin Islands",
+"tz":"America/St_Thomas"
+},
+{
+"iata":"TFN",
+"name":"Tenerife Norte Airport",
+"city":"Tenerife",
+"country":"Spain",
+"tz":"Atlantic/Canary"
+},
+{
+"iata":"WRO",
+"name":"Copernicus Wrocław Airport",
+"city":"Wroclaw",
+"country":"Poland",
+"tz":"Europe/Warsaw"
+},
+{
+"iata":"AZA",
+"name":"Phoenix-Mesa-Gateway Airport",
+"city":"Mesa",
+"country":"United States",
+"tz":"America/Phoenix"
+},
+{
+"iata":"DAY",
+"name":"James M Cox Dayton International Airport",
+"city":"Dayton",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"MAO",
+"name":"Eduardo Gomes International Airport",
+"city":"Manaus",
+"country":"Brazil",
+"tz":"America/Boa_Vista"
+},
+{
+"iata":"WLG",
+"name":"Wellington International Airport",
+"city":"Wellington",
+"country":"New Zealand",
+"tz":"Pacific/Auckland"
+},
+{
+"iata":"BJV",
+"name":"Milas Bodrum International Airport",
+"city":"Bodrum",
+"country":"Turkey",
+"tz":"Europe/Istanbul"
+},
+{
+"iata":"CUR",
+"name":"Hato International Airport",
+"city":"Willemstad",
+"country":"Netherlands Antilles",
+"tz":"America/Curacao"
+},
+{
+"iata":"CWL",
+"name":"Cardiff International Airport",
+"city":"Cardiff",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"GAU",
+"name":"Lokpriya Gopinath Bordoloi International Airport",
+"city":"Guwahati",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"AHO",
+"name":"Alghero-Fertilia Airport",
+"city":"Alghero",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"NYO",
+"name":"Stockholm Skavsta Airport",
+"city":"Stockholm",
+"country":"Sweden",
+"tz":"Europe/Stockholm"
+},
+{
+"iata":"PIE",
+"name":"St Petersburg Clearwater International Airport",
+"city":"St. Petersburg",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"PLS",
+"name":"Providenciales Airport",
+"city":"Providenciales",
+"country":"Turks and Caicos Islands",
+"tz":"America/Grand_Turk"
+},
+{
+"iata":"SDJ",
+"name":"Sendai Airport",
+"city":"Sendai",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"TUS",
+"name":"Tucson International Airport",
+"city":"Tucson",
+"country":"United States",
+"tz":"America/Phoenix"
+},
+{
+"iata":"TYS",
+"name":"McGhee Tyson Airport",
+"city":"Knoxville",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"CCJ",
+"name":"Calicut International Airport",
+"city":"Calicut",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"PNH",
+"name":"Phnom Penh International Airport",
+"city":"Phnom-penh",
+"country":"Cambodia",
+"tz":"Asia/Phnom_Penh"
+},
+{
+"iata":"SDU",
+"name":"Santos Dumont Airport",
+"city":"Rio De Janeiro",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"ABV",
+"name":"Nnamdi Azikiwe International Airport",
+"city":"Abuja",
+"country":"Nigeria",
+"tz":"Africa/Lagos"
+},
+{
+"iata":"ALB",
+"name":"Albany International Airport",
+"city":"Albany",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"EBL",
+"name":"Erbil International Airport",
+"city":"Erbil",
+"country":"Iraq",
+"tz":"Asia/Baghdad"
+},
+{
+"iata":"LXA",
+"name":"Lhasa Gonggar Airport",
+"city":"Lhasa",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"OSS",
+"name":"Osh Airport",
+"city":"Osh",
+"country":"Kyrgyzstan",
+"tz":"Asia/Bishkek"
+},
+{
+"iata":"PEW",
+"name":"Peshawar International Airport",
+"city":"Peshawar",
+"country":"Pakistan",
+"tz":"Asia/Karachi"
+},
+{
+"iata":"ROC",
+"name":"Greater Rochester International Airport",
+"city":"Rochester",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"BAV",
+"name":"Baotou Airport",
+"city":"Baotou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"GOI",
+"name":"Dabolim Airport",
+"city":"Goa",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"GSP",
+"name":"Greenville Spartanburg International Airport",
+"city":"Greenville",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"JOG",
+"name":"Adi Sutjipto International Airport",
+"city":"Yogyakarta",
+"country":"Indonesia",
+"tz":"Asia/Jakarta"
+},
+{
+"iata":"KIN",
+"name":"Norman Manley International Airport",
+"city":"Kingston",
+"country":"Jamaica",
+"tz":"America/Jamaica"
+},
+{
+"iata":"LIT",
+"name":"Bill & Hillary Clinton National Airport/Adams Field",
+"city":"Little Rock",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"PTP",
+"name":"Pointe-à-Pitre Le Raizet",
+"city":"Pointe-a-pitre",
+"country":"Guadeloupe",
+"tz":"America/Guadeloupe"
+},
+{
+"iata":"RMQ",
+"name":"Taichung Ching Chuang Kang Airport",
+"city":"Taichung",
+"country":"Taiwan",
+"tz":"Asia/Taipei"
+},
+{
+"iata":"SNN",
+"name":"Shannon Airport",
+"city":"Shannon",
+"country":"Ireland",
+"tz":"Europe/Dublin"
+},
+{
+"iata":"SZB",
+"name":"Sultan Abdul Aziz Shah International Airport",
+"city":"Kuala Lumpur",
+"country":"Malaysia",
+"tz":"Asia/Kuala_Lumpur"
+},
+{
+"iata":"YCU",
+"name":"Yuncheng Guangong Airport",
+"city":"Yuncheng",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"YZF",
+"name":"Yellowknife Airport",
+"city":"Yellowknife",
+"country":"Canada",
+"tz":"America/Edmonton"
+},
+{
+"iata":"BET",
+"name":"Bethel Airport",
+"city":"Bethel",
+"country":"United States",
+"tz":"America/Anchorage"
+},
+{
+"iata":"CLO",
+"name":"Alfonso Bonilla Aragon International Airport",
+"city":"Cali",
+"country":"Colombia",
+"tz":"America/Bogota"
+},
+{
+"iata":"DSM",
+"name":"Des Moines International Airport",
+"city":"Des Moines",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"HRE",
+"name":"Robert Gabriel Mugabe International Airport",
+"city":"Harare",
+"country":"Zimbabwe",
+"tz":"Africa/Harare"
+},
+{
+"iata":"YQB",
+"name":"Quebec Jean Lesage International Airport",
+"city":"Quebec",
+"country":"Canada",
+"tz":"America/Toronto"
+},
+{
+"iata":"AGA",
+"name":"Al Massira Airport",
+"city":"Agadir",
+"country":"Morocco",
+"tz":"Africa/Casablanca"
+},
+{
+"iata":"BZE",
+"name":"Philip S. W. Goldson International Airport",
+"city":"Belize City",
+"country":"Belize",
+"tz":"America/Belize"
+},
+{
+"iata":"GRR",
+"name":"Gerald R. Ford International Airport",
+"city":"Grand Rapids",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"KTW",
+"name":"Katowice International Airport",
+"city":"Katowice",
+"country":"Poland",
+"tz":"Europe/Warsaw"
+},
+{
+"iata":"KZN",
+"name":"Kazan International Airport",
+"city":"Kazan",
+"country":"Russia",
+"tz":"Europe/Moscow"
+},
+{
+"iata":"OOL",
+"name":"Gold Coast Airport",
+"city":"Coolangatta",
+"country":"Australia",
+"tz":"Australia/Brisbane"
+},
+{
+"iata":"RNO",
+"name":"Reno Tahoe International Airport",
+"city":"Reno",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"ROV",
+"name":"Platov International Airport",
+"city":"Rostov",
+"country":"Russia",
+"tz":"Europe/Moscow"
+},
+{
+"iata":"TPS",
+"name":"Vincenzo Florio Airport Trapani-Birgi",
+"city":"Trapani",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"VLI",
+"name":"Bauerfield International Airport",
+"city":"Port-vila",
+"country":"Vanuatu",
+"tz":"Pacific/Efate"
+},
+{
+"iata":"BKO",
+"name":"Modibo Keita International Airport",
+"city":"Bamako",
+"country":"Mali",
+"tz":"Africa/Bamako"
+},
+{
+"iata":"FIH",
+"name":"Ndjili International Airport",
+"city":"Kinshasa",
+"country":"Congo (Kinshasa)",
+"tz":"Africa/Kinshasa"
+},
+{
+"iata":"PVD",
+"name":"Theodore Francis Green State Airport",
+"city":"Providence",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"TUL",
+"name":"Tulsa International Airport",
+"city":"Tulsa",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"BMA",
+"name":"Stockholm-Bromma Airport",
+"city":"Stockholm",
+"country":"Sweden",
+"tz":"Europe/Stockholm"
+},
+{
+"iata":"BTH",
+"name":"Hang Nadim International Airport",
+"city":"Batam",
+"country":"Indonesia",
+"tz":"Asia/Jakarta"
+},
+{
+"iata":"FAI",
+"name":"Fairbanks International Airport",
+"city":"Fairbanks",
+"country":"United States",
+"tz":"America/Anchorage"
+},
+{
+"iata":"KBL",
+"name":"Hamid Karzai International Airport",
+"city":"Kabul",
+"country":"Afghanistan",
+"tz":"Asia/Kabul"
+},
+{
+"iata":"KUF",
+"name":"Kurumoch International Airport",
+"city":"Samara",
+"country":"Russia",
+"tz":"Europe/Samara"
+},
+{
+"iata":"TNR",
+"name":"Ivato Airport",
+"city":"Antananarivo",
+"country":"Madagascar",
+"tz":"Indian/Antananarivo"
+},
+{
+"iata":"AER",
+"name":"Sochi International Airport",
+"city":"Sochi",
+"country":"Russia",
+"tz":"Europe/Moscow"
+},
+{
+"iata":"KCH",
+"name":"Kuching International Airport",
+"city":"Kuching",
+"country":"Malaysia",
+"tz":"Asia/Kuala_Lumpur"
+},
+{
+"iata":"MDE",
+"name":"Jose Maria Córdova International Airport",
+"city":"Rio Negro",
+"country":"Colombia",
+"tz":"America/Bogota"
+},
+{
+"iata":"SYR",
+"name":"Syracuse Hancock International Airport",
+"city":"Syracuse",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"TOS",
+"name":"Tromsø Airport,",
+"city":"Tromso",
+"country":"Norway",
+"tz":"Europe/Oslo"
+},
+{
+"iata":"TXN",
+"name":"Tunxi International Airport",
+"city":"Huangshan",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"VVO",
+"name":"Vladivostok International Airport",
+"city":"Vladivostok",
+"country":"Russia",
+"tz":"Asia/Vladivostok"
+},
+{
+"iata":"WMI",
+"name":"Modlin Airport",
+"city":"Warsaw",
+"country":"Poland",
+"tz":"Europe/Warsaw"
+},
+{
+"iata":"ZAD",
+"name":"Zadar Airport",
+"city":"Zadar",
+"country":"Croatia",
+"tz":"Europe/Zagreb"
+},
+{
+"iata":"BZV",
+"name":"Maya-Maya Airport",
+"city":"Brazzaville",
+"country":"Congo (Brazzaville)",
+"tz":"Africa/Brazzaville"
+},
+{
+"iata":"GCM",
+"name":"Owen Roberts International Airport",
+"city":"Georgetown",
+"country":"Cayman Islands",
+"tz":"America/Cayman"
+},
+{
+"iata":"GSO",
+"name":"Piedmont Triad International Airport",
+"city":"Greensboro",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"LPB",
+"name":"El Alto International Airport",
+"city":"La Paz",
+"country":"Bolivia",
+"tz":"America/La_Paz"
+},
+{
+"iata":"PSP",
+"name":"Palm Springs International Airport",
+"city":"Palm Springs",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"BEN",
+"name":"Benina International Airport",
+"city":"Benghazi",
+"country":"Libya",
+"tz":"Africa/Tripoli"
+},
+{
+"iata":"DSN",
+"name":"Ordos Ejin Horo Airport",
+"city":"Dongsheng",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"ONT",
+"name":"Ontario International Airport",
+"city":"Ontario",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"SUF",
+"name":"Lamezia Terme Airport",
+"city":"Lamezia",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"VTE",
+"name":"Wattay International Airport",
+"city":"Vientiane",
+"country":"Laos",
+"tz":"Asia/Vientiane"
+},
+{
+"iata":"EXT",
+"name":"Exeter International Airport",
+"city":"Exeter",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"OME",
+"name":"Nome Airport",
+"city":"Nome",
+"country":"United States",
+"tz":"America/Anchorage"
+},
+{
+"iata":"AWZ",
+"name":"Ahwaz Airport",
+"city":"Ahwaz",
+"country":"Iran",
+"tz":"Asia/Tehran"
+},
+{
+"iata":"HIR",
+"name":"Honiara International Airport",
+"city":"Honiara",
+"country":"Solomon Islands",
+"tz":"Pacific/Guadalcanal"
+},
+{
+"iata":"HMO",
+"name":"General Ignacio P. Garcia International Airport",
+"city":"Hermosillo",
+"country":"Mexico",
+"tz":"America/Hermosillo"
+},
+{
+"iata":"JHG",
+"name":"Xishuangbanna Gasa Airport",
+"city":"Jinghonggasa",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"LBV",
+"name":"Libreville Leon M'ba International Airport",
+"city":"Libreville",
+"country":"Gabon",
+"tz":"Africa/Libreville"
+},
+{
+"iata":"MPL",
+"name":"Montpellier-Méditerranée Airport",
+"city":"Montpellier",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"MYY",
+"name":"Miri Airport",
+"city":"Miri",
+"country":"Malaysia",
+"tz":"Asia/Kuala_Lumpur"
+},
+{
+"iata":"PAP",
+"name":"Toussaint Louverture International Airport",
+"city":"Port-au-prince",
+"country":"Haiti",
+"tz":"America/Port-au-Prince"
+},
+{
+"iata":"SKP",
+"name":"Skopje Alexander the Great Airport",
+"city":"Skopje",
+"country":"Macedonia",
+"tz":"Europe/Skopje"
+},
+{
+"iata":"VVI",
+"name":"Viru Viru International Airport",
+"city":"Santa Cruz",
+"country":"Bolivia",
+"tz":"America/La_Paz"
+},
+{
+"iata":"XNA",
+"name":"Northwest Arkansas Regional Airport",
+"city":"Bentonville",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"YIH",
+"name":"Yichang Sanxia Airport",
+"city":"Yichang",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"YRT",
+"name":"Rankin Inlet Airport",
+"city":"Rankin Inlet",
+"country":"Canada",
+"tz":"America/Winnipeg"
+},
+{
+"iata":"ELP",
+"name":"El Paso International Airport",
+"city":"El Paso",
+"country":"United States",
+"tz":"America/Denver"
+},
+{
+"iata":"PDL",
+"name":"João Paulo II Airport",
+"city":"Ponta Delgada",
+"country":"Portugal",
+"tz":"Atlantic/Azores"
+},
+{
+"iata":"BGI",
+"name":"Sir Grantley Adams International Airport",
+"city":"Bridgetown",
+"country":"Barbados",
+"tz":"America/Barbados"
+},
+{
+"iata":"BWN",
+"name":"Brunei International Airport",
+"city":"Bandar Seri Begawan",
+"country":"Brunei",
+"tz":"Asia/Brunei"
+},
+{
+"iata":"FDF",
+"name":"Martinique Aimé Césaire International Airport",
+"city":"Fort-de-france",
+"country":"Martinique",
+"tz":"America/Martinique"
+},
+{
+"iata":"FMM",
+"name":"Memmingen Allgau Airport",
+"city":"Memmingen",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"HPN",
+"name":"Westchester County Airport",
+"city":"White Plains",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"MVD",
+"name":"Carrasco International /General C L Berisso Airport",
+"city":"Montevideo",
+"country":"Uruguay",
+"tz":"America/Montevideo"
+},
+{
+"iata":"SAP",
+"name":"Ramón Villeda Morales International Airport",
+"city":"San Pedro Sula",
+"country":"Honduras",
+"tz":"America/Tegucigalpa"
+},
+{
+"iata":"SAV",
+"name":"Savannah Hilton Head International Airport",
+"city":"Savannah",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"UFA",
+"name":"Ufa International Airport",
+"city":"Ufa",
+"country":"Russia",
+"tz":"Asia/Yekaterinburg"
+},
+{
+"iata":"LIR",
+"name":"Daniel Oduber Quiros International Airport",
+"city":"Liberia",
+"country":"Costa Rica",
+"tz":"America/Costa_Rica"
+},
+{
+"iata":"OTZ",
+"name":"Ralph Wien Memorial Airport",
+"city":"Kotzebue",
+"country":"United States",
+"tz":"America/Anchorage"
+},
+{
+"iata":"TJM",
+"name":"Roshchino International Airport",
+"city":"Tyumen",
+"country":"Russia",
+"tz":"Asia/Yekaterinburg"
+},
+{
+"iata":"ADE",
+"name":"Aden International Airport",
+"city":"Aden",
+"country":"Yemen",
+"tz":"Asia/Aden"
+},
+{
+"iata":"BDS",
+"name":"Brindisi – Salento Airport",
+"city":"Brindisi",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"CAK",
+"name":"Akron Canton Regional Airport",
+"city":"Akron",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"DRS",
+"name":"Dresden Airport",
+"city":"Dresden",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"FNA",
+"name":"Lungi International Airport",
+"city":"Freetown",
+"country":"Sierra Leone",
+"tz":"Africa/Freetown"
+},
+{
+"iata":"IEV",
+"name":"Kiev Zhuliany International Airport",
+"city":"Kiev",
+"country":"Ukraine",
+"tz":"Europe/Kiev"
+},
+{
+"iata":"KTN",
+"name":"Ketchikan International Airport",
+"city":"Ketchikan",
+"country":"United States",
+"tz":"America/Anchorage"
+},
+{
+"iata":"MRV",
+"name":"Mineralnyye Vody Airport",
+"city":"Mineralnye Vody",
+"country":"Russia",
+"tz":"Europe/Moscow"
+},
+{
+"iata":"YZV",
+"name":"Sept-Îles Airport",
+"city":"Sept-iles",
+"country":"Canada",
+"tz":"America/Toronto"
+},
+{
+"iata":"GYN",
+"name":"Santa Genoveva Airport",
+"city":"Goiania",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"MIG",
+"name":"Mianyang Airport",
+"city":"Mianyang",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"XRY",
+"name":"Jerez Airport",
+"city":"Jerez",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"YYT",
+"name":"St. John's International Airport",
+"city":"St. John's",
+"country":"Canada",
+"tz":"America/St_Johns"
+},
+{
+"iata":"BDO",
+"name":"Husein Sastranegara International Airport",
+"city":"Bandung",
+"country":"Indonesia",
+"tz":"Asia/Jakarta"
+},
+{
+"iata":"BHD",
+"name":"George Best Belfast City Airport",
+"city":"Belfast",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"CLJ",
+"name":"Cluj-Napoca International Airport",
+"city":"Cluj-napoca",
+"country":"Romania",
+"tz":"Europe/Bucharest"
+},
+{
+"iata":"DUR",
+"name":"King Shaka International Airport",
+"city":"Durban",
+"country":"South Africa",
+"tz":"Africa/Johannesburg"
+},
+{
+"iata":"DYG",
+"name":"Dayong Airport",
+"city":"Dayong",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"FLN",
+"name":"Hercílio Luz International Airport",
+"city":"Florianopolis",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"GSE",
+"name":"Gothenburg City Airport",
+"city":"Gothenborg",
+"country":"Sweden",
+"tz":"Europe/Stockholm"
+},
+{
+"iata":"LIH",
+"name":"Lihue Airport",
+"city":"Lihue",
+"country":"United States",
+"tz":"Pacific/Honolulu"
+},
+{
+"iata":"MDC",
+"name":"Sam Ratulangi Airport",
+"city":"Manado",
+"country":"Indonesia",
+"tz":"Asia/Makassar"
+},
+{
+"iata":"PIK",
+"name":"Glasgow Prestwick Airport",
+"city":"Prestwick",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"PNS",
+"name":"Pensacola Regional Airport",
+"city":"Pensacola",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"POZ",
+"name":"Poznań-Ławica Airport",
+"city":"Poznan",
+"country":"Poland",
+"tz":"Europe/Warsaw"
+},
+{
+"iata":"PRN",
+"name":"Priština International Airport",
+"city":"Pristina",
+"country":"Serbia",
+"tz":"Europe/Belgrade"
+},
+{
+"iata":"SCO",
+"name":"Aktau Airport",
+"city":"Aktau",
+"country":"Kazakhstan",
+"tz":"Asia/Oral"
+},
+{
+"iata":"AAL",
+"name":"Aalborg Airport",
+"city":"Aalborg",
+"country":"Denmark",
+"tz":"Europe/Copenhagen"
+},
+{
+"iata":"BOI",
+"name":"Boise Air Terminal/Gowen Field",
+"city":"Boise",
+"country":"United States",
+"tz":"America/Denver"
+},
+{
+"iata":"JRO",
+"name":"Kilimanjaro International Airport",
+"city":"Kilimanjaro",
+"country":"Tanzania",
+"tz":"Africa/Dar_es_Salaam"
+},
+{
+"iata":"KOA",
+"name":"Ellison Onizuka Kona International At Keahole Airport",
+"city":"Kona",
+"country":"United States",
+"tz":"Pacific/Honolulu"
+},
+{
+"iata":"LFW",
+"name":"Lomé-Tokoin Airport",
+"city":"Lome",
+"country":"Togo",
+"tz":"Africa/Lome"
+},
+{
+"iata":"ULN",
+"name":"Chinggis Khaan International Airport",
+"city":"Ulan Bator",
+"country":"Mongolia",
+"tz":"Asia/Ulaanbaatar"
+},
+{
+"iata":"BHY",
+"name":"Beihai Airport",
+"city":"Beihai",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"BTS",
+"name":"M. R. Štefánik Airport",
+"city":"Bratislava",
+"country":"Slovakia",
+"tz":"Europe/Bratislava"
+},
+{
+"iata":"CEK",
+"name":"Chelyabinsk Balandino Airport",
+"city":"Chelyabinsk",
+"country":"Russia",
+"tz":"Asia/Yekaterinburg"
+},
+{
+"iata":"CLY",
+"name":"Calvi-Sainte-Catherine Airport",
+"city":"Calvi",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"FAT",
+"name":"Fresno Yosemite International Airport",
+"city":"Fresno",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"FKB",
+"name":"Karlsruhe Baden-Baden Airport",
+"city":"Karlsruhe/Baden-Baden",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"GOA",
+"name":"Genoa Cristoforo Colombo Airport",
+"city":"Genoa",
+"country":"Italy",
+"tz":"Europe/Rome"
+},
+{
+"iata":"ICT",
+"name":"Wichita Eisenhower National Airport",
+"city":"Wichita",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"IFN",
+"name":"Esfahan Shahid Beheshti International Airport",
+"city":"Esfahan",
+"country":"Iran",
+"tz":"Asia/Tehran"
+},
+{
+"iata":"JIB",
+"name":"Djibouti-Ambouli Airport",
+"city":"Djibouti",
+"country":"Djibouti",
+"tz":"Africa/Djibouti"
+},
+{
+"iata":"JNU",
+"name":"Juneau International Airport",
+"city":"Juneau",
+"country":"United States",
+"tz":"America/Anchorage"
+},
+{
+"iata":"LEX",
+"name":"Blue Grass Airport",
+"city":"Lexington KY",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"MHT",
+"name":"Manchester-Boston Regional Airport",
+"city":"Manchester NH",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"MJV",
+"name":"San Javier Airport",
+"city":"Murcia",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"RUN",
+"name":"Roland Garros Airport",
+"city":"St.-denis",
+"country":"Reunion",
+"tz":"Indian/Reunion"
+},
+{
+"iata":"XUZ",
+"name":"Xuzhou Guanyin Airport",
+"city":"Xuzhou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"MDT",
+"name":"Harrisburg International Airport",
+"city":"Harrisburg",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"PMV",
+"name":"Del Caribe Santiago Mariño International Airport",
+"city":"Porlamar",
+"country":"Venezuela",
+"tz":"America/Caracas"
+},
+{
+"iata":"REU",
+"name":"Reus Air Base",
+"city":"Reus",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"BND",
+"name":"Bandar Abbas International Airport",
+"city":"Bandar Abbas",
+"country":"Iran",
+"tz":"Asia/Tehran"
+},
+{
+"iata":"BOH",
+"name":"Bournemouth Airport",
+"city":"Bournemouth",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"GRZ",
+"name":"Graz Airport",
+"city":"Graz",
+"country":"Austria",
+"tz":"Europe/Vienna"
+},
+{
+"iata":"KUN",
+"name":"Kaunas International Airport",
+"city":"Kaunas",
+"country":"Lithuania",
+"tz":"Europe/Vilnius"
+},
+{
+"iata":"NSI",
+"name":"Yaoundé Nsimalen International Airport",
+"city":"Yaounde",
+"country":"Cameroon",
+"tz":"Africa/Douala"
+},
+{
+"iata":"RAO",
+"name":"Leite Lopes Airport",
+"city":"Ribeirao Preto",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"SDR",
+"name":"Santander Airport",
+"city":"Santander",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"TNG",
+"name":"Ibn Batouta Airport",
+"city":"Tanger",
+"country":"Morocco",
+"tz":"Africa/Casablanca"
+},
+{
+"iata":"WDH",
+"name":"Hosea Kutako International Airport",
+"city":"Windhoek",
+"country":"Namibia",
+"tz":"Africa/Windhoek"
+},
+{
+"iata":"ZHA",
+"name":"Zhanjiang Airport",
+"city":"Zhanjiang",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"ODS",
+"name":"Odessa International Airport",
+"city":"Odessa",
+"country":"Ukraine",
+"tz":"Europe/Kiev"
+},
+{
+"iata":"UVF",
+"name":"Hewanorra International Airport",
+"city":"Hewandorra",
+"country":"Saint Lucia",
+"tz":"America/St_Lucia"
+},
+{
+"iata":"WIL",
+"name":"Nairobi Wilson Airport",
+"city":"Nairobi",
+"country":"Kenya",
+"tz":"Africa/Nairobi"
+},
+{
+"iata":"ASU",
+"name":"Silvio Pettirossi International Airport",
+"city":"Asuncion",
+"country":"Paraguay",
+"tz":"America/Asuncion"
+},
+{
+"iata":"BUR",
+"name":"Bob Hope Airport",
+"city":"Burbank",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"CKY",
+"name":"Conakry International Airport",
+"city":"Conakry",
+"country":"Guinea",
+"tz":"Africa/Conakry"
+},
+{
+"iata":"FEZ",
+"name":"Saïss Airport",
+"city":"Fes",
+"country":"Morocco",
+"tz":"Africa/Casablanca"
+},
+{
+"iata":"GCI",
+"name":"Guernsey Airport",
+"city":"Guernsey",
+"country":"Guernsey",
+"tz":"Europe/Guernsey"
+},
+{
+"iata":"GOJ",
+"name":"Nizhny Novgorod Strigino International Airport",
+"city":"Nizhniy Novgorod",
+"country":"Russia",
+"tz":"Europe/Moscow"
+},
+{
+"iata":"HLD",
+"name":"Dongshan Airport",
+"city":"Hailar",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"HSV",
+"name":"Huntsville International Carl T Jones Field",
+"city":"Huntsville",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"JAN",
+"name":"Jackson-Medgar Wiley Evers International Airport",
+"city":"Jackson",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"JHB",
+"name":"Senai International Airport",
+"city":"Johor Bahru",
+"country":"Malaysia",
+"tz":"Asia/Kuala_Lumpur"
+},
+{
+"iata":"KLO",
+"name":"Kalibo International Airport",
+"city":"Kalibo",
+"country":"Philippines",
+"tz":"Asia/Manila"
+},
+{
+"iata":"KOJ",
+"name":"Kagoshima Airport",
+"city":"Kagoshima",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"LEI",
+"name":"Almería International Airport",
+"city":"Almeria",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"LGB",
+"name":"Long Beach /Daugherty Field/ Airport",
+"city":"Long Beach",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"LKO",
+"name":"Chaudhary Charan Singh International Airport",
+"city":"Lucknow",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"LYI",
+"name":"Shubuling Airport",
+"city":"Linyi",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"NDR",
+"name":"Nador International Airport",
+"city":"El Aroui",
+"country":"Morocco",
+"tz":"Africa/Casablanca"
+},
+{
+"iata":"PKU",
+"name":"Sultan Syarif Kasim Ii (Simpang Tiga) Airport",
+"city":"Pekanbaru",
+"country":"Indonesia",
+"tz":"Asia/Jakarta"
+},
+{
+"iata":"PNR",
+"name":"Pointe Noire Airport",
+"city":"Pointe-noire",
+"country":"Congo (Brazzaville)",
+"tz":"Africa/Brazzaville"
+},
+{
+"iata":"TGU",
+"name":"Toncontín International Airport",
+"city":"Tegucigalpa",
+"country":"Honduras",
+"tz":"America/Tegucigalpa"
+},
+{
+"iata":"USM",
+"name":"Samui Airport",
+"city":"Ko Samui",
+"country":"Thailand",
+"tz":"Asia/Bangkok"
+},
+{
+"iata":"VTZ",
+"name":"Vishakhapatnam Airport",
+"city":"Vishakhapatnam",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"YFB",
+"name":"Iqaluit Airport",
+"city":"Iqaluit",
+"country":"Canada",
+"tz":"America/Toronto"
+},
+{
+"iata":"YIW",
+"name":"Yiwu Airport",
+"city":"Yiwu",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"YTY",
+"name":"Yangzhou Taizhou Airport",
+"city":"Yangzhou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"BOO",
+"name":"Bodø Airport",
+"city":"Bodo",
+"country":"Norway",
+"tz":"Europe/Oslo"
+},
+{
+"iata":"CID",
+"name":"The Eastern Iowa Airport",
+"city":"Cedar Rapids",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"DJJ",
+"name":"Sentani International Airport",
+"city":"Jayapura",
+"country":"Indonesia",
+"tz":"Asia/Jayapura"
+},
+{
+"iata":"DOM",
+"name":"Douglas-Charles Airport",
+"city":"Dominica",
+"country":"Dominica",
+"tz":"America/Dominica"
+},
+{
+"iata":"PGD",
+"name":"Charlotte County Airport",
+"city":"Punta Gorda",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"SID",
+"name":"Amílcar Cabral International Airport",
+"city":"Amilcar Cabral",
+"country":"Cape Verde",
+"tz":"Atlantic/Cape_Verde"
+},
+{
+"iata":"ADA",
+"name":"Adana Airport",
+"city":"Adana",
+"country":"Turkey",
+"tz":"Europe/Istanbul"
+},
+{
+"iata":"BES",
+"name":"Brest Bretagne Airport",
+"city":"Brest",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"CAE",
+"name":"Columbia Metropolitan Airport",
+"city":"Columbia",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"CGR",
+"name":"Campo Grande Airport",
+"city":"Campo Grande",
+"country":"Brazil",
+"tz":"America/Campo_Grande"
+},
+{
+"iata":"CJB",
+"name":"Coimbatore International Airport",
+"city":"Coimbatore",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"HIJ",
+"name":"Hiroshima Airport",
+"city":"Hiroshima",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"JAI",
+"name":"Jaipur International Airport",
+"city":"Jaipur",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"KMQ",
+"name":"Komatsu Airport",
+"city":"Kanazawa",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"LGK",
+"name":"Langkawi International Airport",
+"city":"Langkawi",
+"country":"Malaysia",
+"tz":"Asia/Kuala_Lumpur"
+},
+{
+"iata":"LWO",
+"name":"Lviv International Airport",
+"city":"Lvov",
+"country":"Ukraine",
+"tz":"Europe/Kiev"
+},
+{
+"iata":"MPM",
+"name":"Maputo Airport",
+"city":"Maputo",
+"country":"Mozambique",
+"tz":"Africa/Maputo"
+},
+{
+"iata":"MSN",
+"name":"Dane County Regional Truax Field",
+"city":"Madison",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"NGS",
+"name":"Nagasaki Airport",
+"city":"Nagasaki",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"NIM",
+"name":"Diori Hamani International Airport",
+"city":"Niamey",
+"country":"Niger",
+"tz":"Africa/Niamey"
+},
+{
+"iata":"OMS",
+"name":"Omsk Central Airport",
+"city":"Omsk",
+"country":"Russia",
+"tz":"Asia/Omsk"
+},
+{
+"iata":"OVD",
+"name":"Asturias Airport",
+"city":"Aviles",
+"country":"Spain",
+"tz":"Europe/Madrid"
+},
+{
+"iata":"RAI",
+"name":"Praia International Airport",
+"city":"Praia, Santiago Island",
+"country":"Cape Verde",
+"tz":"Atlantic/Cape_Verde"
+},
+{
+"iata":"SRG",
+"name":"Achmad Yani Airport",
+"city":"Semarang",
+"country":"Indonesia",
+"tz":"Asia/Jakarta"
+},
+{
+"iata":"YNZ",
+"name":"Yancheng Airport",
+"city":"Yancheng",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"YXL",
+"name":"Sioux Lookout Airport",
+"city":"Sioux Lookout",
+"country":"Canada",
+"tz":"America/Winnipeg"
+},
+{
+"iata":"CUU",
+"name":"General Roberto Fierro Villalobos International Airport",
+"city":"Chihuahua",
+"country":"Mexico",
+"tz":"America/Mazatlan"
+},
+{
+"iata":"EYW",
+"name":"Key West International Airport",
+"city":"Key West",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"ISP",
+"name":"Long Island Mac Arthur Airport",
+"city":"Islip",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"KIH",
+"name":"Kish International Airport",
+"city":"Kish Island",
+"country":"Iran",
+"tz":"Asia/Tehran"
+},
+{
+"iata":"MDL",
+"name":"Mandalay International Airport",
+"city":"Mandalay",
+"country":"Burma",
+"tz":"Asia/Rangoon"
+},
+{
+"iata":"UUS",
+"name":"Yuzhno-Sakhalinsk Airport",
+"city":"Yuzhno-sakhalinsk",
+"country":"Russia",
+"tz":"Asia/Srednekolymsk"
+},
+{
+"iata":"YQR",
+"name":"Regina International Airport",
+"city":"Regina",
+"country":"Canada",
+"tz":"America/Regina"
+},
+{
+"iata":"ZTH",
+"name":"Zakynthos International Airport \"Dionysios Solomos\"",
+"city":"Zakynthos",
+"country":"Greece",
+"tz":"Europe/Athens"
+},
+{
+"iata":"CGP",
+"name":"Shah Amanat International Airport",
+"city":"Chittagong",
+"country":"Bangladesh",
+"tz":"Asia/Dhaka"
+},
+{
+"iata":"CHA",
+"name":"Lovell Field",
+"city":"Chattanooga",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"CIH",
+"name":"Changzhi Airport",
+"city":"Changzhi",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"CUL",
+"name":"Bachigualato Federal International Airport",
+"city":"Culiacan",
+"country":"Mexico",
+"tz":"America/Mazatlan"
+},
+{
+"iata":"CZL",
+"name":"Mohamed Boudiaf International Airport",
+"city":"Constantine",
+"country":"Algeria",
+"tz":"Africa/Algiers"
+},
+{
+"iata":"CZM",
+"name":"Cozumel International Airport",
+"city":"Cozumel",
+"country":"Mexico",
+"tz":"America/Cancun"
+},
+{
+"iata":"FWA",
+"name":"Fort Wayne International Airport",
+"city":"Fort Wayne",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"IDR",
+"name":"Devi Ahilyabai Holkar Airport",
+"city":"Indore",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"IXB",
+"name":"Bagdogra Airport",
+"city":"Baghdogra",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"JDZ",
+"name":"Jingdezhen Airport",
+"city":"Jingdezhen",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"JZH",
+"name":"Jiuzhai Huanglong Airport",
+"city":"Jiuzhaigou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"KBV",
+"name":"Krabi Airport",
+"city":"Krabi",
+"country":"Thailand",
+"tz":"Asia/Bangkok"
+},
+{
+"iata":"KIJ",
+"name":"Niigata Airport",
+"city":"Niigata",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"LOP",
+"name":"Lombok International Airport",
+"city":"Praya",
+"country":"Indonesia",
+"tz":"Asia/Makassar"
+},
+{
+"iata":"LYG",
+"name":"Lianyungang Airport",
+"city":"Lianyungang",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"MMX",
+"name":"Malmö Sturup Airport",
+"city":"Malmoe",
+"country":"Sweden",
+"tz":"Europe/Stockholm"
+},
+{
+"iata":"NAT",
+"name":"Governador Aluízio Alves International Airport",
+"city":"Natal",
+"country":"Brazil",
+"tz":"America/Fortaleza"
+},
+{
+"iata":"NUX",
+"name":"Novy Urengoy Airport",
+"city":"Novy Urengoy",
+"country":"Russia",
+"tz":"Asia/Yekaterinburg"
+},
+{
+"iata":"ROB",
+"name":"Roberts International Airport",
+"city":"Monrovia",
+"country":"Liberia",
+"tz":"Africa/Monrovia"
+},
+{
+"iata":"SJJ",
+"name":"Sarajevo International Airport",
+"city":"Sarajevo",
+"country":"Bosnia and Herzegovina",
+"tz":"Europe/Sarajevo"
+},
+{
+"iata":"TGD",
+"name":"Podgorica Airport",
+"city":"Podgorica",
+"country":"Montenegro",
+"tz":"Europe/Podgorica"
+},
+{
+"iata":"TSV",
+"name":"Townsville Airport",
+"city":"Townsville",
+"country":"Australia",
+"tz":"Australia/Brisbane"
+},
+{
+"iata":"VER",
+"name":"General Heriberto Jara International Airport",
+"city":"Vera Cruz",
+"country":"Mexico",
+"tz":"America/Mexico_City"
+},
+{
+"iata":"VIX",
+"name":"Eurico de Aguiar Salles Airport",
+"city":"Vitoria",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"IXE",
+"name":"Mangalore International Airport",
+"city":"Mangalore",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"JTR",
+"name":"Santorini Airport",
+"city":"Thira",
+"country":"Greece",
+"tz":"Europe/Athens"
+},
+{
+"iata":"MIR",
+"name":"Monastir Habib Bourguiba International Airport",
+"city":"Monastir",
+"country":"Tunisia",
+"tz":"Africa/Tunis"
+},
+{
+"iata":"SLZ",
+"name":"Marechal Cunha Machado International Airport",
+"city":"Sao Luis",
+"country":"Brazil",
+"tz":"America/Fortaleza"
+},
+{
+"iata":"YWK",
+"name":"Wabush Airport",
+"city":"Wabush",
+"country":"Canada",
+"tz":"America/Halifax"
+},
+{
+"iata":"ASB",
+"name":"Ashgabat International Airport",
+"city":"Ashkhabad",
+"country":"Turkmenistan",
+"tz":"Asia/Ashgabat"
+},
+{
+"iata":"BDA",
+"name":"L.F. Wade International International Airport",
+"city":"Bermuda",
+"country":"Bermuda",
+"tz":"Atlantic/Bermuda"
+},
+{
+"iata":"CIF",
+"name":"Chifeng Airport",
+"city":"Chifeng",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"DOK",
+"name":"Donetsk International Airport",
+"city":"Donetsk",
+"country":"Ukraine",
+"tz":"Europe/Kiev"
+},
+{
+"iata":"DZA",
+"name":"Dzaoudzi Pamandzi International Airport",
+"city":"Dzaoudzi",
+"country":"Mayotte",
+"tz":"Indian/Mayotte"
+},
+{
+"iata":"FPO",
+"name":"Grand Bahama International Airport",
+"city":"Freeport",
+"country":"Bahamas",
+"tz":"America/Nassau"
+},
+{
+"iata":"GEG",
+"name":"Spokane International Airport",
+"city":"Spokane",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"KGD",
+"name":"Khrabrovo Airport",
+"city":"Kaliningrad",
+"country":"Russia",
+"tz":"Europe/Kaliningrad"
+},
+{
+"iata":"MID",
+"name":"Licenciado Manuel Crescencio Rejon Int Airport",
+"city":"Merida",
+"country":"Mexico",
+"tz":"America/Mexico_City"
+},
+{
+"iata":"MLI",
+"name":"Quad City International Airport",
+"city":"Moline",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"MZT",
+"name":"General Rafael Buelna International Airport",
+"city":"Mazatlan",
+"country":"Mexico",
+"tz":"America/Mazatlan"
+},
+{
+"iata":"NAG",
+"name":"Dr. Babasaheb Ambedkar International Airport",
+"city":"Nagpur",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"NOC",
+"name":"Ireland West Knock Airport",
+"city":"Connaught",
+"country":"Ireland",
+"tz":"Europe/Dublin"
+},
+{
+"iata":"PIA",
+"name":"General Wayne A. Downing Peoria International Airport",
+"city":"Peoria",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"PUY",
+"name":"Pula Airport",
+"city":"Pula",
+"country":"Croatia",
+"tz":"Europe/Zagreb"
+},
+{
+"iata":"ROA",
+"name":"Roanoke–Blacksburg Regional Airport",
+"city":"Roanoke VA",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"TBZ",
+"name":"Tabriz International Airport",
+"city":"Tabriz",
+"country":"Iran",
+"tz":"Asia/Tehran"
+},
+{
+"iata":"TLH",
+"name":"Tallahassee Regional Airport",
+"city":"Tallahassee",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"UDI",
+"name":"Ten. Cel. Aviador César Bombonato Airport",
+"city":"Uberlandia",
+"country":"Brazil",
+"tz":"America/Sao_Paulo"
+},
+{
+"iata":"WUS",
+"name":"Nanping Wuyishan Airport",
+"city":"Wuyishan",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"YLW",
+"name":"Kelowna International Airport",
+"city":"Kelowna",
+"country":"Canada",
+"tz":"America/Vancouver"
+},
+{
+"iata":"YXE",
+"name":"Saskatoon John G. Diefenbaker International Airport",
+"city":"Saskatoon",
+"country":"Canada",
+"tz":"America/Regina"
+},
+{
+"iata":"YYR",
+"name":"Goose Bay Airport",
+"city":"Goose Bay",
+"country":"Canada",
+"tz":"America/Halifax"
+},
+{
+"iata":"ZYI",
+"name":"Zunyi Xinzhou Airport",
+"city":"Zunyi",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"AHB",
+"name":"Abha Regional Airport",
+"city":"Abha",
+"country":"Saudi Arabia",
+"tz":"Asia/Riyadh"
+},
+{
+"iata":"BDJ",
+"name":"Syamsudin Noor Airport",
+"city":"Banjarmasin",
+"country":"Indonesia",
+"tz":"Asia/Makassar"
+},
+{
+"iata":"BJX",
+"name":"Del Bajío International Airport",
+"city":"Del Bajio",
+"country":"Mexico",
+"tz":"America/Mexico_City"
+},
+{
+"iata":"GND",
+"name":"Point Salines International Airport",
+"city":"Point Salines",
+"country":"Grenada",
+"tz":"America/Grenada"
+},
+{
+"iata":"MGA",
+"name":"Augusto C. Sandino (Managua) International Airport",
+"city":"Managua",
+"country":"Nicaragua",
+"tz":"America/Managua"
+},
+{
+"iata":"NSK",
+"name":"Norilsk-Alykel Airport",
+"city":"Norilsk",
+"country":"Russia",
+"tz":"Asia/Krasnoyarsk"
+},
+{
+"iata":"POP",
+"name":"Gregorio Luperon International Airport",
+"city":"Puerto Plata",
+"country":"Dominican Republic",
+"tz":"America/Santo_Domingo"
+},
+{
+"iata":"SXR",
+"name":"Sheikh ul Alam Airport",
+"city":"Srinagar",
+"country":"India",
+"tz":"Asia/Calcutta"
+},
+{
+"iata":"AMQ",
+"name":"Pattimura Airport, Ambon",
+"city":"Ambon",
+"country":"Indonesia",
+"tz":"Asia/Jayapura"
+},
+{
+"iata":"BGW",
+"name":"Baghdad International Airport",
+"city":"Baghdad",
+"country":"Iraq",
+"tz":"Asia/Baghdad"
+},
+{
+"iata":"BIQ",
+"name":"Biarritz-Anglet-Bayonne Airport",
+"city":"Biarritz-bayonne",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"BVC",
+"name":"Rabil Airport",
+"city":"Boa Vista",
+"country":"Cape Verde",
+"tz":"Atlantic/Cape_Verde"
+},
+{
+"iata":"DNK",
+"name":"Dnipropetrovsk International Airport",
+"city":"Dnepropetrovsk",
+"country":"Ukraine",
+"tz":"Europe/Kiev"
+},
+{
+"iata":"DVO",
+"name":"Francisco Bangoy International Airport",
+"city":"Davao",
+"country":"Philippines",
+"tz":"Asia/Manila"
+},
+{
+"iata":"ECN",
+"name":"Ercan International Airport",
+"city":"Nicosia",
+"country":"Cyprus",
+"tz":"Asia/Nicosia"
+},
+{
+"iata":"FAR",
+"name":"Hector International Airport",
+"city":"Fargo",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"FSC",
+"name":"Figari Sud-Corse Airport",
+"city":"Figari",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"HYN",
+"name":"Huangyan Luqiao Airport",
+"city":"Huangyan",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"ISG",
+"name":"New Ishigaki Airport",
+"city":"Ishigaki",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"KBR",
+"name":"Sultan Ismail Petra Airport",
+"city":"Kota Bahru",
+"country":"Malaysia",
+"tz":"Asia/Kuala_Lumpur"
+},
+{
+"iata":"LZH",
+"name":"Liuzhou Bailian Airport",
+"city":"Liuzhou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"MAR",
+"name":"La Chinita International Airport",
+"city":"Maracaibo",
+"country":"Venezuela",
+"tz":"America/Caracas"
+},
+{
+"iata":"MHH",
+"name":"Leonard M Thompson International Airport",
+"city":"Marsh Harbor",
+"country":"Bahamas",
+"tz":"America/Nassau"
+},
+{
+"iata":"NJC",
+"name":"Nizhnevartovsk Airport",
+"city":"Nizhnevartovsk",
+"country":"Russia",
+"tz":"Asia/Yekaterinburg"
+},
+{
+"iata":"RTB",
+"name":"Juan Manuel Galvez International Airport",
+"city":"Roatan",
+"country":"Honduras",
+"tz":"America/Tegucigalpa"
+},
+{
+"iata":"SEN",
+"name":"Southend Airport",
+"city":"Southend",
+"country":"United Kingdom",
+"tz":"Europe/London"
+},
+{
+"iata":"SGC",
+"name":"Surgut Airport",
+"city":"Surgut",
+"country":"Russia",
+"tz":"Asia/Yekaterinburg"
+},
+{
+"iata":"SGF",
+"name":"Springfield Branson National Airport",
+"city":"Springfield",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"SSG",
+"name":"Malabo Airport",
+"city":"Malabo",
+"country":"Equatorial Guinea",
+"tz":"Africa/Malabo"
+},
+{
+"iata":"STM",
+"name":"Maestro Wilson Fonseca Airport",
+"city":"Santarem",
+"country":"Brazil",
+"tz":"America/Belem"
+},
+{
+"iata":"TTN",
+"name":"Trenton Mercer Airport",
+"city":"Trenton",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"UET",
+"name":"Quetta International Airport",
+"city":"Quetta",
+"country":"Pakistan",
+"tz":"Asia/Karachi"
+},
+{
+"iata":"YNJ",
+"name":"Yanji Chaoyangchuan Airport",
+"city":"Yanji",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"YTZ",
+"name":"Billy Bishop Toronto City Centre Airport",
+"city":"Toronto",
+"country":"Canada",
+"tz":"America/Toronto"
+},
+{
+"iata":"BJM",
+"name":"Bujumbura International Airport",
+"city":"Bujumbura",
+"country":"Burundi",
+"tz":"Africa/Bujumbura"
+},
+{
+"iata":"BTV",
+"name":"Burlington International Airport",
+"city":"Burlington",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"COS",
+"name":"City of Colorado Springs Municipal Airport",
+"city":"Colorado Springs",
+"country":"United States",
+"tz":"America/Denver"
+},
+{
+"iata":"EUG",
+"name":"Mahlon Sweet Field",
+"city":"Eugene",
+"country":"United States",
+"tz":"America/Los_Angeles"
+},
+{
+"iata":"PLM",
+"name":"Sultan Mahmud Badaruddin II Airport",
+"city":"Palembang",
+"country":"Indonesia",
+"tz":"Asia/Jakarta"
+},
+{
+"iata":"RAR",
+"name":"Rarotonga International Airport",
+"city":"Avarua",
+"country":"Cook Islands",
+"tz":"Pacific/Rarotonga"
+},
+{
+"iata":"TLC",
+"name":"Licenciado Adolfo Lopez Mateos International Airport",
+"city":"Toluca",
+"country":"Mexico",
+"tz":"America/Mexico_City"
+},
+{
+"iata":"YQT",
+"name":"Thunder Bay Airport",
+"city":"Thunder Bay",
+"country":"Canada",
+"tz":"America/Toronto"
+},
+{
+"iata":"ABE",
+"name":"Lehigh Valley International Airport",
+"city":"Allentown",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"AES",
+"name":"Ålesund Airport",
+"city":"Alesund",
+"country":"Norway",
+"tz":"Europe/Oslo"
+},
+{
+"iata":"AJU",
+"name":"Santa Maria Airport",
+"city":"Aracaju",
+"country":"Brazil",
+"tz":"America/Fortaleza"
+},
+{
+"iata":"BJL",
+"name":"Banjul International Airport",
+"city":"Banjul",
+"country":"Gambia",
+"tz":"Africa/Banjul"
+},
+{
+"iata":"CBR",
+"name":"Canberra International Airport",
+"city":"Canberra",
+"country":"Australia",
+"tz":"Australia/Sydney"
+},
+{
+"iata":"CHO",
+"name":"Charlottesville Albemarle Airport",
+"city":"Charlottesville VA",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"COR",
+"name":"Ingeniero Ambrosio Taravella Airport",
+"city":"Cordoba",
+"country":"Argentina",
+"tz":"America/Cordoba"
+},
+{
+"iata":"CRK",
+"name":"Diosdado Macapagal International Airport",
+"city":"Angeles City",
+"country":"Philippines",
+"tz":"Asia/Manila"
+},
+{
+"iata":"FDH",
+"name":"Friedrichshafen Airport",
+"city":"Friedrichshafen",
+"country":"Germany",
+"tz":"Europe/Berlin"
+},
+{
+"iata":"FNT",
+"name":"Bishop International Airport",
+"city":"Flint",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"FSD",
+"name":"Joe Foss Field Airport",
+"city":"Sioux Falls",
+"country":"United States",
+"tz":"America/Chicago"
+},
+{
+"iata":"HSN",
+"name":"Zhoushan Airport",
+"city":"Zhoushan",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"ILM",
+"name":"Wilmington International Airport",
+"city":"Wilmington",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"ISA",
+"name":"Mount Isa Airport",
+"city":"Mount Isa",
+"country":"Australia",
+"tz":"Australia/Brisbane"
+},
+{
+"iata":"JMK",
+"name":"Mikonos Airport",
+"city":"Mykonos",
+"country":"Greece",
+"tz":"Europe/Athens"
+},
+{
+"iata":"KHG",
+"name":"Kashgar Airport",
+"city":"Kashi",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"KOW",
+"name":"Ganzhou Airport",
+"city":"Ganzhou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"LPQ",
+"name":"Luang Phabang International Airport",
+"city":"Luang Prabang",
+"country":"Laos",
+"tz":"Asia/Vientiane"
+},
+{
+"iata":"LZO",
+"name":"Luzhou Airport",
+"city":"Luzhou",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"MBA",
+"name":"Mombasa Moi International Airport",
+"city":"Mombasa",
+"country":"Kenya",
+"tz":"Africa/Nairobi"
+},
+{
+"iata":"MCZ",
+"name":"Zumbi dos Palmares Airport",
+"city":"Maceio",
+"country":"Brazil",
+"tz":"America/Fortaleza"
+},
+{
+"iata":"NOU",
+"name":"La Tontouta International Airport",
+"city":"Noumea",
+"country":"New Caledonia",
+"tz":"Pacific/Noumea"
+},
+{
+"iata":"OKJ",
+"name":"Okayama Airport",
+"city":"Okayama",
+"country":"Japan",
+"tz":"Asia/Tokyo"
+},
+{
+"iata":"RNS",
+"name":"Rennes-Saint-Jacques Airport",
+"city":"Rennes",
+"country":"France",
+"tz":"Europe/Paris"
+},
+{
+"iata":"SEZ",
+"name":"Seychelles International Airport",
+"city":"Mahe",
+"country":"Seychelles",
+"tz":"Indian/Mahe"
+},
+{
+"iata":"SRQ",
+"name":"Sarasota Bradenton International Airport",
+"city":"Sarasota",
+"country":"United States",
+"tz":"America/New_York"
+},
+{
+"iata":"TGO",
+"name":"Tongliao Airport",
+"city":"Tongliao",
+"country":"China",
+"tz":"Asia/Shanghai"
+},
+{
+"iata":"TIF",
+"name":"Ta’if Regional Airport",
+"city":"Taif",
+"country":"Saudi Arabia",
+"tz":"Asia/Riyadh"
+}
+]
