@@ -622,7 +622,7 @@ function BudgetCalcEditor({ planId }: { planId: string }) {
   ];
 
   return (
-    <div className="flex flex-1 min-h-0 flex-col gap-3">
+    <div className="flex flex-1 min-h-0 flex-col gap-3 overflow-auto">
       {/* 요약 */}
       <section className="rounded-md border border-border bg-card text-sm">
         <div className="px-3 py-2 flex items-center gap-3 flex-wrap">
@@ -743,7 +743,7 @@ function BudgetCalcEditor({ planId }: { planId: string }) {
         columnDefs={columnDefs}
         getRowId={(r) => r._key}
         pagination={false}
-        height={700}
+        autoHeight
         onRowClicked={(r) => setSelectedRowKey(r._key)}
         onCellValueChanged={onCellValueChanged}
         enableCheckbox={false}

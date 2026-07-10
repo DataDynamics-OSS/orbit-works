@@ -8,7 +8,7 @@
  * - 출력: HTML 문자열. 빈 문서는 "<p></p>" 가 아니라 빈 문자열로 정규화.
  */
 
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
@@ -17,6 +17,7 @@ import { Underline } from "@tiptap/extension-underline";
 import { Link } from "@tiptap/extension-link";
 import { ResizableImage as Image } from "@/components/board/tiptap-resizable-image";
 import { Table } from "@tiptap/extension-table";
+import type { EditorProps } from "@tiptap/pm/view";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
@@ -27,6 +28,41 @@ import { Placeholder } from "@tiptap/extension-placeholder";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { Indent as IndentExtension } from "./extensions/indent";
+// 코드 블록 문법 강조 — lowlight(highlight.js) 기반. StarterKit 기본 codeBlock 을
+// 끄고 이걸로 교체한다. `common` = 약 37개 주요 언어 묶음.
+import { CodeBlockLowlight } from "@tiptap/extension-code-block-lowlight";
+import { createLowlight, common } from "lowlight";
+import { highlightCodeBlocksInDom } from "@/lib/highlight-code";
+
+const lowlight = createLowlight(common);
+
+// 코드 블록 언어 드롭다운 목록 — 값은 highlight.js 언어 id. 빈 값 = 미지정(강조 없음).
+const CODE_LANGUAGES: { id: string; label: string }[] = [
+  { id: "", label: "(언어 없음)" },
+  { id: "plaintext", label: "Plain text" },
+  { id: "bash", label: "Bash / Shell" },
+  { id: "c", label: "C" },
+  { id: "cpp", label: "C++" },
+  { id: "csharp", label: "C#" },
+  { id: "css", label: "CSS" },
+  { id: "diff", label: "Diff" },
+  { id: "go", label: "Go" },
+  { id: "java", label: "Java" },
+  { id: "javascript", label: "JavaScript" },
+  { id: "json", label: "JSON" },
+  { id: "kotlin", label: "Kotlin" },
+  { id: "markdown", label: "Markdown" },
+  { id: "php", label: "PHP" },
+  { id: "python", label: "Python" },
+  { id: "ruby", label: "Ruby" },
+  { id: "rust", label: "Rust" },
+  { id: "scss", label: "SCSS" },
+  { id: "sql", label: "SQL" },
+  { id: "swift", label: "Swift" },
+  { id: "typescript", label: "TypeScript" },
+  { id: "xml", label: "HTML / XML" },
+  { id: "yaml", label: "YAML" },
+];
 
 import {
   AlignCenter,
@@ -83,6 +119,9 @@ type Props = {
   placeholder?: string;
   readOnly?: boolean;
   minHeight?: number;
+  /** 부모 높이를 가득 채우고(본문 영역 bottom 에 맞춤) 본문이 넘치면 자체 스크롤.
+   *  부모가 높이를 정해줘야 함(flex-1 + min-h-0 등). */
+  fillHeight?: boolean;
 };
 
 
@@ -117,14 +156,41 @@ export function TipTapEditor({
   placeholder,
   readOnly = false,
   minHeight,
+  fillHeight = false,
 }: Props) {
-  const editor = useEditor({
-    immediatelyRender: false,
-    extensions: [
+  // onChange 를 ref 로 보관 → onUpdate 는 항상 최신 onChange 를 호출하면서도
+  // useEditor 옵션(onUpdate)은 변하지 않게 둔다.
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
+
+  // content 는 **초기값만** useEditor 에 전달한다. 매 키 입력마다 바뀌는 value 를
+  // 옵션에 넣으면 아래 compareOptions 가 매번 "다름"으로 판정한다. 이후 외부 value
+  // 변경은 맨 아래 useEffect 가 setContent 로 동기화한다.
+  const initialContentRef = useRef(value || "");
+
+  // ⚠️ extensions / editorProps 는 반드시 메모이즈해 **참조를 고정**한다.
+  // @tiptap/react 의 useEditor 는 매 렌더마다 옵션을 compareOptions 로 비교해 다르면
+  // editor.setOptions() 를 호출한다. 그런데 .configure() 는 매 렌더 새 확장 인스턴스를,
+  // 인라인 editorProps/content 는 매 렌더 새 값을 만들어 "항상 다름"이 된다. 그러면
+  // 키 입력 → onUpdate → 부모 setState → 리렌더 → setOptions() 가 **매 키 입력마다**
+  // 호출되고, IME(한글) 조합 중 setOptions 가 view props/state 를 재적용하면서 조합이
+  // 깨져 "한글" → "ㅎ하한한ㄱ그글글" 처럼 글자가 중복된다(표·문단 전 영역, 전 브라우저).
+  // 참조를 고정하면 setOptions 가 키 입력마다 호출되지 않아 조합이 보존된다.
+  const extensions = useMemo(
+    () => [
       StarterKit.configure({
         // StarterKit 의 기본 설정 사용. heading 1~6, list, blockquote, code,
-        // codeBlock, horizontalRule, hardBreak, history 모두 포함.
+        // horizontalRule, hardBreak, history 포함.
+        // tiptap v3 의 StarterKit 은 link/underline 도 번들 — 아래에서 커스텀
+        // 설정으로 따로 추가하므로 중복(Duplicate extension names) 방지로 끈다.
+        link: false,
+        underline: false,
+        // 기본 codeBlock 끄고 CodeBlockLowlight(문법 강조)로 교체.
+        codeBlock: false,
       }),
+      // 코드 블록 — lowlight 문법 강조. 언어는 노드의 language 속성으로 결정되며
+      // 툴바의 언어 드롭다운에서 선택한다.
+      CodeBlockLowlight.configure({ lowlight }),
       Underline,
       Link.configure({
         openOnClick: false,
@@ -159,17 +225,19 @@ export function TipTapEditor({
         emptyEditorClass: "is-editor-empty",
       }),
     ],
-    content: value || "",
-    editable: !readOnly,
-    onUpdate: ({ editor }) => {
-      const html = editor.getHTML();
-      onChange(isEmptyTipTapHtml(html) ? "" : html);
-    },
-    // 이미지 클립보드 paste / drag-drop — 압축 후 base64 inline.
-    // TipTap default 는 file → src 변환을 안 해서 빈 <img> 가 들어가던 문제 해결.
-    // 1MB 짜리 스크린샷도 maxDim 1280 + JPEG 0.75 로 보통 100~200KB 까지 축소.
-    editorProps: {
+    [placeholder],
+  );
+
+  // 이미지 클립보드 paste / drag-drop — 압축 후 base64 inline.
+  // TipTap default 는 file → src 변환을 안 해서 빈 <img> 가 들어가던 문제 해결.
+  // 1MB 짜리 스크린샷도 maxDim 1280 + JPEG 0.75 로 보통 100~200KB 까지 축소.
+  const editorProps = useMemo<EditorProps>(
+    () => ({
       handlePaste(view, event) {
+        // Excel/Sheets 등은 이미지 비트맵 + <table> HTML 을 함께 클립보드에 담는다.
+        // 표가 포함된 HTML 이면 이미지 삽입을 양보해 ProseMirror 가 table 로 파싱하게 한다.
+        const html = event.clipboardData?.getData("text/html") || "";
+        if (/<table[\s>]/i.test(html)) return false;
         const files = Array.from(event.clipboardData?.files || []).filter((f) =>
           f.type.startsWith("image/"),
         );
@@ -190,12 +258,32 @@ export function TipTapEditor({
         void insertImagesFromFiles(view, files, coords?.pos);
         return true;
       },
+    }),
+    [],
+  );
+
+  const editor = useEditor({
+    immediatelyRender: false,
+    extensions,
+    content: initialContentRef.current,
+    editable: !readOnly,
+    onUpdate: ({ editor }) => {
+      const html = editor.getHTML();
+      onChangeRef.current(isEmptyTipTapHtml(html) ? "" : html);
     },
+    editorProps,
   });
 
-  // 외부 value 가 비동기 로딩되어 나중에 채워지는 경우 동기화
+  // 외부 value 가 비동기 로딩되어 나중에 채워지는 경우 동기화.
+  // 단, 사용자가 편집 중(view.composing/isFocused)이면 setContent 를 호출하지 않는다 —
+  // 비동기로 외부 value 가 뒤늦게 도착했을 때 진행 중인 편집/IME 조합을 덮어쓰지
+  // 않기 위한 방어 가드일 뿐이다.
+  // ⚠️ 한글 IME 글자 중복("한글"→"ㅎ하한한ㄱ그글글")의 실제 원인·수정은 여기가 아니라
+  // 위쪽 useEditor 옵션 메모이즈(extensions/editorProps/content 참조 고정 → 키입력마다
+  // editor.setOptions() 호출 방지)다. 이 가드는 그 버그와 무관하다.
   useEffect(() => {
     if (!editor) return;
+    if (editor.view.composing || editor.isFocused) return;
     if ((value || "") === editor.getHTML()) return;
     if (isEmptyTipTapHtml(editor.getHTML()) && !value) return;
     editor.commands.setContent(value || "", { emitUpdate: false });
@@ -215,18 +303,29 @@ export function TipTapEditor({
   if (!editor) return null;
 
   return (
-    <div className="rounded-md border border-border bg-white">
+    <div
+      className={
+        "rounded-md border border-border bg-white" +
+        (fillHeight ? " flex h-full min-h-0 flex-col" : "")
+      }
+    >
       {!readOnly && <Toolbar editor={editor} />}
       <div
         className={
           "tiptap-content " +
-          (readOnly
-            ? "p-4"
-            : minHeight !== undefined
+          (fillHeight
+            ? "min-h-0 flex-1 overflow-auto p-4"
+            : readOnly
               ? "p-4"
-              : "p-4 min-h-[300px]")
+              : minHeight !== undefined
+                ? "p-4"
+                : "p-4 min-h-[300px]")
         }
-        style={!readOnly && minHeight !== undefined ? { minHeight } : undefined}
+        style={
+          !readOnly && !fillHeight && minHeight !== undefined
+            ? { minHeight }
+            : undefined
+        }
         onContextMenu={onContextMenu}
       >
         <EditorContent editor={editor} />
@@ -250,12 +349,23 @@ export function TipTapEditor({
 // forwardRef — 부모가 본문 컨테이너 DOM 을 받아 heading 추출(목차) 등에 사용.
 export const TipTapViewer = forwardRef<HTMLDivElement, { html: string }>(
   function TipTapViewer({ html }, ref) {
+    const innerRef = useRef<HTMLDivElement | null>(null);
+    // 저장 HTML 은 강조 토큰이 없으므로(편집기는 render-time decoration) 마운트 후
+    // 코드 블록을 highlight.js 로 다시 강조한다. 색은 globals.css 의
+    // `.tiptap-content pre .hljs-*` 규칙이 입힌다.
+    useEffect(() => {
+      if (innerRef.current) highlightCodeBlocksInDom(innerRef.current);
+    }, [html]);
     if (!html || isEmptyTipTapHtml(html)) {
       return <p className="text-muted-foreground text-sm italic">(내용 없음)</p>;
     }
     return (
       <div
-        ref={ref}
+        ref={(node) => {
+          innerRef.current = node;
+          if (typeof ref === "function") ref(node);
+          else if (ref) ref.current = node;
+        }}
         className="tiptap-content"
         dangerouslySetInnerHTML={{ __html: html }}
       />
@@ -461,6 +571,8 @@ function Toolbar({ editor }: { editor: Editor }) {
       >
         <Code2 className="h-4 w-4" />
       </button>
+      {/* 코드 블록 안에 커서가 있을 때만 언어 선택 드롭다운 노출. */}
+      {editor.isActive("codeBlock") && <CodeBlockLangSelect editor={editor} />}
       <button
         type="button"
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
@@ -593,6 +705,31 @@ function Toolbar({ editor }: { editor: Editor }) {
         <Redo className="h-4 w-4" />
       </button>
     </div>
+  );
+}
+
+// 코드 블록 언어 선택 — 현재 codeBlock 노드의 language 속성을 읽고/갱신한다.
+function CodeBlockLangSelect({ editor }: { editor: Editor }) {
+  const current = (editor.getAttributes("codeBlock").language as string) || "";
+  return (
+    <select
+      value={current}
+      onChange={(e) =>
+        editor
+          .chain()
+          .focus()
+          .updateAttributes("codeBlock", { language: e.target.value || null })
+          .run()
+      }
+      className="h-8 rounded border border-input bg-white px-1.5 text-xs"
+      title="코드 언어"
+    >
+      {CODE_LANGUAGES.map((l) => (
+        <option key={l.id || "none"} value={l.id}>
+          {l.label}
+        </option>
+      ))}
+    </select>
   );
 }
 

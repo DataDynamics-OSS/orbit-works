@@ -41,6 +41,9 @@
 --                                 vendor 가 우리에게 발행한 청구서 (수동 입력).
 --  20) 사업공고 수집            : announcements (+ sources, fetch_runs, bookmarks).
 --                                 G2B / NTIS / IRIS / BizInfo / K-Startup.
+--  20b) 이메일 클라이언트       : email_accounts (+ members, folders, emails,
+--                                 attachments, sync_runs, pending_actions, outbox,
+--                                 user_state). IMAP/POP3 양방향 + 아카이빙.
 --  21) 멀티 테넌트 인프라       : tenants, tenant_audits + 모든 도메인 테이블의
 --                                 tenant_id 컬럼 / RLS 정책 (tenant_iso) /
 --                                 fn_auto_tenant_id 트리거 (방어 layer).
@@ -121,6 +124,16 @@ DROP TABLE IF EXISTS public.announcement_bookmarks       CASCADE;
 DROP TABLE IF EXISTS public.announcement_fetch_runs      CASCADE;
 DROP TABLE IF EXISTS public.announcements                CASCADE;
 DROP TABLE IF EXISTS public.announcement_sources         CASCADE;
+
+DROP TABLE IF EXISTS public.email_user_state             CASCADE;
+DROP TABLE IF EXISTS public.email_outbox                 CASCADE;
+DROP TABLE IF EXISTS public.email_pending_actions        CASCADE;
+DROP TABLE IF EXISTS public.email_attachments            CASCADE;
+DROP TABLE IF EXISTS public.email_sync_runs              CASCADE;
+DROP TABLE IF EXISTS public.emails                       CASCADE;
+DROP TABLE IF EXISTS public.email_folders                CASCADE;
+DROP TABLE IF EXISTS public.email_account_members        CASCADE;
+DROP TABLE IF EXISTS public.email_accounts               CASCADE;
 
 DROP TABLE IF EXISTS public.tax_invoice_items            CASCADE;
 DROP TABLE IF EXISTS public.tax_invoice_fetches          CASCADE;
@@ -2883,6 +2896,132 @@ CREATE TABLE public.cloud_cost_fetches (
 );
 CREATE INDEX ix_cloud_cost_fetches_started ON public.cloud_cost_fetches (started_at DESC);
 
+-- 도메인 자산 대장 — 자원 > 도메인 메뉴.
+--
+-- 회사가 보유한 도메인(`orbit-works.app`, `data-dynamics.io` 등)의 구매일·만료
+-- 일·구매처·금액·용도·자동갱신·만료알람 관리.
+--
+-- `expiry_alarm=true` 인 항목은 일일 cron (`services/daily_alerts.py`) 의 D-30
+-- 검사 대상이 되어, tenant 의 ADMIN/HR/SUPER_ADMIN 에게 mattermost DM 으로
+-- 만료 임박 알림 발송. `auto_renew` 은 표시 전용 (알람 동작과 무관).
+CREATE TABLE public.domains (
+    id              uuid          PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id       uuid          NOT NULL,
+    name            varchar(255)  NOT NULL,
+    purchase_date   date,
+    expiry_date     date,
+    purchase_amount numeric(14, 2),
+    currency        varchar(3)    NOT NULL DEFAULT 'KRW',         -- KRW | USD | EUR | JPY
+    vendor          varchar(200),                                 -- 가비아 / 후이즈 / Cloudflare / GoDaddy 등
+    purpose         text,                                         -- 자유 입력 (운영 사이트, 데모, 마케팅 랜딩 등)
+    auto_renew      boolean       NOT NULL DEFAULT false,         -- 표시 전용 — 알람 동작과 무관
+    expiry_alarm    boolean       NOT NULL DEFAULT true,          -- D-30 cron 알림 ON/OFF
+    memo            text,
+    created_at      timestamptz   NOT NULL DEFAULT now(),
+    updated_at      timestamptz   NOT NULL DEFAULT now(),
+    CONSTRAINT uq_domains_tenant_name UNIQUE (tenant_id, name)
+);
+CREATE INDEX ix_domains_tenant_id   ON public.domains (tenant_id);
+CREATE INDEX ix_domains_name        ON public.domains (name);
+CREATE INDEX ix_domains_expiry_date ON public.domains (expiry_date);
+
+-- 서버 호스팅 대장 — 자원 > 서버 호스팅 메뉴.
+--
+-- 회사가 사용 중인 서버(전용 / VPS / 클라우드 IaaS / 코로케이션) 의 IP·스펙·
+-- 용도·호스팅 업체·시작일·종료일·월 비용·유형 관리.
+--
+-- `expiry_alarm=true` 인 항목은 일일 cron (`services/daily_alerts.py`) 의 D-30
+-- 검사 대상이 되어, tenant 의 ADMIN/HR/SUPER_ADMIN 에게 mattermost DM 으로
+-- 종료 임박 알림 발송 (도메인과 같은 채널, 별도 feature key
+-- `server_hosting_expiry_alert`).
+--
+-- 운영 약속:
+--   - `monthly_cost` 는 KRW 정수 전용 (해외 호스팅도 환산 후 입력). 통화 다양
+--     화가 필요해지면 domains 처럼 currency 컬럼 추가.
+--   - `hosting_type` 은 앱 단(스키마) 에서만 enum 검증 — DB CHECK 미설치
+--     (신규 유형 추가 시 마이그레이션 없이 코드만 갱신하면 되도록).
+--   - (tenant_id, ip) UNIQUE — 동일 tenant 안 같은 IP 중복 등록 차단.
+CREATE TABLE public.server_hostings (
+    id              uuid          PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id       uuid          NOT NULL,
+    ip              varchar(45)   NOT NULL,                       -- IPv4/IPv6 모두 문자열로 보관 (검증은 앱)
+    cpu_cores       integer,                                      -- vCPU 포함 정수
+    ram_gb          integer,                                      -- GB 단위 정수 ("32" = 32GB)
+    disk_gb         integer,                                      -- GB 단위 정수 (총량)
+    os              varchar(120),                                 -- "Ubuntu 22.04", "Rocky Linux 9" 등
+    purpose         text,                                         -- 자유 입력 ("운영 DB", "백업", "스테이징" 등)
+    vendor          varchar(200),                                 -- KT Cloud / NHN Cloud / AWS / Smileserv 등
+    start_date      date,
+    end_date        date,
+    monthly_cost    numeric(14, 2),                               -- KRW 고정 (해외는 환산 후 입력)
+    hosting_type    varchar(20),                                  -- DEDICATED | VPS | CLOUD | COLOCATION (앱 검증)
+    expiry_alarm    boolean       NOT NULL DEFAULT true,          -- D-30 cron 알림 ON/OFF
+    memo            text,
+    created_at      timestamptz   NOT NULL DEFAULT now(),
+    updated_at      timestamptz   NOT NULL DEFAULT now(),
+    CONSTRAINT uq_server_hostings_tenant_ip UNIQUE (tenant_id, ip)
+);
+CREATE INDEX ix_server_hostings_tenant_id ON public.server_hostings (tenant_id);
+CREATE INDEX ix_server_hostings_ip        ON public.server_hostings (ip);
+CREATE INDEX ix_server_hostings_end_date  ON public.server_hostings (end_date);
+
+-- 임직원 가동율 캐시 — 인사 > 임직원 가동율 메뉴.
+--
+-- (developer × year × month) 단위로 시간 기반 가동율과 수익기여도(비용 기반)
+-- 를 미리 계산해 저장. 매트릭스 페이지가 이 테이블만 읽어 즉시 응답.
+--
+-- 갱신 주기:
+--   - 매일 03:00 cron (services/scheduler.py) — 이번 달만 재계산.
+--   - 백엔드 startup — 빈 테이블이면 올해 1월~현재월 자동 백필 (멱등).
+--   - POST /api/v1/utilization/recompute (ADMIN/HR) — retroactive 수정·신년 전환용.
+--
+-- 정책:
+--   - 정규직(employment_type='FULL_TIME') 만. FREELANCER/INSOURCED 는 제외.
+--   - workdays=0 (휴직·미입사·퇴사 후) → time_ratio NULL, 매트릭스에 '-' 표시.
+--   - monthly_cost=0 (salary 누락) → cost_ratio NULL.
+--   - breakdown_json: popover 한 셀의 프로젝트별 일수·기여분. cells.allocated_days
+--     · revenue_contrib 와 같은 트랜잭션에 저장돼 항상 정합.
+CREATE TABLE public.employee_utilization_cells (
+    id              uuid          PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id       uuid          NOT NULL,
+    developer_id    uuid          NOT NULL REFERENCES public.developers(id) ON DELETE CASCADE,
+    year            integer       NOT NULL,
+    month           integer       NOT NULL,                  -- 1..12
+    -- 시간 기반 ----------------------------------------------------------------
+    --   workdays  분모. 이미 휴가·입사전·퇴사후 일수를 차감한 후의 가용 영업일.
+    --             음수가 나오면 services/utilization.py 가 0 으로 clamp 하고 WARNING.
+    workdays        numeric(5, 1) NOT NULL,
+    --   allocated_days  분자 = Σ(month 와 assignment 의 영업일 교집합 × alloc% / 100).
+    --                   여러 프로젝트 동시 투입은 합산 → workdays 초과 가능 (overbook).
+    allocated_days  numeric(7, 2) NOT NULL DEFAULT 0,
+    --   time_ratio = allocated_days / workdays. workdays = 0 (그 달 내내 휴직·
+    --                미입사·퇴사 후) 인 경우 NULL — 프런트에서 '-' 로 표시되어
+    --                "벤치(0%)" 와 명확히 구분된다.
+    time_ratio      numeric(6, 4),
+    -- 수익기여도 (비용 기반) --------------------------------------------------
+    --   revenue_contrib  Σ(assignment.monthly_rate × 영업일 교집합 / 월 영업일 × alloc% / 100).
+    revenue_contrib numeric(14, 2) NOT NULL DEFAULT 0,
+    --   monthly_cost     annual_salary/12 + 회사부담 4대보험(actual 우선,
+    --                    없으면 estimated). DeveloperSalary 가 없으면 0.
+    monthly_cost    numeric(14, 2) NOT NULL DEFAULT 0,
+    --   cost_ratio = revenue_contrib / monthly_cost. NULL 사유 두 가지:
+    --                (1) monthly_cost = 0 (salary row 누락 — 운영자가 봐야 함, WARNING 발생)
+    --                (2) (이론상) 수식 자체가 정의 안 됨. 1.0× 가 손익분기.
+    cost_ratio      numeric(8, 4),
+    --   breakdown_json  팝오버 표시용. 같은 트랜잭션에 저장돼 cells.allocated_days /
+    --                   revenue_contrib 와 항상 정합. 예:
+    --     [{"project_id":"...", "project_name":"X",
+    --       "days":12.0, "allocation_percent":100,
+    --       "monthly_rate":7500000, "contrib":3750000}, ...]
+    breakdown_json  jsonb         NOT NULL DEFAULT '[]'::jsonb,
+    computed_at     timestamptz   NOT NULL DEFAULT now(),
+    created_at      timestamptz   NOT NULL DEFAULT now(),
+    updated_at      timestamptz   NOT NULL DEFAULT now(),
+    CONSTRAINT uq_eu_cells UNIQUE (tenant_id, developer_id, year, month)
+);
+CREATE INDEX ix_eu_cells_tenant_year_month ON public.employee_utilization_cells (tenant_id, year, month);
+CREATE INDEX ix_eu_cells_developer          ON public.employee_utilization_cells (developer_id, year, month);
+
 -- 알람 규칙 + 이벤트 (Tier 1+2: DAILY_THRESHOLD / MONTHLY_FORECAST / FETCH_FAILED /
 -- DAY_OVER_DAY_PERCENT / NEW_SERVICE). 일일 cloud cost 수집 후 evaluator 가 평가.
 CREATE TABLE public.cloud_cost_alert_rules (
@@ -3565,6 +3704,290 @@ INSERT INTO public.announcement_sources (code, name, agency, base_url, adapter_k
   ('iitp',     'IITP 사업공고',        '정보통신기획평가원',       'https://www.iitp.kr',         'html',    70),
   ('keit',     'KEIT SROME',           '한국산업기술기획평가원',   'https://srome.keit.re.kr',    'html',    80)
 ON CONFLICT (code) DO NOTHING;
+
+
+-- =============================================================================
+-- 이메일 클라이언트 (Email) — IMAP/POP3 양방향 + 아카이빙
+--
+-- 설계: docs/email-client-design.md
+-- - 계정은 PERSONAL/SHARED. 접근은 email_account_members 멤버십으로 제어.
+--   메일은 유저가 아니라 *계정* 에 귀속(공유 메일함).
+-- - 원본 RFC822 raw 는 파일스토리지(.eml), DB 에는 파싱 메타 + 검색 인덱스만.
+-- - 자격증명(password/smtp_password) 은 여기 저장하지 않음 — app_settings.email
+--   (announcements 와 동일하게 마스킹).
+-- - 중복 방지: (account_id, folder_id, uid_validity, imap_uid) UNIQUE.
+-- - tenant_id / RLS / fn_auto_tenant_id 트리거는 파일 끝의 Stage 3a 부록이 처리
+--   (테이블 배열에 email_* 등록). 단 search_tsv/search_text 트리거는 아래에서 직접.
+-- =============================================================================
+
+CREATE TABLE public.email_accounts (
+    id              uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id       uuid         NOT NULL REFERENCES public.tenants(id) ON DELETE RESTRICT,
+    kind            varchar(10)  NOT NULL DEFAULT 'PERSONAL',  -- PERSONAL | SHARED
+    created_by      uuid         REFERENCES public.users(id) ON DELETE SET NULL,
+    display_name    varchar(120) NOT NULL,
+    email_addr      varchar(320) NOT NULL,
+    protocol        varchar(10)  NOT NULL DEFAULT 'IMAP',      -- IMAP | POP3
+    host            varchar(255) NOT NULL,
+    port            integer      NOT NULL DEFAULT 993,
+    security        varchar(10)  NOT NULL DEFAULT 'SSL',       -- SSL | STARTTLS | NONE
+    username        varchar(320) NOT NULL,
+    smtp_host       varchar(255),
+    smtp_port       integer      DEFAULT 587,
+    smtp_security   varchar(10)  DEFAULT 'STARTTLS',
+    smtp_username   varchar(320),
+    sent_folder     varchar(255) DEFAULT 'Sent',
+    archive_folder  varchar(255) DEFAULT 'Archive',
+    trash_folder    varchar(255) DEFAULT 'Trash',
+    shared_seen     boolean      NOT NULL DEFAULT false,       -- 기본 유저별 읽음
+    enabled         boolean      NOT NULL DEFAULT true,
+    sync_enabled    boolean      NOT NULL DEFAULT true,
+    last_sync_at    timestamptz,
+    last_ok_at      timestamptz,
+    last_error      text,
+    capabilities    jsonb,
+    created_at      timestamptz  NOT NULL DEFAULT now(),
+    updated_at      timestamptz  NOT NULL DEFAULT now(),
+    CONSTRAINT uq_email_account_addr UNIQUE (tenant_id, email_addr)
+);
+CREATE INDEX ix_email_accounts_tenant ON public.email_accounts (tenant_id);
+
+CREATE TABLE public.email_account_members (
+    id              uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id       uuid         NOT NULL REFERENCES public.tenants(id) ON DELETE RESTRICT,
+    account_id      uuid         NOT NULL REFERENCES public.email_accounts(id) ON DELETE CASCADE,
+    user_id         uuid         NOT NULL REFERENCES public.users(id)          ON DELETE CASCADE,
+    role            varchar(10)  NOT NULL DEFAULT 'MEMBER',    -- OWNER | MEMBER | VIEWER
+    can_send        boolean      NOT NULL DEFAULT true,
+    can_manage      boolean      NOT NULL DEFAULT false,
+    created_at      timestamptz  NOT NULL DEFAULT now(),
+    updated_at      timestamptz  NOT NULL DEFAULT now(),
+    CONSTRAINT uq_email_member UNIQUE (account_id, user_id)
+);
+CREATE INDEX ix_email_account_members_tenant ON public.email_account_members (tenant_id);
+CREATE INDEX ix_email_account_members_account ON public.email_account_members (account_id);
+CREATE INDEX ix_email_account_members_user    ON public.email_account_members (tenant_id, user_id);
+
+CREATE TABLE public.email_folders (
+    id              uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id       uuid         NOT NULL REFERENCES public.tenants(id) ON DELETE RESTRICT,
+    account_id      uuid         NOT NULL REFERENCES public.email_accounts(id) ON DELETE CASCADE,
+    name            varchar(512) NOT NULL,            -- 디코드본
+    raw_name        varchar(512) NOT NULL,            -- 원본(modified UTF-7)
+    role            varchar(20),                      -- INBOX|SENT|ARCHIVE|TRASH|DRAFTS|JUNK|CUSTOM
+    uid_validity    bigint,
+    uid_next        bigint,
+    highest_modseq  bigint,
+    last_synced_uid bigint       DEFAULT 0,
+    total_count     integer      DEFAULT 0,
+    unseen_count    integer      DEFAULT 0,
+    created_at      timestamptz  NOT NULL DEFAULT now(),
+    updated_at      timestamptz  NOT NULL DEFAULT now(),
+    CONSTRAINT uq_email_folder_raw UNIQUE (account_id, raw_name)
+);
+CREATE INDEX ix_email_folders_tenant  ON public.email_folders (tenant_id);
+CREATE INDEX ix_email_folders_account ON public.email_folders (account_id);
+
+CREATE TABLE public.emails (
+    id              uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id       uuid         NOT NULL REFERENCES public.tenants(id) ON DELETE RESTRICT,
+    account_id      uuid         NOT NULL REFERENCES public.email_accounts(id) ON DELETE CASCADE,
+    folder_id       uuid         REFERENCES public.email_folders(id) ON DELETE SET NULL,
+    imap_uid        bigint,
+    uid_validity    bigint,
+    message_id      varchar(998),
+    thread_id       varchar(998),
+    subject         text,
+    from_addr       varchar(320),
+    from_name       varchar(320),
+    to_addrs        text[],
+    cc_addrs        text[],
+    bcc_addrs       text[],
+    reply_to        varchar(320),
+    sent_at         timestamptz,
+    received_at     timestamptz,
+    body_text       text,
+    body_html       text,
+    snippet         varchar(512),
+    has_attachments boolean      NOT NULL DEFAULT false,
+    size_bytes      integer,
+    is_seen         boolean      NOT NULL DEFAULT false,
+    is_flagged      boolean      NOT NULL DEFAULT false,
+    is_answered     boolean      NOT NULL DEFAULT false,
+    is_draft        boolean      NOT NULL DEFAULT false,
+    is_archived     boolean      NOT NULL DEFAULT false,
+    archived_at     timestamptz,
+    archived_by     uuid         REFERENCES public.users(id) ON DELETE SET NULL,
+    server_deleted    boolean    NOT NULL DEFAULT false,  -- EXPUNGE 반영(설계 §5)
+    server_deleted_at timestamptz,
+    raw_path        varchar(512),
+    raw_sha256      varchar(64),
+    search_tsv      tsvector,                         -- 랭킹/연산자 (fn_emails_tsv 트리거)
+    search_text     text,                             -- pg_bigm 부분일치 (fn_emails_tsv 트리거)
+    created_at      timestamptz  NOT NULL DEFAULT now(),
+    updated_at      timestamptz  NOT NULL DEFAULT now(),
+    CONSTRAINT uq_email_uid UNIQUE (account_id, folder_id, uid_validity, imap_uid)
+);
+CREATE INDEX ix_emails_tenant         ON public.emails (tenant_id);
+CREATE INDEX ix_emails_account_folder ON public.emails (account_id, folder_id, received_at DESC);
+CREATE INDEX ix_emails_message_id     ON public.emails (account_id, message_id);
+CREATE INDEX ix_emails_archived       ON public.emails (tenant_id, is_archived, archived_at DESC);
+CREATE INDEX ix_emails_search_tsv     ON public.emails USING gin (search_tsv);
+
+CREATE TABLE public.email_attachments (
+    id              uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id       uuid         NOT NULL REFERENCES public.tenants(id) ON DELETE RESTRICT,
+    email_id        uuid         NOT NULL REFERENCES public.emails(id) ON DELETE CASCADE,
+    filename        varchar(512) NOT NULL,
+    content_type    varchar(255),
+    content_id      varchar(255),
+    is_inline       boolean      NOT NULL DEFAULT false,
+    size_bytes      integer,
+    part_ref        varchar(40),                      -- MIME 파트 경로(.eml 추출용)
+    file_path       varchar(512),                     -- 열람 후 캐시(NULL=미추출)
+    sha256          varchar(64),
+    fetched_at      timestamptz,
+    created_at      timestamptz  NOT NULL DEFAULT now(),
+    updated_at      timestamptz  NOT NULL DEFAULT now()
+);
+CREATE INDEX ix_email_attachments_tenant ON public.email_attachments (tenant_id);
+CREATE INDEX ix_email_attachments_email  ON public.email_attachments (email_id);
+
+CREATE TABLE public.email_sync_runs (
+    id              uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id       uuid         NOT NULL REFERENCES public.tenants(id) ON DELETE RESTRICT,
+    account_id      uuid         REFERENCES public.email_accounts(id) ON DELETE SET NULL,
+    folder_id       uuid         REFERENCES public.email_folders(id) ON DELETE SET NULL,
+    trigger_kind    varchar(20)  NOT NULL,                     -- SCHEDULED | MANUAL
+    triggered_by    uuid         REFERENCES public.users(id) ON DELETE SET NULL,
+    direction       varchar(10)  NOT NULL DEFAULT 'BOTH',      -- PULL | PUSH | BOTH
+    started_at      timestamptz  NOT NULL,
+    finished_at     timestamptz,
+    status          varchar(20)  NOT NULL DEFAULT 'RUNNING',   -- RUNNING | OK | FAILED | SKIPPED
+    fetched_count   integer      NOT NULL DEFAULT 0,
+    inserted_count  integer      NOT NULL DEFAULT 0,
+    updated_count   integer      NOT NULL DEFAULT 0,
+    pushed_count    integer      NOT NULL DEFAULT 0,
+    skipped_count   integer      NOT NULL DEFAULT 0,
+    error_message   text
+);
+CREATE INDEX ix_email_sync_runs_tenant  ON public.email_sync_runs (tenant_id);
+CREATE INDEX ix_email_sync_runs_account ON public.email_sync_runs (account_id);
+CREATE INDEX ix_email_sync_runs_started ON public.email_sync_runs (started_at DESC);
+
+CREATE TABLE public.email_pending_actions (
+    id              uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id       uuid         NOT NULL REFERENCES public.tenants(id) ON DELETE RESTRICT,
+    user_id         uuid         NOT NULL REFERENCES public.users(id)          ON DELETE CASCADE,
+    account_id      uuid         NOT NULL REFERENCES public.email_accounts(id) ON DELETE CASCADE,
+    email_id        uuid         REFERENCES public.emails(id) ON DELETE CASCADE,
+    action          varchar(20)  NOT NULL,            -- SEEN|UNSEEN|FLAG|UNFLAG|MOVE|ARCHIVE|TRASH|DELETE
+    target_folder   varchar(512),
+    payload         jsonb,
+    status          varchar(20)  NOT NULL DEFAULT 'PENDING',   -- PENDING | DONE | FAILED
+    attempts        integer      NOT NULL DEFAULT 0,
+    last_error      text,
+    created_at      timestamptz  NOT NULL DEFAULT now(),
+    done_at         timestamptz
+);
+CREATE INDEX ix_email_pending_tenant ON public.email_pending_actions (tenant_id);
+CREATE INDEX ix_email_pending_status ON public.email_pending_actions (account_id, status, created_at);
+
+CREATE TABLE public.email_outbox (
+    id              uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id       uuid         NOT NULL REFERENCES public.tenants(id) ON DELETE RESTRICT,
+    user_id         uuid         NOT NULL REFERENCES public.users(id)          ON DELETE CASCADE,
+    account_id      uuid         NOT NULL REFERENCES public.email_accounts(id) ON DELETE CASCADE,
+    in_reply_to     uuid         REFERENCES public.emails(id) ON DELETE SET NULL,
+    to_addrs        text[]       NOT NULL,
+    cc_addrs        text[],
+    bcc_addrs       text[],
+    subject         text,
+    body_text       text,
+    body_html       text,
+    attachments     jsonb,                            -- [{filename, file_path, content_type}]
+    status          varchar(20)  NOT NULL DEFAULT 'DRAFT',     -- DRAFT | QUEUED | SENT | FAILED
+    scheduled_at    timestamptz,
+    sent_at         timestamptz,
+    error_message   text,
+    created_at      timestamptz  NOT NULL DEFAULT now(),
+    updated_at      timestamptz  NOT NULL DEFAULT now()
+);
+CREATE INDEX ix_email_outbox_tenant  ON public.email_outbox (tenant_id);
+CREATE INDEX ix_email_outbox_account ON public.email_outbox (account_id, status);
+
+CREATE TABLE public.email_user_state (
+    id              uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id       uuid         NOT NULL REFERENCES public.tenants(id) ON DELETE RESTRICT,
+    email_id        uuid         NOT NULL REFERENCES public.emails(id) ON DELETE CASCADE,
+    user_id         uuid         NOT NULL REFERENCES public.users(id)  ON DELETE CASCADE,
+    is_seen         boolean      NOT NULL DEFAULT false,
+    seen_at         timestamptz,
+    CONSTRAINT uq_email_user_state UNIQUE (email_id, user_id)
+);
+CREATE INDEX ix_email_user_state_tenant ON public.email_user_state (tenant_id);
+CREATE INDEX ix_email_user_state_user   ON public.email_user_state (tenant_id, user_id, is_seen);
+
+-- 계정 단위 공유 라벨(Gmail 식). 로컬 전용 — IMAP 동기화 안 함.
+CREATE TABLE public.email_labels (
+    id           uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id    uuid         NOT NULL REFERENCES public.tenants(id) ON DELETE RESTRICT,
+    account_id   uuid         NOT NULL REFERENCES public.email_accounts(id) ON DELETE CASCADE,
+    name         varchar(100) NOT NULL,
+    color        varchar(20),
+    created_at   timestamptz  NOT NULL DEFAULT now(),
+    updated_at   timestamptz  NOT NULL DEFAULT now(),
+    CONSTRAINT uq_email_label_name UNIQUE (account_id, name)
+);
+CREATE INDEX ix_email_labels_account ON public.email_labels (account_id);
+
+-- 메일 ↔ 라벨 다대다 연결. 한 메일에 라벨 여러 개.
+CREATE TABLE public.email_label_links (
+    id           uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id    uuid         NOT NULL REFERENCES public.tenants(id) ON DELETE RESTRICT,
+    email_id     uuid         NOT NULL REFERENCES public.emails(id) ON DELETE CASCADE,
+    label_id     uuid         NOT NULL REFERENCES public.email_labels(id) ON DELETE CASCADE,
+    created_at   timestamptz  NOT NULL DEFAULT now(),
+    CONSTRAINT uq_email_label_link UNIQUE (email_id, label_id)
+);
+CREATE INDEX ix_email_label_links_email ON public.email_label_links (email_id);
+CREATE INDEX ix_email_label_links_label ON public.email_label_links (label_id);
+
+-- 검색 인덱스 유지 트리거 — search_tsv(랭킹) + search_text(pg_bigm 부분일치).
+CREATE OR REPLACE FUNCTION public.fn_emails_tsv() RETURNS trigger
+LANGUAGE plpgsql AS $$
+BEGIN
+  NEW.search_tsv :=
+    setweight(to_tsvector('simple', coalesce(NEW.subject, '')), 'A') ||
+    setweight(to_tsvector('simple', coalesce(NEW.from_name, '') || ' ' ||
+              coalesce(NEW.from_addr, '')), 'B') ||
+    setweight(to_tsvector('simple', coalesce(NEW.body_text, '')), 'C');
+  NEW.search_text := coalesce(NEW.subject, '') || ' ' ||
+    coalesce(NEW.from_name, '') || ' ' || coalesce(NEW.from_addr, '') || ' ' ||
+    coalesce(NEW.body_text, '');
+  RETURN NEW;
+END $$;
+
+DROP TRIGGER IF EXISTS trg_emails_tsv ON public.emails;
+CREATE TRIGGER trg_emails_tsv BEFORE INSERT OR UPDATE ON public.emails
+  FOR EACH ROW EXECUTE FUNCTION public.fn_emails_tsv();
+
+-- 한국어 정밀(부분일치) 검색 — pg_bigm bigram GIN 인덱스.
+-- ⚠️ pg_bigm 은 별도 확장(contrib 아님). 미설치 환경에서도 db.sql 전체가 깨지지
+--    않도록 방어적으로 시도하고, 실패하면 tsvector 만으로 진행(WARNING).
+DO $$
+BEGIN
+  CREATE EXTENSION IF NOT EXISTS pg_bigm;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_indexes
+    WHERE schemaname = 'public' AND indexname = 'ix_emails_bigm'
+  ) THEN
+    EXECUTE 'CREATE INDEX ix_emails_bigm ON public.emails '
+            'USING gin (search_text public.gin_bigm_ops)';
+  END IF;
+EXCEPTION WHEN OTHERS THEN
+  RAISE WARNING 'pg_bigm 미설치 — 한국어 부분일치 인덱스 생략(tsvector 만 사용). 원인: %', SQLERRM;
+END $$;
 
 
 -- =============================================================================
@@ -4516,6 +4939,9 @@ DECLARE
     'support_cases', 'support_case_attachments', 'support_case_comments', 'support_case_counters',
     'support_logs', 'support_log_attachments', 'support_log_comments',
     'holiday_alarm_recipients',
+    'email_accounts', 'email_account_members', 'email_folders', 'emails',
+    'email_attachments', 'email_sync_runs', 'email_pending_actions',
+    'email_outbox', 'email_user_state',
     'worksites', 'worksite_assignments'
   ];
 BEGIN

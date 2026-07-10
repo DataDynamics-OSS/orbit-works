@@ -73,6 +73,14 @@ export function AssistantTab() {
     }
   }
 
+  // 숨김: 서버가 준 마스킹값(cfg)으로 되돌린다. 이전엔 show 플래그만 끄고 평문이
+  // 화면에 그대로 남아 아이콘만 바뀌었음 (CloudCostTab 과 동일 수정).
+  function hide(prov: "gemini" | "claude" | "openai") {
+    const masked = cfg?.[prov]?.api_key ?? "";
+    setForm((f) => (f ? { ...f, [prov]: { ...f[prov], api_key: masked } } as AssistantFull : f));
+    setShow((s) => ({ ...s, [prov]: false }));
+  }
+
   if (!form) return <div className="text-sm text-muted-foreground p-4">불러오는 중…</div>;
 
   const input = "w-full rounded-md border border-input bg-background px-3 py-2 text-sm";
@@ -153,7 +161,7 @@ export function AssistantTab() {
         onChange={(v) => setForm({ ...form, gemini: v })}
         shown={show.gemini}
         onReveal={() => reveal("gemini")}
-        onHide={() => setShow((s) => ({ ...s, gemini: false }))}
+        onHide={() => hide("gemini")}
         input={input}
       />
 
@@ -173,7 +181,7 @@ export function AssistantTab() {
         onChange={(v) => setForm({ ...form, claude: v })}
         shown={show.claude}
         onReveal={() => reveal("claude")}
-        onHide={() => setShow((s) => ({ ...s, claude: false }))}
+        onHide={() => hide("claude")}
         input={input}
       />
 
@@ -193,7 +201,7 @@ export function AssistantTab() {
         onChange={(v) => setForm({ ...form, openai: v })}
         shown={show.openai}
         onReveal={() => reveal("openai")}
-        onHide={() => setShow((s) => ({ ...s, openai: false }))}
+        onHide={() => hide("openai")}
         input={input}
         showBaseUrl
         extraHelp={<OpenAICompatHelp />}

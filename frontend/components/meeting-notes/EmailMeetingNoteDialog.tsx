@@ -20,6 +20,7 @@ import { Dialog } from "@/components/ui/Dialog";
 import { useDialog } from "@/components/ui/DialogProvider";
 import { SharePicker } from "@/components/meeting-notes/SharePicker";
 import { sortDevelopersKo } from "@/lib/sort-developers";
+import { highlightHtmlForEmail } from "@/lib/highlight-code";
 
 type DevLite = {
   id: string;
@@ -77,7 +78,9 @@ export function EmailMeetingNoteDialog({
 
   const sendM = useMutation({
     mutationFn: async () => {
-      const body_html = await getBodyHtml();
+      // 저장 HTML 의 코드 블록을 강조 + 인라인 스타일로 구워 보낸다 (이메일은 외부
+      // CSS/JS 미적용이라 토큰 색·다크 배경을 인라인으로 박아야 보인다).
+      const body_html = highlightHtmlForEmail(await getBodyHtml());
       return (
         await api.post(`/meeting-notes/${noteId}/email`, {
           developer_ids: selectedIds,

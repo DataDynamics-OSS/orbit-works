@@ -24,6 +24,9 @@ class AppConfig(BaseModel):
     name: str = "Orbit Works"
     environment: str = "development"
     api_v1_prefix: str = "/api/v1"
+    # 데모 환경 플래그 — 로그인 페이지 배너 + 일부 destructive 기능 가드.
+    # demo.orbit-works.app 의 config.yaml 만 true. 다른 환경은 모두 false.
+    demo_mode: bool = False
 
 
 class ServerConfig(BaseModel):
@@ -282,6 +285,9 @@ class MailNotifications(BaseModel):
     license_expiry_days_before: list[int] = Field(default_factory=lambda: [30, 14, 7, 1])
     license_renewal_prep: bool = True
     subject_prefix: str = "[Orbit Works]"
+    # 마케팅 메일의 트래킹 픽셀·클릭·수신거부 링크가 박힐 외부 접근 base URL.
+    # 비우면 server.public_url 로 fallback. 운영에서는 반드시 https://<도메인>.
+    public_base_url: str = ""
 
 
 class MailConfig(BaseModel):
@@ -351,6 +357,32 @@ class AnnouncementsConfig(BaseModel):
     auto_fetch: AnnouncementsAutoFetch = Field(default_factory=AnnouncementsAutoFetch)
     # code → source-level settings. 키가 없으면 DB enabled 플래그만 사용.
     sources: dict[str, AnnouncementSourceConfig] = Field(default_factory=dict)
+
+
+class EmailAutoSync(BaseModel):
+    """이메일 자동 동기화 — 30분 주기 폴링(설계 docs/email-client-design.md §10)."""
+
+    enabled: bool = True
+    interval_minutes: int = 30
+    batch_size: int = 200
+
+
+class EmailArchive(BaseModel):
+    """콜드 아카이빙 — 오래된 메일을 보관 검증 후 정리(설계 §7)."""
+
+    enabled: bool = True
+    retention_days: int = 365  # 0 = 비활성
+    keep_body_text: bool = True  # false 면 콜드 시 본문 비우고 .eml 만 유지
+    cold_purge_server: bool = False  # true=보관검증 후 서버에서 정리(파괴적, opt-in)
+    run_hour: int = 4  # 야간 배치 시각(KST)
+
+
+class EmailConfig(BaseModel):
+    """이메일 클라이언트 런타임 설정. 계정별 비밀은 app_settings.email.accounts.*."""
+
+    enabled: bool = True
+    auto_sync: EmailAutoSync = Field(default_factory=EmailAutoSync)
+    archive: EmailArchive = Field(default_factory=EmailArchive)
 
 
 # ---------------------------------------------------------------------------
@@ -630,6 +662,7 @@ class Settings(BaseSettings):
     payroll: PayrollConfig = Field(default_factory=PayrollConfig)
     tax_invoice: TaxInvoiceConfig = Field(default_factory=TaxInvoiceConfig)
     announcements: AnnouncementsConfig = Field(default_factory=AnnouncementsConfig)
+    email: EmailConfig = Field(default_factory=EmailConfig)
     security: SecurityConfig = Field(default_factory=SecurityConfig)
     cloud_cost: CloudCostConfig = Field(default_factory=CloudCostConfig)
     assistant: AssistantConfig = Field(default_factory=AssistantConfig)

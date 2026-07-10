@@ -8,6 +8,7 @@ import { MailWarning, Plus, Save, Trash2 } from "lucide-react";
 import { api } from "@/lib/api";
 import { DashboardHeader } from "@/components/layout/DashboardHeader";
 import { Dialog } from "@/components/ui/Dialog";
+import { useToast } from "@/components/ui/ToastProvider";
 
 type BodyKind = "HTML" | "EDITOR" | "IMPORT";
 
@@ -93,6 +94,7 @@ function TabButton({
 function TemplatesTab() {
   const qc = useQueryClient();
   const router = useRouter();
+  const toast = useToast();
   const [createOpen, setCreateOpen] = useState(false);
 
   const { data: templates = [] } = useQuery<Template[]>({
@@ -116,7 +118,7 @@ function TemplatesTab() {
       setCreateOpen(false);
       router.push(`/marketing/emails/${tpl.id}`);
     },
-    onError: (e: any) => alert(e?.response?.data?.detail ?? "생성 실패"),
+    onError: (e: any) => toast.error(e?.response?.data?.detail ?? "생성에 실패했습니다."),
   });
 
   const del = useMutation({
@@ -283,6 +285,7 @@ function CreateTemplateDialog({
 
 function UnsubscribesTab() {
   const qc = useQueryClient();
+  const toast = useToast();
   const [addEmail, setAddEmail] = useState("");
 
   const { data: rows = [] } = useQuery<Unsubscribe[]>({
@@ -301,6 +304,10 @@ function UnsubscribesTab() {
     onSuccess: () => {
       setAddEmail("");
       qc.invalidateQueries({ queryKey: ["marketing", "unsubscribes"] });
+      toast.success("수신거부 주소가 추가되었습니다.");
+    },
+    onError: (err: { response?: { data?: { detail?: string } } }) => {
+      toast.error(err.response?.data?.detail || "추가에 실패했습니다.");
     },
   });
 
@@ -331,7 +338,7 @@ function UnsubscribesTab() {
           type="button"
           onClick={() => {
             if (!addEmail.includes("@")) {
-              alert("올바른 이메일을 입력하세요.");
+              toast.error("올바른 이메일을 입력하세요.");
               return;
             }
             add.mutate();

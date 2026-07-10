@@ -38,6 +38,17 @@
     -apple-system,
     sans-serif;
 }
+
+/* 본문 기본 글꼴색 — BlockNote 라이트 테마 기본값(`--bn-colors-editor-text:
+   #3f3f3f`, 짙은 회색)이 검정으로 보이지 않아 페이지 전역 텍스트색
+   (`--foreground`)으로 맞춘다. 색상 마크(BlockNote 텍스트 컬러 기능)로
+   명시 지정한 글자는 자체 color 가 우선하므로 영향 없음.
+   주의: 이 변수는 BlockNote 가 `.bn-root` *자체* 에 정의하므로(=조상
+   `.mn-bn-root` 에 선언해도 .bn-root 가 자기 값으로 덮어씀) 반드시 .bn-root
+   를 직접, 더 높은 specificity(`.mn-bn-root .bn-root`)로 잡아야 적용된다. */
+.mn-bn-root .bn-root {
+  --bn-colors-editor-text: hsl(var(--foreground));
+}
 .mn-bn-root .bn-editor {
   font-size: 14px;            /* base = 14px */
   line-height: 1.6;

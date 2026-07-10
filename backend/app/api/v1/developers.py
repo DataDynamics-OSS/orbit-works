@@ -11,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.api.deps import (
+    forbid_in_demo_mode,
     get_current_user,
     has_feature,
     require_admin,
@@ -732,7 +733,11 @@ def _reject_birthday_password(resident_number: str | None, new_pw: str) -> None:
         )
 
 
-@router.patch("/{dev_id}/password", status_code=status.HTTP_204_NO_CONTENT)
+@router.patch(
+    "/{dev_id}/password",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(forbid_in_demo_mode)],
+)
 async def reset_developer_password(
     dev_id: UUID,
     payload: DeveloperPasswordUpdate,
@@ -756,7 +761,11 @@ async def reset_developer_password(
     )
 
 
-@router.post("/me/change-password", status_code=status.HTTP_204_NO_CONTENT)
+@router.post(
+    "/me/change-password",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(forbid_in_demo_mode)],
+)
 async def change_my_password(
     payload: DeveloperChangePassword,
     db: AsyncSession = Depends(get_db),

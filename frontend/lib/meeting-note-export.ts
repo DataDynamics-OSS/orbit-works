@@ -14,6 +14,7 @@
 
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { highlightCodeBlocksInDom } from "@/lib/highlight-code";
 
 export type MeetingNoteForExport = {
   id: string;
@@ -126,6 +127,20 @@ function buildHtml(note: MeetingNoteForExport, bodyHtml: string): string {
       .mn-pdf .mn-body blockquote { border-left:3px solid #cbd5e1; padding-left:10px; margin:6px 0; color:#475569; }
       .mn-pdf .mn-body pre { background:#0f172a; color:#f8fafc; padding:10px 12px; border-radius:6px; font-size:10px; line-height:1.5; overflow:hidden; white-space:pre-wrap; word-break:break-all; font-family:'D2Coding',ui-monospace,Menlo,Consolas,monospace; }
       .mn-pdf .mn-body code { background:#f1f5f9; padding:0.1em 0.35em; border-radius:0.25em; font-size:10px; font-family:'D2Coding',ui-monospace,Menlo,Consolas,monospace; }
+      /* pre 안의 code 는 인라인 code 박스 스타일을 상속하면 안 됨 — 어두운 pre 위에
+         흰 배경 박스가 또 끼는 문제 방지. 배경/패딩 제거하고 pre 색을 상속. */
+      .mn-pdf .mn-body pre code { background:transparent; color:inherit; padding:0; border-radius:0; }
+      /* 코드 블록 문법 강조 토큰 (highlight.js) — 어두운 pre 배경에 맞춘 atom-one-dark 계열. */
+      .mn-pdf .mn-body pre .hljs-comment, .mn-pdf .mn-body pre .hljs-quote { color:#7f848e; font-style:italic; }
+      .mn-pdf .mn-body pre .hljs-keyword, .mn-pdf .mn-body pre .hljs-doctag, .mn-pdf .mn-body pre .hljs-formula { color:#c678dd; }
+      .mn-pdf .mn-body pre .hljs-section, .mn-pdf .mn-body pre .hljs-name, .mn-pdf .mn-body pre .hljs-selector-tag, .mn-pdf .mn-body pre .hljs-deletion, .mn-pdf .mn-body pre .hljs-subst { color:#e06c75; }
+      .mn-pdf .mn-body pre .hljs-literal { color:#56b6c2; }
+      .mn-pdf .mn-body pre .hljs-string, .mn-pdf .mn-body pre .hljs-regexp, .mn-pdf .mn-body pre .hljs-addition, .mn-pdf .mn-body pre .hljs-attribute { color:#98c379; }
+      .mn-pdf .mn-body pre .hljs-attr, .mn-pdf .mn-body pre .hljs-variable, .mn-pdf .mn-body pre .hljs-template-variable, .mn-pdf .mn-body pre .hljs-type, .mn-pdf .mn-body pre .hljs-selector-class, .mn-pdf .mn-body pre .hljs-selector-attr, .mn-pdf .mn-body pre .hljs-selector-pseudo, .mn-pdf .mn-body pre .hljs-number { color:#d19a66; }
+      .mn-pdf .mn-body pre .hljs-symbol, .mn-pdf .mn-body pre .hljs-bullet, .mn-pdf .mn-body pre .hljs-link, .mn-pdf .mn-body pre .hljs-meta, .mn-pdf .mn-body pre .hljs-selector-id, .mn-pdf .mn-body pre .hljs-title { color:#61afef; }
+      .mn-pdf .mn-body pre .hljs-built_in, .mn-pdf .mn-body pre .hljs-class { color:#e5c07b; }
+      .mn-pdf .mn-body pre .hljs-emphasis { font-style:italic; }
+      .mn-pdf .mn-body pre .hljs-strong { font-weight:700; }
       .mn-pdf .mn-body table { border-collapse:collapse; width:100%; margin:6px 0; }
       .mn-pdf .mn-body th, .mn-pdf .mn-body td { border:1px solid #cbd5e1; padding:4px 6px; font-size:10px; vertical-align:top; }
       .mn-pdf .mn-body th { background:#f1f5f9; font-weight:700; }
@@ -159,6 +174,9 @@ export async function downloadMeetingNotePdf(
   container.style.cssText =
     "position:fixed;top:-20000px;left:0;width:880px;background:#ffffff;";
   container.innerHTML = html;
+  // 코드 블록 문법 강조 — 저장 HTML 에는 토큰이 없으므로 여기서 입힌다 (위 <style>
+  // 의 .mn-pdf .mn-body pre .hljs-* 규칙이 색을 입힘).
+  highlightCodeBlocksInDom(container);
   document.body.appendChild(container);
   try {
     if (document.fonts?.ready) await document.fonts.ready;

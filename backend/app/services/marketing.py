@@ -140,16 +140,24 @@ def build_tracked_body(
     body_text: str,
     send_id: UUID,
     unsubscribe_token: str | None,
-) -> tuple[str, str]:
-    """본문 끝에 트래킹 픽셀·수신거부 푸터 부착.
+) -> tuple[str, str, str]:
+    """본문 끝에 수신거부 푸터(법정 필수) + 트래킹 픽셀 부착.
 
-    클릭 트래킹은 1차에서 생략 (단순 anchor 변환은 HTML 파싱 의존성 추가 필요).
-    원하는 경우 본문 내 `[[track:URL]]` 토큰을 클릭 추적 리다이렉트로 변환.
+    반환: (body_html, body_text, unsub_url). unsub_url 은 List-Unsubscribe 헤더용.
+
+    수신거부 푸터는 정보통신망법 50조상 (광고) 메일에 반드시 들어가야 하므로
+    트래킹(픽셀/클릭)과 **독립적으로** 부착한다. 단 절대 URL 이 필요하므로 base
+    가 없으면 링크를 만들 수 없다 — 이 경우 호출부(`send_campaign_emails`)에서
+    발송 자체를 막아야 한다. (base 가 빈 채로 여기 도달하면 푸터 없이 나가므로
+    호출부 가드가 1차 방어선.)
+
+    클릭 트래킹은 본문 내 `[[track:URL]]` 토큰을 리다이렉트 URL 로 치환.
     """
     base = get_tracking_base_url()
     pixel_html = ""
     footer_html = ""
     footer_text = ""
+    unsub_url = ""
 
     if base:
         pixel_url = f"{base}/api/v1/marketing/track/open/{send_id}.png"
@@ -167,6 +175,8 @@ def build_tracked_body(
         body_html = click_re.sub(_click, body_html)
         body_text = click_re.sub(_click, body_text)
 
+    # 수신거부 푸터 — 트래킹 비활성(base 만 없는 케이스)과 무관하게, 토큰과 base
+    # 가 있으면 항상 부착. base 가 없으면 호출부가 이미 발송을 막았어야 한다.
     if unsubscribe_token and base:
         unsub_url = f"{base}/api/v1/marketing/track/unsubscribe/{unsubscribe_token}"
         footer_html = (
@@ -182,7 +192,7 @@ def build_tracked_body(
         body_html = body_html + footer_html + pixel_html
     if body_text:
         body_text = body_text + footer_text
-    return body_html, body_text
+    return body_html, body_text, unsub_url
 
 
 # ---------------------------------------------------------------------------
@@ -299,6 +309,17 @@ async def send_campaign_emails(
     if not recipients:
         raise ValueError("세그먼트에서 발송 대상 수신자가 0명입니다.")
 
+    # 수신거부 링크는 절대 URL 이 필요. base 가 없으면 (광고) 메일에 법정 필수
+    # 수신거부 수단을 넣을 수 없으므로 발송 자체를 차단한다. (조용히 빠진 채
+    # 발송되면 정보통신망법 50조 위반.)
+    if not get_tracking_base_url():
+        raise ValueError(
+            "공개 base URL 이 설정되지 않아 수신거부 링크를 생성할 수 없습니다. "
+            "config.yaml 의 mail.notifications.public_base_url 또는 server.public_url 을 "
+            "운영 도메인(https://…)으로 설정한 뒤 다시 발송하세요. "
+            "(법정 필수 수신거부 수단 누락 방지를 위해 발송을 차단했습니다.)"
+        )
+
     # 수신거부 lookup — lower(email) 매칭. tenant 격리는 RLS 가 자동.
     unsub_rows = (
         await db.execute(
@@ -338,7 +359,7 @@ async def send_campaign_emails(
         body_text = render_template(template.body_text, contact, customer)
 
         token = _signed_token(campaign.tenant_id, to_addr)
-        body_html, body_text = build_tracked_body(
+        body_html, body_text, unsub_url = build_tracked_body(
             body_html, body_text, send.id, token
         )
 
@@ -357,6 +378,7 @@ async def send_campaign_emails(
                 html=bool(body_html),
                 attachments=attachments,
                 inline_images=inline_images,
+                list_unsubscribe_url=unsub_url or None,
             )
         except Exception as exc:
             ok = False

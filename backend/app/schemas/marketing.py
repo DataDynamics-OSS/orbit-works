@@ -15,6 +15,10 @@ CampaignObjective = Literal[
     "CROSS_SELL", "UPSELL", "NURTURE", "RETENTION", "WIN_BACK", "EVENT_INVITE", "OTHER"
 ]
 ContactKind = Literal["CUSTOMER", "PARTNER"]
+# 발송 수신자에는 임직원(EMPLOYEE) shadow contact 도 포함될 수 있다 (세그먼트의
+# developer_ids → kind='EMPLOYEE' contact). include_kinds 와 달리 preview/발송 응답은
+# 이 종류를 허용해야 한다 (안 그러면 response_model 검증이 500 을 던짐).
+RecipientKind = Literal["CUSTOMER", "PARTNER", "EMPLOYEE"]
 EmailSendStatus = Literal[
     "QUEUED", "SENT", "BOUNCED", "FAILED", "SKIPPED_UNSUBSCRIBED"
 ]
@@ -73,7 +77,7 @@ class SegmentRecipient(BaseModel):
     customer_contact_id: UUID
     contact_name: str
     email: str
-    kind: ContactKind
+    kind: RecipientKind
 
 
 # ---------------------------------------------------------------------------

@@ -23,6 +23,8 @@ COPY requirements.txt ./
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY app ./app
+# RLS 정책·트리거 SQL — startup 시 SUPERUSER 권한으로 자동 적용 (main.py:_apply_rls_policies).
+COPY sql ./sql
 
 # Host 의 data 디렉터리가 /app/data 로 bind-mount 된다 (docker-compose.yml 참조).
 # 업로드 파일은 /app/data/uploads, DB 백업은 /app/data/backups 아래에 저장.

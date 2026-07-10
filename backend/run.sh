@@ -37,4 +37,9 @@ echo
 
 export DATABASE__HOST="${DATABASE__HOST:-localhost}"
 
-exec uvicorn app.main:app --host "$HOST" --port "$PORT" "$@" --reload
+# --reload-dir app: watchfiles 가 backend/app/ 만 watch.
+#   기본 동작은 cwd 전체를 watch 하므로 logs/app.log (매 요청 쓰기) · data/
+#   업로드 · __pycache__ 등이 reload 를 무한 트리거 → 매 request 시 worker
+#   가 중단·재기동되어 5xx 가능. 디렉터리 한정으로 차단.
+exec uvicorn app.main:app --host "$HOST" --port "$PORT" \
+    --reload --reload-dir app "$@"

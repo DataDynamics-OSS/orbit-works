@@ -17,6 +17,7 @@ import {
 import { api } from "@/lib/api";
 import { DashboardHeader } from "@/components/layout/DashboardHeader";
 import { Dialog } from "@/components/ui/Dialog";
+import { useToast } from "@/components/ui/ToastProvider";
 
 type Channel = "EMAIL" | "GOOGLE_ADS";
 type Status = "PLANNED" | "RUNNING" | "PAUSED" | "COMPLETED" | "ARCHIVED";
@@ -107,10 +108,18 @@ export default function CampaignDetailPage() {
     queryFn: async () => (await api.get(`/marketing/email-templates`)).data,
   });
 
+  const toast = useToast();
+
   const update = useMutation({
     mutationFn: async (patch: Partial<Campaign>) =>
       (await api.patch(`/marketing/campaigns/${id}`, patch)).data,
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["marketing", "campaign", id] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["marketing", "campaign", id] });
+      toast.success("저장되었습니다.");
+    },
+    onError: (err: { response?: { data?: { detail?: string } } }) => {
+      toast.error(err.response?.data?.detail || "저장에 실패했습니다.");
+    },
   });
 
   const del = useMutation({
@@ -164,16 +173,18 @@ export default function CampaignDetailPage() {
           </button>
         }
       />
-      <div className="p-4 space-y-6 max-w-5xl">
-        <SettingsCard
-          campaign={campaign}
-          segments={segments}
-          templates={templates}
-          onSave={(patch) => update.mutate(patch)}
-        />
+      <div className="flex-1 overflow-y-auto">
+        <div className="p-4 space-y-6 max-w-5xl">
+          <SettingsCard
+            campaign={campaign}
+            segments={segments}
+            templates={templates}
+            onSave={(patch) => update.mutate(patch)}
+          />
 
-        {campaign.channel === "EMAIL" && <EmailSection campaign={campaign} />}
-        {campaign.channel === "GOOGLE_ADS" && <GoogleAdsSection campaign={campaign} />}
+          {campaign.channel === "EMAIL" && <EmailSection campaign={campaign} />}
+          {campaign.channel === "GOOGLE_ADS" && <GoogleAdsSection campaign={campaign} />}
+        </div>
       </div>
     </>
   );
@@ -481,6 +492,7 @@ function EmailSection({ campaign }: { campaign: Campaign }) {
 
 function GoogleAdsSection({ campaign }: { campaign: Campaign }) {
   const qc = useQueryClient();
+  const toast = useToast();
   const [metricDate, setMetricDate] = useState(new Date().toISOString().slice(0, 10));
   const [impressions, setImpressions] = useState("0");
   const [clicks, setClicks] = useState("0");
@@ -509,6 +521,10 @@ function GoogleAdsSection({ campaign }: { campaign: Campaign }) {
         queryKey: ["marketing", "campaign", campaign.id, "ga-metrics"],
       });
       qc.invalidateQueries({ queryKey: ["marketing", "campaign", campaign.id] });
+      toast.success("저장되었습니다.");
+    },
+    onError: (err: { response?: { data?: { detail?: string } } }) => {
+      toast.error(err.response?.data?.detail || "저장에 실패했습니다.");
     },
   });
 
@@ -516,11 +532,12 @@ function GoogleAdsSection({ campaign }: { campaign: Campaign }) {
     mutationFn: async () =>
       (await api.post(`/marketing/google-ads/campaigns/${campaign.id}/sync`, {})).data,
     onError: (err: { response?: { data?: { detail?: string } } }) =>
-      alert(err.response?.data?.detail || "동기화 실패"),
+      toast.error(err.response?.data?.detail || "동기화에 실패했습니다."),
     onSuccess: () => {
       qc.invalidateQueries({
         queryKey: ["marketing", "campaign", campaign.id, "ga-metrics"],
       });
+      toast.success("동기화되었습니다.");
     },
   });
 

@@ -100,6 +100,41 @@ async def save_upload(upload: UploadFile, subdir: str) -> tuple[str, int]:
     return stored_rel, size
 
 
+async def save_bytes(data: bytes, subdir: str, ext: str) -> tuple[str, int]:
+    """raw bytes 를 저장하고 (stored_path, size) 반환. `save_upload` 의 bytes 버전.
+
+    메일 원본(.eml)·첨부 추출처럼 UploadFile 이 아닌 바이트를 저장할 때 사용.
+    멀티 테넌트 경로 규칙은 `save_upload` 과 동일 — 디스크는
+    ``<upload.dir>/<tenant_id>/<subdir>/<uuid><ext>``, DB 에는 tenant 상대경로만.
+
+    크기 한도(`upload.max_size_mb`) 초과 시 413. `ext` 는 '.eml' 처럼 점 포함.
+    """
+    max_bytes = _max_bytes()
+    if len(data) > max_bytes:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=(
+                f"파일 크기가 허용 한도({settings.upload.max_size_mb}MB)를 초과했습니다."
+            ),
+        )
+    subdir_path = Path(subdir)
+    base = Path(settings.upload.dir)
+    tid = _tenant_prefix()
+    base_abs = (base / tid / subdir_path) if tid else (base / subdir_path)
+    base_abs.mkdir(parents=True, exist_ok=True)
+    safe_ext = ext.lower()
+    if not safe_ext.startswith("."):
+        safe_ext = f".{safe_ext}"
+    if len(safe_ext) > 10 or not all(ch.isalnum() or ch == "." for ch in safe_ext):
+        safe_ext = ".bin"
+    filename = f"{uuid.uuid4().hex}{safe_ext}"
+    dest_abs = base_abs / filename
+    async with aiofiles.open(dest_abs, "wb") as f:
+        await f.write(data)
+    stored_rel = str(subdir_path / filename)
+    return stored_rel, len(data)
+
+
 async def save_upload_as(
     upload: UploadFile, subdir: str, base_name: str
 ) -> tuple[str, int]:

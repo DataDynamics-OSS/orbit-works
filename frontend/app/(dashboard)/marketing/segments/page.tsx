@@ -20,6 +20,7 @@ import { Plus, Pencil, Trash2, Users, X } from "lucide-react";
 import { api } from "@/lib/api";
 import { DashboardHeader } from "@/components/layout/DashboardHeader";
 import { Dialog } from "@/components/ui/Dialog";
+import { useToast } from "@/components/ui/ToastProvider";
 
 type Segment = {
   id: string;
@@ -50,7 +51,8 @@ type Recipient = {
   customer_contact_id: string;
   contact_name: string;
   email: string;
-  kind: "CUSTOMER" | "PARTNER";
+  // 임직원 세그먼트는 EMPLOYEE shadow contact 도 수신자에 포함된다.
+  kind: "CUSTOMER" | "PARTNER" | "EMPLOYEE";
 };
 
 type Contact = {
@@ -210,6 +212,7 @@ function SegmentDialog({
   onClose: () => void;
   onSaved: () => void;
 }) {
+  const toast = useToast();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [includePartners, setIncludePartners] = useState(false);
@@ -434,7 +437,13 @@ function SegmentDialog({
       }
       return (await api.post("/marketing/segments", payload)).data;
     },
-    onSuccess: onSaved,
+    onSuccess: () => {
+      onSaved();
+      toast.success("저장되었습니다.");
+    },
+    onError: (err: { response?: { data?: { detail?: string } } }) => {
+      toast.error(err.response?.data?.detail || "저장에 실패했습니다.");
+    },
   });
 
   // contacts 도착 후 selectedIds 에서 EMPLOYEE shadow id 제거 (UI 표시 중복 제거).
@@ -503,7 +512,7 @@ function SegmentDialog({
               type="button"
               onClick={() => {
                 if (!name.trim()) {
-                  alert("세그먼트 이름을 입력하세요.");
+                  toast.error("세그먼트 이름을 입력하세요.");
                   return;
                 }
                 save.mutate();
@@ -840,7 +849,7 @@ function PreviewDialog({
   segmentName: string;
   onClose: () => void;
 }) {
-  const { data: recipients = [], isLoading } = useQuery<Recipient[]>({
+  const { data: recipients = [], isLoading, isError, error } = useQuery<Recipient[]>({
     queryKey: ["marketing", "segments", segmentId, "recipients"],
     queryFn: async () =>
       (await api.get(`/marketing/segments/${segmentId}/recipients`)).data,
@@ -855,6 +864,13 @@ function PreviewDialog({
     >
       {isLoading ? (
         <div className="text-sm text-muted-foreground">불러오는 중…</div>
+      ) : isError ? (
+        <div className="text-sm text-red-600">
+          수신자를 불러오지 못했습니다
+          {(error as any)?.response?.data?.detail
+            ? ` — ${(error as any).response.data.detail}`
+            : "."}
+        </div>
       ) : recipients.length === 0 ? (
         <div className="text-sm text-muted-foreground">발송 대상 수신자가 없습니다.</div>
       ) : (
@@ -876,7 +892,11 @@ function PreviewDialog({
                   <td className="px-2 py-1.5">{r.customer_name || "-"}</td>
                   <td className="px-2 py-1.5 font-mono">{r.email}</td>
                   <td className="px-2 py-1.5">
-                    {r.kind === "CUSTOMER" ? "고객" : "파트너"}
+                    {r.kind === "CUSTOMER"
+                      ? "고객"
+                      : r.kind === "PARTNER"
+                        ? "파트너"
+                        : "임직원"}
                   </td>
                 </tr>
               ))}

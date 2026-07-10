@@ -109,6 +109,7 @@ class MailService:
         html: bool = False,
         attachments: list[tuple[str, bytes, str]] | None = None,
         inline_images: list[tuple[str, bytes, str]] | None = None,
+        list_unsubscribe_url: str | None = None,
     ) -> bool:
         """글로벌 `config.yaml` 의 mail 설정으로 발송 — tenant 모름·결정 불가한
         호출자(시스템 cron 의 글로벌 알림 등) 전용. tenant 가 명확하면
@@ -116,6 +117,7 @@ class MailService:
         """
         return await self._dispatch(
             get_settings().mail, subject, body, to, html, attachments, inline_images,
+            list_unsubscribe_url=list_unsubscribe_url,
         )
 
     async def send_for_tenant(
@@ -127,6 +129,7 @@ class MailService:
         html: bool = False,
         attachments: list[tuple[str, bytes, str]] | None = None,
         inline_images: list[tuple[str, bytes, str]] | None = None,
+        list_unsubscribe_url: str | None = None,
     ) -> bool:
         """tenant 별 SMTP 설정으로 발송. tenant_id None 이면 `send` 와 동일.
 
@@ -134,9 +137,15 @@ class MailService:
         `<img src="cid:{content_id}">` 와 매칭되는 자산. multipart/related part
         에 Content-ID 헤더로 들어가 이메일 자체에 임베드된다 (외부 URL 차단
         환경에서도 표시).
+
+        `list_unsubscribe_url`: 주어지면 List-Unsubscribe / List-Unsubscribe-Post
+        헤더를 달아 Gmail·Outlook 의 상단 '구독 취소' 버튼(원클릭)을 활성화.
         """
         cfg = await self._resolve_cfg(tenant_id)
-        return await self._dispatch(cfg, subject, body, to, html, attachments, inline_images)
+        return await self._dispatch(
+            cfg, subject, body, to, html, attachments, inline_images,
+            list_unsubscribe_url=list_unsubscribe_url,
+        )
 
     async def _dispatch(
         self,
@@ -147,6 +156,7 @@ class MailService:
         html: bool,
         attachments: list[tuple[str, bytes, str]] | None,
         inline_images: list[tuple[str, bytes, str]] | None = None,
+        list_unsubscribe_url: str | None = None,
     ) -> bool:
         """attachments: [(filename, content_bytes, mime_type), ...]. 생략 가능."""
         if not cfg.enabled:
@@ -166,6 +176,12 @@ class MailService:
         msg["To"] = ", ".join(recipients)
         prefix = cfg.notifications.subject_prefix.strip()
         msg["Subject"] = f"{prefix} {subject}" if prefix else subject
+        if list_unsubscribe_url:
+            # RFC 2369 + RFC 8058 — 메일 클라이언트 상단 '구독 취소' 버튼.
+            # List-Unsubscribe-Post 가 있으면 클라이언트가 GET 페이지 방문 없이
+            # 즉시 POST(원클릭) → /marketing/track/unsubscribe/{token} 처리.
+            msg["List-Unsubscribe"] = f"<{list_unsubscribe_url}>"
+            msg["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click"
         if html:
             # 본문 안의 data URL 이미지를 cid: 참조 + multipart/related part 로
             # 변환 — Gmail 등의 102KB 본문 clipping 회피 + 일부 클라이언트의

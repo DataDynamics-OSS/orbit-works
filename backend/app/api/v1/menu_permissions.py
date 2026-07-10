@@ -47,6 +47,7 @@ DEFAULT_MENU_PERMISSIONS: dict[str, list[str]] = {
     "board": ["SALES", "HR", "SUPPORT", "ETC"],
     "opportunities": ["SALES"],
     "announcements": ["SALES", "HR", "SUPPORT", "ETC"],
+    "emails": ["SALES", "MARKETING", "HR", "SUPPORT", "ETC"],
     "licenses": ["SALES", "SUPPORT"],
     "licenses.calendar": ["SALES", "SUPPORT"],
     "quotes": ["SALES"],
@@ -56,6 +57,11 @@ DEFAULT_MENU_PERMISSIONS: dict[str, list[str]] = {
     # 클라우드 비용은 자격증명 노출 우려가 있어 ADMIN 외엔 기본 미공개.
     # 대시보드 카드 등 단순 시청 권한이 필요하면 운영자가 메뉴 권한에서 부여.
     "cloud_costs": [],
+    # 서버 호스팅 — IP·스펙 등 인프라 정보. 기본 ADMIN 전용 (cloud_costs 와 동일 정책).
+    "server_hostings": [],
+    # 임직원 가동율 — HR 가 기본. ADMIN 자동. 매니저는 /auth/me 가 menu_grants 에
+    # 'utilization' 을 자동 추가 (직속 부하 1명 이상 FULL_TIME ACTIVE 가 있으면).
+    "utilization": ["HR"],
     "vendor_bills": ["HR"],
     "developers": ["HR"],
     "projects": ["SALES", "HR"],

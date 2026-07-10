@@ -21,6 +21,7 @@ export function TocResizer({
   min = 160,
   max = 720,
   ariaLabel = "목차 패널 폭 조절",
+  invert = false,
 }: {
   width: number;
   onChange: (w: number) => void;
@@ -31,6 +32,9 @@ export function TocResizer({
   min?: number;
   max?: number;
   ariaLabel?: string;
+  /** 조절 대상 패널이 separator 의 왼쪽에 있을 때 true(오른쪽 드래그 = 폭 증가).
+      기본 false 는 TOC(오른쪽 패널) 기준 — 왼쪽 드래그가 폭 증가. */
+  invert?: boolean;
 }) {
   const persist = useCallback(
     (w: number) => {
@@ -58,8 +62,9 @@ export function TocResizer({
         document.body.style.cursor = "col-resize";
         document.body.style.userSelect = "none";
         const onMove = (ev: MouseEvent) => {
-          // 마우스 ← : width 증가 (TOC 가 오른쪽 끝). → : width 감소.
-          const delta = startX - ev.clientX;
+          // 기본(TOC, 오른쪽 패널): 마우스 ← 가 width 증가.
+          // invert(왼쪽 패널): 마우스 → 가 width 증가.
+          const delta = invert ? ev.clientX - startX : startX - ev.clientX;
           latest = Math.max(min, Math.min(max, startWidth + delta));
           onChange(latest);
         };

@@ -21,6 +21,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ColDef } from "ag-grid-community";
+import { ChevronDown, ChevronRight, Layers } from "lucide-react";
 import { api } from "@/lib/api";
 import { DashboardHeader } from "@/components/layout/DashboardHeader";
 import { DataGrid, type DataGridHandle } from "@/components/data-grid/DataGrid";
@@ -66,12 +67,78 @@ const SCOPE_LABEL: Record<Scope, string> = {
   shared: "공유받은 회의록",
 };
 
+// ---------------------------------------------------------------------------
+// 고객사별 그룹 보기 (ag-grid community 는 native row grouping 미지원 →
+// full-width 밴드 행을 직접 끼워 넣는 방식)
+// ---------------------------------------------------------------------------
+
+const NONE_KEY = "__none__";
+
+type GroupBand = {
+  __group: true;
+  key: string;      // customer_id 또는 NONE_KEY
+  name: string;
+  count: number;
+};
+type FlatRow = MeetingRow | GroupBand;
+
+const isBand = (r: FlatRow): r is GroupBand =>
+  (r as GroupBand).__group === true;
+
+/**
+ * rows 를 고객사별 버킷으로 묶어 [밴드, ...회의록, 밴드, ...] 평면 배열로.
+ * - 고객사명 ko 정렬, "고객사 없음" 버킷은 항상 마지막.
+ * - 버킷 내부는 updated_at 내림차순.
+ * - collapsed 에 든 key 의 버킷은 자식 행을 생략(밴드만 남김).
+ */
+function buildGrouped(rows: MeetingRow[], collapsed: Set<string>): FlatRow[] {
+  const buckets = new Map<string, { name: string; items: MeetingRow[] }>();
+  for (const r of rows) {
+    const key = r.customer_id ?? NONE_KEY;
+    const name = r.customer_id
+      ? r.customer_name ?? "(이름없음)"
+      : "고객사 없음";
+    let b = buckets.get(key);
+    if (!b) {
+      b = { name, items: [] };
+      buckets.set(key, b);
+    }
+    b.items.push(r);
+  }
+  const ordered = [...buckets.entries()].sort(([ka, a], [kb, b]) => {
+    if (ka === NONE_KEY) return 1;
+    if (kb === NONE_KEY) return -1;
+    return a.name.localeCompare(b.name, "ko");
+  });
+  const out: FlatRow[] = [];
+  for (const [key, { name, items }] of ordered) {
+    items.sort((x, y) => y.updated_at.localeCompare(x.updated_at));
+    out.push({ __group: true, key, name, count: items.length });
+    if (!collapsed.has(key)) out.push(...items);
+  }
+  return out;
+}
+
+// 그룹 모드 전용 검색 — quickFilter 대신 rows 를 선필터(밴드 깨짐 방지).
+function filterRows(rows: MeetingRow[], q: string): MeetingRow[] {
+  const term = q.trim().toLowerCase();
+  if (!term) return rows;
+  return rows.filter((r) =>
+    [r.title, r.customer_name, r.project_name, r.author_name]
+      .some((v) => (v ?? "").toLowerCase().includes(term)),
+  );
+}
+
 export default function MeetingNotesPage() {
   const router = useRouter();
   const qc = useQueryClient();
   const dialog = useDialog();
   const [scope, setScope] = useState<Scope>("all");
   const [createOpen, setCreateOpen] = useState(false);
+  // 고객사별 그룹 보기 토글 + 접힌 그룹 key 집합.
+  const [grouped, setGrouped] = useState(false);
+  const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+  const [groupQuery, setGroupQuery] = useState("");
 
   // 본인 권한 — '전체 (회사)' 탭은 관리자만 노출.
   const { data: me } = useQuery<{ role: string }>({
@@ -245,6 +312,51 @@ export default function MeetingNotesPage() {
     [],
   );
 
+  // 그룹 모드 컬럼 — 고객사는 밴드로 대체되어 중복이라 제외하고, 정렬을 켜면
+  // 밴드 구조가 깨지므로 모든 컬럼 sortable=false (정렬은 buildGrouped 가 고정).
+  const groupedColumnDefs = useMemo<ColDef<MeetingRow>[]>(
+    () =>
+      columnDefs
+        .filter((c) => c.field !== "customer_name")
+        .map((c) => ({ ...c, sortable: false, sort: undefined })),
+    [columnDefs],
+  );
+
+  const displayRows = useMemo<FlatRow[]>(
+    () => (grouped ? buildGrouped(filterRows(rows, groupQuery), collapsed) : rows),
+    [grouped, rows, groupQuery, collapsed],
+  );
+
+  function toggleCollapse(key: string) {
+    setCollapsed((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }
+
+  // full-width 밴드 셀 렌더러 — 고객사명 + 건수 + ▼/▶ 토글.
+  const GroupBandRenderer = (p: any) => {
+    const b = p.data as GroupBand;
+    const isCollapsed = collapsed.has(b.key);
+    return (
+      <button
+        type="button"
+        onClick={() => toggleCollapse(b.key)}
+        className="flex h-full w-full items-center gap-2 bg-muted/60 px-2 text-left font-medium text-foreground hover:bg-muted"
+      >
+        {isCollapsed ? (
+          <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+        ) : (
+          <ChevronDown className="h-3.5 w-3.5 shrink-0" />
+        )}
+        <span className="truncate">{b.name}</span>
+        <span className="text-xs text-muted-foreground">({b.count}건)</span>
+      </button>
+    );
+  };
+
   return (
     <>
       <DashboardHeader title="회의록" />
@@ -264,9 +376,44 @@ export default function MeetingNotesPage() {
 
         <DataGrid<MeetingRow>
           ref={gridRef}
-          rowData={rows}
-          columnDefs={columnDefs}
-          getRowId={(r) => r.id}
+          rowData={displayRows as MeetingRow[]}
+          columnDefs={grouped ? groupedColumnDefs : columnDefs}
+          getRowId={(r: any) => (r.__group ? `band:${r.key}` : r.id)}
+          // 그룹 모드: 밴드 경계와 페이지가 안 맞으므로 페이지네이션 끄고 스크롤.
+          pagination={!grouped}
+          // 그룹 모드에서는 quickFilter 대신 rows 선필터(groupQuery) 사용 —
+          // 밴드 행이 필터에 걸려 그룹 구조가 깨지는 것을 방지.
+          hideSearch={grouped}
+          isFullWidthRow={grouped ? (p) => !!p.rowNode.data?.__group : undefined}
+          fullWidthCellRenderer={grouped ? GroupBandRenderer : undefined}
+          getRowHeight={
+            grouped ? (p) => (p.data?.__group ? 34 : undefined) : undefined
+          }
+          toolbarLeading={
+            <>
+              {grouped && (
+                <input
+                  value={groupQuery}
+                  onChange={(e) => setGroupQuery(e.target.value)}
+                  placeholder="검색"
+                  className="h-8 w-56 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              )}
+              <button
+                type="button"
+                onClick={() => setGrouped((g) => !g)}
+                className={
+                  "h-8 inline-flex items-center gap-1 rounded-md border px-3 text-xs font-medium " +
+                  (grouped
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-border bg-background text-muted-foreground hover:bg-muted")
+                }
+              >
+                <Layers className="h-3.5 w-3.5" />
+                고객사별 묶기
+              </button>
+            </>
+          }
           onAdd={() => setCreateOpen(true)}
           addLabel="새 회의록"
           // '공유받은' / '전체 (회사)' 탭에서는 삭제 버튼 숨김 — 본인 작성건이

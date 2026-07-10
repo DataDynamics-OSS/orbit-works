@@ -310,6 +310,144 @@ async def _fetch_announcements_job() -> None:
         )
 
 
+def _sync_emails_trigger() -> IntervalTrigger:
+    m = max(1, get_settings().email.auto_sync.interval_minutes)
+    return IntervalTrigger(minutes=m)
+
+
+async def _sync_emails_job() -> None:
+    """이메일 자동 동기화 — **활성 tenant 별** 로 run_all(PULL).
+
+    tenant 컨텍스트를 set 해야 RLS 격리 + storage 의 tenant prefix 가 적용된다
+    (설계 §10). 계정별 실패는 EmailSyncRun 에 격리 기록.
+    """
+    from sqlalchemy import select as sa_select
+
+    from app.core.tenant_context import set_current_tenant_id
+    from app.models import Tenant
+    from app.services.email import run_all
+
+    cfg = get_settings().email
+    if not cfg.enabled or not cfg.auto_sync.enabled:
+        return
+
+    async with track_job_run(
+        job_name="이메일 자동 동기화", job_kind="EMAIL_SYNC"
+    ) as ctx:
+        async with system_session() as db:
+            tenants = list(
+                (
+                    await db.execute(
+                        sa_select(Tenant.id, Tenant.slug).where(
+                            Tenant.is_active.is_(True)
+                        )
+                    )
+                ).all()
+            )
+
+        total_ok = total_failed = total_skipped = total_new = 0
+        per_tenant: list[dict] = []
+        for tid, slug in tenants:
+            set_current_tenant_id(tid)
+            try:
+                async with system_session(tenant_id=str(tid)) as db:
+                    results = await run_all(db, trigger_kind="SCHEDULED")
+            except Exception as exc:  # pragma: no cover
+                logger.warning(
+                    "이메일 동기화 실패 tenant=%s: %s", slug, exc, exc_info=True
+                )
+                per_tenant.append({"tenant": slug, "status": "FAILED", "error": str(exc)})
+                continue
+            finally:
+                set_current_tenant_id(None)
+            if not results:
+                continue
+            ok = sum(1 for r in results if r.status == "OK")
+            failed = sum(1 for r in results if r.status == "FAILED")
+            skipped = sum(1 for r in results if r.status == "SKIPPED")
+            new = sum(r.inserted for r in results)
+            total_ok += ok
+            total_failed += failed
+            total_skipped += skipped
+            total_new += new
+            per_tenant.append(
+                {"tenant": slug, "accounts": len(results), "ok": ok,
+                 "failed": failed, "skipped": skipped, "new": new}
+            )
+
+        ctx.set_summary(
+            f"테넌트 {len(per_tenant)} · 계정 ok={total_ok} failed={total_failed} "
+            f"skipped={total_skipped} · 신규 {total_new}"
+        )
+        ctx.update_extra(
+            ok=total_ok, failed=total_failed, skipped=total_skipped,
+            new=total_new, per_tenant=per_tenant,
+        )
+        logger.info(
+            "이메일 자동 동기화 완료: 테넌트 %d, 계정 ok=%d failed=%d, 신규=%d",
+            len(per_tenant), total_ok, total_failed, total_new,
+        )
+
+
+def _cold_archive_trigger(tz: str) -> CronTrigger:
+    h = get_settings().email.archive.run_hour
+    return CronTrigger(hour=h, minute=30, timezone=tz)
+
+
+async def _cold_archive_emails_job() -> None:
+    """이메일 콜드 아카이빙 — 활성 tenant 별. 보관 검증 통과분만 정리(설계 §7)."""
+    from sqlalchemy import select as sa_select
+
+    from app.core.tenant_context import set_current_tenant_id
+    from app.models import Tenant
+    from app.services.email.archiver import run_cold_archive_all
+
+    a = get_settings().email.archive
+    if not get_settings().email.enabled or not a.enabled or a.retention_days <= 0:
+        return
+
+    async with track_job_run(
+        job_name="이메일 콜드 아카이빙", job_kind="EMAIL_ARCHIVE"
+    ) as ctx:
+        async with system_session() as db:
+            tenants = list(
+                (
+                    await db.execute(
+                        sa_select(Tenant.id, Tenant.slug).where(
+                            Tenant.is_active.is_(True)
+                        )
+                    )
+                ).all()
+            )
+        tot_arch = tot_purge = tot_fail = 0
+        for tid, slug in tenants:
+            set_current_tenant_id(tid)
+            try:
+                async with system_session(tenant_id=str(tid)) as db:
+                    results = await run_cold_archive_all(
+                        db,
+                        retention_days=a.retention_days,
+                        keep_body_text=a.keep_body_text,
+                        cold_purge_server=a.cold_purge_server,
+                    )
+            except Exception as exc:  # pragma: no cover
+                logger.warning("콜드 아카이빙 실패 tenant=%s: %s", slug, exc, exc_info=True)
+                continue
+            finally:
+                set_current_tenant_id(None)
+            tot_arch += sum(r.archived for r in results)
+            tot_purge += sum(r.purged for r in results)
+            tot_fail += sum(r.failed for r in results)
+        ctx.set_summary(
+            f"보관 {tot_arch} · 서버정리 {tot_purge} · 검증실패 {tot_fail}"
+        )
+        ctx.update_extra(archived=tot_arch, purged=tot_purge, failed=tot_fail)
+        logger.info(
+            "이메일 콜드 아카이빙 완료: 보관=%d 정리=%d 실패=%d",
+            tot_arch, tot_purge, tot_fail,
+        )
+
+
 async def _daily_tax_invoice_job() -> None:
     """스케줄러가 매일 새벽에 호출 — **활성 tenant 별로 분기 실행**.
 
@@ -479,6 +617,28 @@ def start_scheduler() -> None:
         replace_existing=True,
     )
 
+    # 임직원 가동율 재계산 — 매일 03:00 (daily_alerts 01:00, backup 02:00 이후).
+    # 안전 윈도우 1개월: 이번 달만 재계산 (지난달 retroactive 수정은 수동 API).
+    async def _utilization_recompute_job() -> None:
+        from app.services.utilization_recompute import (
+            recompute_current_month_all_tenants,
+        )
+        async with track_job_run(
+            job_name="임직원 가동율 재계산 (이번 달)",
+            job_kind="UTILIZATION_RECOMPUTE",
+        ):
+            await recompute_current_month_all_tenants()
+
+    _scheduler.add_job(
+        _utilization_recompute_job,
+        trigger=CronTrigger(hour=3, minute=0, timezone=tz),
+        id="utilization_recompute",
+        name="임직원 가동율 재계산 (이번 달)",
+        coalesce=True,
+        misfire_grace_time=3600,
+        replace_existing=True,
+    )
+
     _scheduler.add_job(
         _fetch_fx_job,
         trigger=_fetch_fx_trigger(tz),
@@ -545,6 +705,32 @@ def start_scheduler() -> None:
             trigger=_announcements_trigger(tz),
             id="fetch_announcements",
             name="사업공고 일간 수집",
+            coalesce=True,
+            misfire_grace_time=3600,
+            replace_existing=True,
+        )
+
+    # 이메일 자동 동기화 — 30분 주기(email.auto_sync). 테넌트별 run_all.
+    email_cfg = get_settings().email
+    if email_cfg.enabled and email_cfg.auto_sync.enabled:
+        _scheduler.add_job(
+            _sync_emails_job,
+            trigger=_sync_emails_trigger(),
+            id="sync_emails",
+            name="이메일 자동 동기화",
+            coalesce=True,
+            misfire_grace_time=600,
+            replace_existing=True,
+        )
+
+    # 이메일 콜드 아카이빙 — 야간(email.archive.run_hour:30). retention_days>0 일 때만.
+    arch = get_settings().email.archive
+    if email_cfg.enabled and arch.enabled and arch.retention_days > 0:
+        _scheduler.add_job(
+            _cold_archive_emails_job,
+            trigger=_cold_archive_trigger(tz),
+            id="cold_archive_emails",
+            name="이메일 콜드 아카이빙",
             coalesce=True,
             misfire_grace_time=3600,
             replace_existing=True,
@@ -832,6 +1018,53 @@ def _on_announcements_settings_changed() -> None:
     elif existing is not None:
         _scheduler.remove_job("fetch_announcements")
         logger.info("fetch_announcements 제거됨 (enabled=false)")
+
+
+@on_settings_change("email")
+def _on_email_settings_changed() -> None:
+    """email 섹션 변경 → 동기화 job 재등록/추가/제거."""
+    if _scheduler is None:
+        return
+    e = get_settings().email
+    existing = _scheduler.get_job("sync_emails")
+    if e.enabled and e.auto_sync.enabled:
+        if existing is None:
+            _scheduler.add_job(
+                _sync_emails_job,
+                trigger=_sync_emails_trigger(),
+                id="sync_emails",
+                name="이메일 자동 동기화",
+                coalesce=True,
+                misfire_grace_time=600,
+                replace_existing=True,
+            )
+        else:
+            _scheduler.reschedule_job("sync_emails", trigger=_sync_emails_trigger())
+        logger.info("sync_emails 재등록 → %d분 주기", e.auto_sync.interval_minutes)
+    elif existing is not None:
+        _scheduler.remove_job("sync_emails")
+        logger.info("sync_emails 제거됨 (enabled=false)")
+
+    # 콜드 아카이빙 job 도 함께 관리.
+    tz = get_settings().scheduler.timezone
+    arch_job = _scheduler.get_job("cold_archive_emails")
+    if e.enabled and e.archive.enabled and e.archive.retention_days > 0:
+        if arch_job is None:
+            _scheduler.add_job(
+                _cold_archive_emails_job,
+                trigger=_cold_archive_trigger(tz),
+                id="cold_archive_emails",
+                name="이메일 콜드 아카이빙",
+                coalesce=True,
+                misfire_grace_time=3600,
+                replace_existing=True,
+            )
+        else:
+            _scheduler.reschedule_job(
+                "cold_archive_emails", trigger=_cold_archive_trigger(tz)
+            )
+    elif arch_job is not None:
+        _scheduler.remove_job("cold_archive_emails")
 
 
 @on_settings_change("backup")

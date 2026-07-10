@@ -291,6 +291,66 @@ pre[class*="language-"] {
   color: inherit;
   padding: 0;
 }
+/* 코드 블록 문법 강조 (lowlight / highlight.js) — 어두운 pre 배경(#0f172a)에
+   맞춘 atom-one-dark 계열 토큰 색. .tiptap-content 로 스코프해 전역 오염 방지. */
+.tiptap-content pre .hljs-comment,
+.tiptap-content pre .hljs-quote {
+  color: #7f848e;
+  font-style: italic;
+}
+.tiptap-content pre .hljs-keyword,
+.tiptap-content pre .hljs-doctag,
+.tiptap-content pre .hljs-formula {
+  color: #c678dd;
+}
+.tiptap-content pre .hljs-section,
+.tiptap-content pre .hljs-name,
+.tiptap-content pre .hljs-selector-tag,
+.tiptap-content pre .hljs-deletion,
+.tiptap-content pre .hljs-subst {
+  color: #e06c75;
+}
+.tiptap-content pre .hljs-literal {
+  color: #56b6c2;
+}
+.tiptap-content pre .hljs-string,
+.tiptap-content pre .hljs-regexp,
+.tiptap-content pre .hljs-addition,
+.tiptap-content pre .hljs-attribute,
+.tiptap-content pre .hljs-meta .hljs-string {
+  color: #98c379;
+}
+.tiptap-content pre .hljs-attr,
+.tiptap-content pre .hljs-variable,
+.tiptap-content pre .hljs-template-variable,
+.tiptap-content pre .hljs-type,
+.tiptap-content pre .hljs-selector-class,
+.tiptap-content pre .hljs-selector-attr,
+.tiptap-content pre .hljs-selector-pseudo,
+.tiptap-content pre .hljs-number {
+  color: #d19a66;
+}
+.tiptap-content pre .hljs-symbol,
+.tiptap-content pre .hljs-bullet,
+.tiptap-content pre .hljs-link,
+.tiptap-content pre .hljs-meta,
+.tiptap-content pre .hljs-selector-id,
+.tiptap-content pre .hljs-title {
+  color: #61afef;
+}
+.tiptap-content pre .hljs-built_in,
+.tiptap-content pre .hljs-class .hljs-title {
+  color: #e5c07b;
+}
+.tiptap-content pre .hljs-emphasis {
+  font-style: italic;
+}
+.tiptap-content pre .hljs-strong {
+  font-weight: 700;
+}
+.tiptap-content pre .hljs-link {
+  text-decoration: underline;
+}
 .tiptap-content hr {
   border: 0;
   border-top: 1px solid #e2e8f0;

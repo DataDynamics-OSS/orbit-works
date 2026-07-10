@@ -52,6 +52,29 @@ function parseCsv(raw: string): string[] {
   return raw.split(",").map((s) => s.trim()).filter(Boolean);
 }
 
+// dotted-path (예: "aws.access_key_id") 로 중첩값을 읽는다.
+function getByPath(obj: unknown, path: string): unknown {
+  let cur: any = obj;
+  for (const p of path.split(".")) {
+    if (cur == null || typeof cur !== "object") return undefined;
+    cur = cur[p];
+  }
+  return cur;
+}
+
+// dotted-path 로 중첩값을 immutable 하게 설정한 새 객체를 반환한다.
+function setByPath<T>(obj: T, path: string, value: unknown): T {
+  const parts = path.split(".");
+  const clone: any = Array.isArray(obj) ? [...(obj as any)] : { ...(obj as any) };
+  let cur = clone;
+  for (let i = 0; i < parts.length - 1; i++) {
+    cur[parts[i]] = { ...cur[parts[i]] };
+    cur = cur[parts[i]];
+  }
+  cur[parts[parts.length - 1]] = value;
+  return clone;
+}
+
 export function CloudCostTab() {
   const qc = useQueryClient();
   const dialog = useDialog();
@@ -102,10 +125,27 @@ export function CloudCostTab() {
     },
   });
 
-  async function reveal(path: string, apply: (v: string) => void) {
+  // eye 토글: 숨김→표시 는 reveal API 의 평문을, 표시→숨김 은 서버가 준 마스킹값
+  // (cc)으로 되돌린다. 이전엔 숨김 시 아이콘만 바뀌고 평문이 화면에 그대로 남았음.
+  // setForm 은 함수형으로 — 여러 필드를 연속 reveal 할 때 stale form 클로저가
+  // 앞서 표시한 값을 덮어쓰지 않도록.
+  async function toggleReveal(
+    path: string,
+    shown: boolean,
+    setShown: (b: boolean) => void,
+  ) {
+    if (shown) {
+      const masked = (getByPath(cc, path) as string) ?? "";
+      setForm((f) => (f ? (setByPath(f, path, masked) as CloudCostFull) : f));
+      setShown(false);
+      return;
+    }
     try {
       const { data } = await api.get(`/settings/cloud_cost/reveal/${path}`);
-      apply(data.value as string);
+      setForm((f) =>
+        f ? (setByPath(f, path, data.value as string) as CloudCostFull) : f,
+      );
+      setShown(true);
     } catch (e: any) {
       await dialog.alert(e?.response?.data?.detail ?? "평문 조회 실패", { title: "오류" });
     }
@@ -201,13 +241,9 @@ export function CloudCostTab() {
               />
               <RevealBtn
                 shown={showAwsAk}
-                onClick={async () => {
-                  if (showAwsAk) { setShowAwsAk(false); return; }
-                  await reveal("aws.access_key_id", (v) =>
-                    setForm({ ...form, aws: { ...form.aws, access_key_id: v } }),
-                  );
-                  setShowAwsAk(true);
-                }}
+                onClick={() =>
+                  toggleReveal("aws.access_key_id", showAwsAk, setShowAwsAk)
+                }
               />
             </div>
           </Field>
@@ -220,13 +256,9 @@ export function CloudCostTab() {
               />
               <RevealBtn
                 shown={showAwsSk}
-                onClick={async () => {
-                  if (showAwsSk) { setShowAwsSk(false); return; }
-                  await reveal("aws.secret_access_key", (v) =>
-                    setForm({ ...form, aws: { ...form.aws, secret_access_key: v } }),
-                  );
-                  setShowAwsSk(true);
-                }}
+                onClick={() =>
+                  toggleReveal("aws.secret_access_key", showAwsSk, setShowAwsSk)
+                }
               />
             </div>
           </Field>
@@ -286,13 +318,9 @@ export function CloudCostTab() {
               />
               <RevealBtn
                 shown={showAzureSec}
-                onClick={async () => {
-                  if (showAzureSec) { setShowAzureSec(false); return; }
-                  await reveal("azure.client_secret", (v) =>
-                    setForm({ ...form, azure: { ...form.azure, client_secret: v } }),
-                  );
-                  setShowAzureSec(true);
-                }}
+                onClick={() =>
+                  toggleReveal("azure.client_secret", showAzureSec, setShowAzureSec)
+                }
               />
             </div>
           </Field>
@@ -366,13 +394,9 @@ export function CloudCostTab() {
               />
               <RevealBtn
                 shown={showGcpSa}
-                onClick={async () => {
-                  if (showGcpSa) { setShowGcpSa(false); return; }
-                  await reveal("gcp.service_account_json", (v) =>
-                    setForm({ ...form, gcp: { ...form.gcp, service_account_json: v } }),
-                  );
-                  setShowGcpSa(true);
-                }}
+                onClick={() =>
+                  toggleReveal("gcp.service_account_json", showGcpSa, setShowGcpSa)
+                }
               />
             </div>
           </Field>

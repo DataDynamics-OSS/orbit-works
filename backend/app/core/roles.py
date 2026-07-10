@@ -37,6 +37,10 @@ _BASE_ALL_USERS = {
     "leaves.self",  # 본인 연차 조회·신청
     "meetings.self",  # 본인 회의실 예약
     "announcements.read",  # 사업공고 조회 + 북마크
+    # 이메일 클라이언트 — 모든 사용자가 사용 가능. 단 실제 계정 접근은
+    # email_account_members 멤버십으로 직교 제어(역할만으론 남의 메일함 못 봄).
+    "emails.read",  # 멤버인 계정의 메일 조회·검색
+    "emails.send",  # 발송·답장·전달 (member.can_send 와 AND)
 }
 
 ROLE_PERMS: dict[str, set[str]] = {
@@ -91,6 +95,8 @@ ROLE_PERMS: dict[str, set[str]] = {
         "customers.manage",
         # 임직원 평가 — HR 가 cycle 관리·calibration·등급 결정.
         "evaluations.manage",
+        # 메일 계정 관리 — 공유 메일함 생성·멤버·동기화·보관 설정.
+        "emails.manage",
     },
     "SUPPORT": _BASE_ALL_USERS | {
         "customers.manage",

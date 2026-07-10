@@ -31,7 +31,9 @@ const nextConfig = {
     .map((s) => s.trim())
     .filter(Boolean),
   async rewrites() {
-    const api = process.env.API_PROXY_URL || "http://backend:4001";
+    // Default → localhost (local `pnpm dev` 환경). docker compose 에서는
+    // frontend service 의 `API_PROXY_URL=http://backend:4001` env 가 override.
+    const api = process.env.API_PROXY_URL || "http://localhost:4001";
     return [{ source: "/api/:path*", destination: `${api}/api/:path*` }];
   },
   // 구 URL /developers/* 북마크는 영구적으로 /employees/* 로 이동.

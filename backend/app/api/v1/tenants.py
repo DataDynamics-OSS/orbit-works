@@ -11,7 +11,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps import get_current_user, require_super_admin
+from app.api.deps import forbid_in_demo_mode, get_current_user, require_super_admin
 from app.core.database import get_db
 from app.core.security import hash_password
 from app.models import Tenant, TenantAudit, User
@@ -578,6 +578,7 @@ async def create_tenant_admin(
 @router.post(
     "/{tenant_id}/admin-users/{user_id}/reset-password",
     status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(forbid_in_demo_mode)],
 )
 async def reset_tenant_admin_password(
     tenant_id: UUID,

@@ -92,6 +92,13 @@ type Props<T> = {
     | SizeColumnsToContentStrategy;
   /** If omitted, the grid stretches to fill its flex parent (recommended). */
   height?: number | string;
+  /**
+   * true 이면 AG Grid `domLayout="autoHeight"` — 그리드가 행 수만큼 늘어나 내부
+   * 세로 스크롤 없이 모든 행을 표시한다. 이때 컨테이너의 flex-1/고정 height 는
+   * 적용하지 않으므로, 뷰포트를 넘치는 경우 페이지(상위) 스크롤로 처리해야 한다.
+   * height 와 동시 사용 금지 (autoHeight 우선).
+   */
+  autoHeight?: boolean;
   pageSize?: number;
   pageSizeOptions?: number[];
   enableCheckbox?: boolean;
@@ -109,6 +116,14 @@ type Props<T> = {
   onCellValueChanged?: (e: any) => void;
   /** 서버 페이지네이션 모드 — 지정 시 AG Grid 내장 pagination 비활성 + 커스텀 footer. */
   serverPagination?: ServerPagination;
+  /**
+   * Full-width row 지원 (community). 특정 행을 모든 컬럼을 가로지르는 단일 셀로
+   * 렌더 — 예: 고객사별 그룹 밴드. fullWidthCellRenderer 와 함께 사용.
+   */
+  isFullWidthRow?: (params: any) => boolean;
+  fullWidthCellRenderer?: any;
+  /** 행 높이를 동적으로 결정. 그룹 밴드 등 일부 행만 높이를 달리할 때. */
+  getRowHeight?: (params: any) => number | undefined;
 };
 
 function DataGridInner<T>(
@@ -127,6 +142,7 @@ function DataGridInner<T>(
     extraActions,
     autoSizeStrategy,
     height,
+    autoHeight = false,
     pageSize = 50,
     pageSizeOptions = [20, 50, 100, 200],
     enableCheckbox = true,
@@ -138,6 +154,9 @@ function DataGridInner<T>(
     onSelectionChange,
     onCellValueChanged,
     serverPagination,
+    isFullWidthRow,
+    fullWidthCellRenderer,
+    getRowHeight,
   }: Props<T>,
   ref: React.Ref<DataGridHandle<T>>,
 ) {
@@ -223,7 +242,7 @@ function DataGridInner<T>(
     !hideSearch || !!onAdd || !!onDelete || !!extraActions || !!toolbarLeading;
 
   return (
-    <div className="flex flex-1 min-h-0 flex-col gap-2">
+    <div className={autoHeight ? "flex flex-col gap-2" : "flex flex-1 min-h-0 flex-col gap-2"}>
       {showToolbar && (
       <div className="flex items-center gap-2 rounded-md border border-border bg-card p-2">
         {!hideSearch && (
@@ -277,14 +296,14 @@ function DataGridInner<T>(
       </div>
       )}
       <div
-        className="ag-theme-quartz flex-1 min-h-0"
+        className={"ag-theme-quartz" + (autoHeight ? "" : " flex-1 min-h-0")}
         style={
           {
             "--ag-font-family":
               "var(--font-roboto-condensed), 'Roboto Condensed', 'Pretendard Variable', Pretendard, system-ui, sans-serif",
             // compact = 12px / 일반 = 13px (0.8125rem). 0.875rem(=14px) 에서 1px 축소.
             "--ag-font-size": compact ? "0.75rem" : "0.8125rem",
-            ...(height ? { height } : {}),
+            ...(!autoHeight && height ? { height } : {}),
           } as React.CSSProperties
         }
       >
@@ -293,6 +312,7 @@ function DataGridInner<T>(
           rowData={rowData}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
+          domLayout={autoHeight ? "autoHeight" : undefined}
           getRowId={getRowId ? (p) => getRowId(p.data as T) : undefined}
           // 서버 페이지네이션이 켜져 있으면 AG Grid 내장 pagination 은 끔.
           pagination={serverPagination ? false : pagination}
@@ -314,6 +334,9 @@ function DataGridInner<T>(
           onGridReady={onGridReady}
           onCellValueChanged={onCellValueChanged}
           autoSizeStrategy={autoSizeStrategy}
+          isFullWidthRow={isFullWidthRow}
+          fullWidthCellRenderer={fullWidthCellRenderer}
+          getRowHeight={getRowHeight}
           animateRows
         />
       </div>

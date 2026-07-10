@@ -29,6 +29,7 @@ import {
 
 import { api } from "@/lib/api";
 import { DashboardHeader } from "@/components/layout/DashboardHeader";
+import { useToast } from "@/components/ui/ToastProvider";
 
 // BlockNote 는 브라우저 전용이라 ssr:false.
 const MeetingNoteEditor = dynamic(
@@ -119,6 +120,7 @@ function EditCard({
   onSaved: () => void;
   onDeleted: () => void;
 }) {
+  const toast = useToast();
   const [name, setName] = useState(template.name);
   const [subject, setSubject] = useState(template.subject);
   const [description, setDescription] = useState(template.description || "");
@@ -128,11 +130,9 @@ function EditCard({
   const [bodyText, setBodyText] = useState(template.body_text);
 
   const editorHtmlRef = useRef<(() => Promise<string>) | null>(null);
-  // BlockNote autosave 가 5초 디바운스라 사용자가 입력 직후 저장 버튼을 누르면
-  // setState 가 아직 안 일어났을 수 있음. saveRef 로 즉시 flush + 결과를
-  // jsonRef 에 동기적으로 받아 mutation 에 넘긴다 (state 비동기 회피).
+  // autosave 가 5초 디바운스라 입력 직후 저장 버튼을 누르면 아직 flush 전일 수 있음.
+  // saveRef 로 즉시 flush 하고, htmlRef 로 현재 HTML 을 동기 회수해 mutation 에 넘긴다.
   const editorSaveRef = useRef<(() => Promise<void>) | null>(null);
-  const editorJsonRef = useRef<any>(template.body_json ?? null);
   const editorPlainRef = useRef<string>(template.body_text || "");
 
   const [importUrl, setImportUrl] = useState("");
@@ -150,9 +150,11 @@ function EditCard({
   const save = useMutation({
     mutationFn: async () => {
       let finalHtml = bodyHtml;
+      // 편집기는 TipTap(HTML) 기반 — body_json 은 더 이상 쓰지 않고 body_html 로
+      // 라운드트립한다. (레거시 BlockNote JSON 본문은 로드 시 HTML 로 변환됨.)
       let finalJson: any = null;
       if (bodyKind === "EDITOR") {
-        // 1) autosave 디바운스 우회 — 즉시 flush 해서 jsonRef 최신화.
+        // 1) autosave 디바운스 우회 — 즉시 flush.
         if (editorSaveRef.current) {
           try {
             await editorSaveRef.current();
@@ -160,7 +162,7 @@ function EditCard({
             /* fall back to last known state */
           }
         }
-        // 2) BlockNote → HTML export.
+        // 2) 편집기 → HTML export (저장 본문).
         if (editorHtmlRef.current) {
           try {
             finalHtml = await editorHtmlRef.current();
@@ -168,8 +170,6 @@ function EditCard({
             /* fall back to last known html */
           }
         }
-        // 3) round-trip 용 raw blocks — ref(동기) 가 우선, fallback 으로 state.
-        finalJson = editorJsonRef.current ?? bodyJson;
       }
       const payload = {
         name,
@@ -189,14 +189,12 @@ function EditCard({
       // inline 처리해 응답으로 돌려준 값으로 HTML 탭 state 도 즉시 동기화.
       // 안 그러면 HTML 탭에 옛 값이 남아 사용자가 "다른 내용" 으로 인식.
       setBodyHtml(updated.body_html ?? "");
-      if (updated.body_json !== undefined) {
-        setBodyJson(updated.body_json);
-        editorJsonRef.current = updated.body_json;
-      }
+      if (updated.body_json !== undefined) setBodyJson(updated.body_json);
       setBodyText(updated.body_text ?? "");
       onSaved();
+      toast.success("저장되었습니다.");
     },
-    onError: (e: any) => alert(e?.response?.data?.detail ?? "저장 실패"),
+    onError: (e: any) => toast.error(e?.response?.data?.detail ?? "저장에 실패했습니다."),
   });
 
   const del = useMutation({
@@ -342,20 +340,14 @@ function EditCard({
           {/* BlockNote 가 부모 높이를 따라가도록 flex-1 + min-h-0. */}
           <div className="flex-1 min-h-0 overflow-auto">
             <MeetingNoteEditor
-              initialBody={bodyJson ? JSON.stringify(bodyJson) : null}
+              // 편집기가 TipTap(HTML)로 교체됨 — 저장된 HTML 을 그대로 복원한다.
+              // (body_html 비어있는 레거시 레코드는 BlockNote JSON 으로 폴백.)
+              initialBody={bodyHtml || (bodyJson ? JSON.stringify(bodyJson) : null)}
               onSave={async (body: string, plainText: string) => {
-                // ref 는 동기적으로 즉시 반영 — 저장 mutation 이 setState 를 기다리지
-                // 않고 ref 만 읽어가도 최신값 보장. state 도 같이 set 해서 다음
-                // render 의 initialBody 가 일치하도록.
-                let parsed: any = null;
-                try {
-                  parsed = JSON.parse(body);
-                } catch {
-                  parsed = null;
-                }
-                editorJsonRef.current = parsed;
+                // body 는 이제 JSON 이 아니라 TipTap HTML 문자열이다.
+                // ref/state 를 동기적으로 갱신해 저장 버튼·HTML 탭이 최신값을 읽도록.
                 editorPlainRef.current = plainText;
-                setBodyJson(parsed);
+                setBodyHtml(body);
               }}
               saveRef={editorSaveRef}
               htmlRef={editorHtmlRef}

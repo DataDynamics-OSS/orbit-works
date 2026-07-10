@@ -40,17 +40,13 @@ database:
   host: db
   port: 5432
   name: orbit
-  username: orbit
-  password: CHANGE_ME
+  # 앱이 사용하는 NOSUPERUSER NOBYPASSRLS 롤. RLS 정책이 강제되어 tenant 격리.
+  # 이 롤이 없으면 backend 가 startup 시 backup.db_username (SUPERUSER) 으로
+  # 자동 생성 (main.py:_bootstrap_db_roles).
+  username: orbit_app
+  password: CHANGE_ME_APP_DB_PASSWORD
   pool_size: 10
   pool_pre_ping: true
-
-# (선택) 백업 전용 SUPERUSER 자격증명. 비워두면 위 database.username 으로 pg_dump
-# 시도 → RLS 가 걸린 테이블에서 차단될 수 있음. RLS 가 적용된 prod 에서는 반드시
-# SUPERUSER (bootstrap 계정) 의 자격증명을 명시 권장.
-# backup_db:
-#   username: CHANGE_ME
-#   password: CHANGE_ME
 
 auth:
   # 강한 시크릿 생성 예:
@@ -88,6 +84,18 @@ backup:
   pg_dump_bin: pg_dump
   # 보관 일수 (0 = 영구 보관).
   retention_days: 365
+  # SUPERUSER 자격증명 — docker-compose.yml 의 POSTGRES_USER/POSTGRES_PASSWORD
+  # 와 동일 값.
+  # 용도 (세 가지):
+  #   1) pg_dump (RLS 우회). 미설정 시 NOBYPASSRLS 롤로 시도되어
+  #      'query would be affected by row-level security policy' 차단.
+  #   2) backend 자동 부트스트랩 — database.username 롤이 없으면
+  #      CREATE ROLE + GRANT (main.py:_bootstrap_db_roles).
+  #   3) RLS 정책·트리거 자동 적용 (sql/rls_policies.sql 의 ALTER TABLE
+  #      ENABLE/FORCE ROW LEVEL SECURITY 는 SUPERUSER 권한 필요).
+  # → prod 에서는 반드시 채울 것. 비우면 위 자동 부트스트랩 SKIP.
+  db_username: orbit_super
+  db_password: CHANGE_ME_SUPERUSER_DB_PASSWORD
 
 scheduler:
   # 매일 01:00 (timezone 기준)에 알림 job 실행. 끄려면 enabled: false.
@@ -134,13 +142,17 @@ exchange:
   daily_backfill_days: 7      # 일일 cron 이 갱신하는 최근 일수 (단건 대신 범위)
 
 # 한국은행 경제통계시스템(ECOS) Open API — 국내 금리·주가지수 시계열.
+# 비우면 영향: 대시보드 > '금리 추이' 차트 (기준금리·CD·국고채·회사채) 가 비어
+# 보임. KR 주가지수(KOSPI/KOSDAQ) 도 ECOS 경유라 함께 빈 칸.
+# 발급: ecos.bok.or.kr → API 인증키 신청 (무료, 즉시 발급).
 ecos:
   enabled: false
   api_key: ""
   base_url: https://ecos.bok.or.kr/api
 
 # 세인트루이스 연준 FRED — 미국 주가지수(S&P500/NASDAQ/DJIA) 일별 시계열.
-# https://fred.stlouisfed.org 가입 후 무료 키 발급.
+# 비우면 영향: 대시보드 > '미국 주가지수 추이' 차트가 비어 보임.
+# 발급: fred.stlouisfed.org → 무료 가입.
 fred:
   enabled: false
   api_key: ""
@@ -149,6 +161,12 @@ fred:
 # 알람 시스템 — provider 단일 선택 (slack 또는 mattermost). enabled=true 일 때만
 # 실제 발송. 각 provider 의 자격증명은 자기 sub-section 으로 격리되어 전환 시
 # 데이터 손실 없음. tenant 별로 Settings > 외부 연동 에서 오버라이드.
+#
+# 비우면 영향:
+#   - 모든 채널 알림 OFF — 라이센스 만료·결재 요청·주간보고 안내·D-day 알림이
+#     send() 단계에서 no-op. 앱 기능은 정상 (DB row 는 만들어짐).
+#   - 결재선의 Slack DM 알림이 사라져 결재 흐름 시연 시 알림 부재.
+# 발급: api.slack.com → bot user OAuth token (xoxb-...).
 notify:
   enabled: false
   provider: slack    # "slack" | "mattermost"
@@ -185,6 +203,10 @@ notify:
 mail:
   # Toggle outgoing mail globally. When false, send() becomes a no-op so the
   # app still works without SMTP credentials.
+  #
+  # 비우면 영향: 견적/인보이스 PDF 메일 발송·마케팅 이메일 캠페인 모두 no-op.
+  # 발급 (Gmail): Google 계정 > 보안 > 2단계 인증 활성화 후 '앱 비밀번호' 16자
+  # 발급 — sender.app_password 에 입력.
   enabled: false
 
   provider: gmail             # informational
@@ -210,12 +232,20 @@ mail:
     license_expiry_days_before: [30, 14, 7, 1]
     license_renewal_prep: true
     subject_prefix: "[Orbit Works]"
+    # 마케팅 메일의 트래킹 픽셀·클릭·수신거부 링크가 박힐 외부 접근 base URL.
+    # 비우면 server.public_url 로 fallback. **운영에서는 반드시 https://<도메인>**
+    # 으로 설정 — 비어 있으면 (광고) 메일에 법정 필수 수신거부 링크를 만들 수 없어
+    # 캠페인 발송이 차단된다.
+    public_base_url: ""
 
 push:
   # PWA Web Push (VAPID). 활성화하려면 키쌍 생성 후 enabled: true.
   # 키 생성 예:
   #   python -c "from py_vapid import Vapid; v=Vapid(); v.generate_keys(); \
   #              print(v.private_pem().decode()); print(v.public_key.to_string())"
+  #
+  # 비우면 영향: 모바일(`/m`) 의 PWA 푸시 알림 OFF. 브라우저 알림 권한 묻는 UI
+  # 자체가 나타나지 않음 (서버가 VAPID public key 응답 안 함). 데스크톱은 영향 X.
   enabled: false
   vapid_subject: "mailto:admin@example.com"
   vapid_public_key: ""
@@ -232,6 +262,9 @@ security:
 # 클라우드 일별 비용 수집 — 운영자가 UI(설정 > 외부 연동 > 클라우드 비용) 에서
 # 자격증명을 입력하면 자동 암호화되어 app_settings 테이블에 저장된다.
 # 아래 default 는 OFF 상태 — 신규 tenant 가 빈값으로 시작하도록.
+#
+# 비우면 영향: '클라우드 비용' 메뉴 와 대시보드 의 일별 클라우드 차트가 비어
+# 보임. 자격증명 입력 (UI) 만 하면 활성화 — 여기 enabled 만 true 로 두면 됨.
 cloud_cost:
   enabled: false
   fetch_interval_days: 1
@@ -246,6 +279,9 @@ cloud_cost:
 # NHN Cloud SMS — SMS 발송 게이트웨이.
 # UI(설정 > 외부 연동 > NHN Cloud SMS) 에서 AppKey/SecretKey 입력.
 # 신규 tenant 는 enabled=false / 키 빈값으로 시작 (DEFAULT_DISABLE_KEYS·DEFAULT_CLEAR_KEYS).
+#
+# 비우면 영향: SMS 발송 OFF — 알람·결재 알림의 SMS 채널이 no-op (다른 채널만
+# 동작). 발송 시도 자체가 차단되므로 NHN 사용량 0.
 nhn_cloud_sms:
   enabled: false
   url: "https://sms.api.nhncloudservice.com"

@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps import get_current_user, require_admin
+from app.api.deps import forbid_in_demo_mode, get_current_user, require_admin
 from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.security import create_access_token, hash_password, verify_password
@@ -274,6 +274,31 @@ async def me(
     ).all()
     menu_grants = [r[0] for r in grant_rows]
 
+    # 매니저 자동 메뉴 부여 — 직속 부하(FULL_TIME ACTIVE) 1명 이상이면
+    # 'utilization' (임직원 가동율) 메뉴를 본인 grants 에 자동 추가.
+    # /weekly-reports 와 같은 매트릭스 절단면(team) 을 위해 — HR 전용으로 두면
+    # 일반 매니저가 못 봄. menu_grants 는 추가만 (없는 항목 차단 X) 이라
+    # role 매트릭스와 OR 처리되므로 안전.
+    # 매니저 자동 메뉴 부여 — 직속 부하(FULL_TIME ACTIVE) 1명 이상이면
+    # 'utilization' (임직원 가동율) 메뉴를 menu_grants 에 자동 추가.
+    # menu_grants 는 isMenuVisible 가드에서 role 매트릭스와 **OR** 처리되므로
+    # 추가만으로 충분 (없는 메뉴 차단 X). 매니저는 다른 곳에서 접근 권한이
+    # 제어돼야 하면 별도 미들웨어를 쓸 것 — 여기는 가시성만 담당.
+    #
+    # 주의: Developer 는 파일 상단(line 13)에 import 돼 있음. 함수 안에서 재
+    # import 하면 Python 스코프 분석이 Developer 를 함수 전역 local 로 잡아
+    # 위쪽 line 252 의 `select(Developer)` 가 UnboundLocalError 가 됨.
+    if current.mapped_developer_id:
+        n = await db.scalar(
+            select(func.count(Developer.id)).where(
+                Developer.manager_id == current.mapped_developer_id,
+                Developer.employment_type == "FULL_TIME",
+                Developer.status == "ACTIVE",
+            )
+        )
+        if n and n > 0 and "utilization" not in menu_grants:
+            menu_grants.append("utilization")
+
     return MeOut(
         id=current.id,
         email=current.email,
@@ -312,7 +337,11 @@ async def update_my_memo(
     return MemoOut(memo=current.memo or "", updated_at=current.memo_updated_at)
 
 
-@router.post("/change-password", status_code=status.HTTP_204_NO_CONTENT)
+@router.post(
+    "/change-password",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(forbid_in_demo_mode)],
+)
 async def change_password(
     payload: PasswordChangeRequest,
     current: User = Depends(get_current_user),

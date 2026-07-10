@@ -28,12 +28,14 @@ from app.api.v1 import (
     customer_interactions,
     customers,
     dashboard,
+    email,
     evaluations,
     goals,
     developer_emergency_contacts,
     developer_interviews,
     developer_passports,
     developers,
+    domains,
     events,
     exchange,
     feature_permissions,
@@ -65,11 +67,14 @@ from app.api.v1 import (
     payroll,
     pickers,
     product_catalog,
+    public,
     projects,
     push,
     rnd_budgets,
     budget_calc,
+    server_hostings,
     support_cases,
+    utilization,
     support_logs,
     system as system_api,
     tax_invoices,
@@ -89,6 +94,7 @@ def _menu(key: str):
 
 api_router = APIRouter()
 # --- 인증·공통·시스템 — 메뉴 가드 없음 ---
+api_router.include_router(public.router)
 api_router.include_router(auth.router)
 api_router.include_router(exchange.router)
 api_router.include_router(notifications.router)
@@ -132,6 +138,7 @@ api_router.include_router(licenses.router, dependencies=_menu("licenses"))
 # ETC 신규 로그인 시 /me/initial-password 도 못 부른다.
 # 페이지 접근은 프론트 route guard 가, 변경 동작은 endpoint 별 require_feature 가 차단.
 api_router.include_router(developers.router)
+api_router.include_router(domains.router)
 api_router.include_router(developer_passports.router)
 api_router.include_router(developer_emergency_contacts.router)
 api_router.include_router(developer_interviews.router)
@@ -157,7 +164,10 @@ api_router.include_router(company_cars.router, dependencies=_menu("cars"))
 api_router.include_router(company_insurances.router, dependencies=_menu("insurances"))
 api_router.include_router(tax_invoices.router, dependencies=_menu("tax_invoices"))
 api_router.include_router(announcements.router, dependencies=_menu("announcements"))
+api_router.include_router(email.router, dependencies=_menu("emails"))
 api_router.include_router(cloud_costs.router, dependencies=_menu("cloud_costs"))
+api_router.include_router(server_hostings.router, dependencies=_menu("server_hostings"))
+api_router.include_router(utilization.router, dependencies=_menu("utilization"))
 api_router.include_router(vendor_bills.router, dependencies=_menu("vendor_bills"))
 api_router.include_router(events.router, dependencies=_menu("events"))
 api_router.include_router(evaluations.router, dependencies=_menu("evaluations"))

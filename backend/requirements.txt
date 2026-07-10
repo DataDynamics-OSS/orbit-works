@@ -16,6 +16,9 @@ email-validator>=2.2.0
 httpx>=0.27.0
 apscheduler>=3.10.4
 aiofiles>=24.1.0
+# 이메일 클라이언트(IMAP 수신). imaplib 래퍼 — 동기이므로 runner 에서 anyio.to_thread
+# 로 감싸 호출(설계 docs/email-client-design.md §11). MIME/플래그/검색 헬퍼 제공.
+imap-tools>=1.6.0
 aiosmtplib>=3.0.2
 # 회의록 이메일 발송 시 사용자 BlockNote HTML sanitize.
 bleach>=6.1.0
@@ -49,3 +52,7 @@ psutil>=5.9.0
 # 마케팅 이메일 — URL import 결과 HTML 의 CSS 를 인라인화 (이메일 클라이언트는
 # 외부 <style> 차단). pynliner 보다 큰 페이지 처리 안정적.
 premailer>=3.10.0
+# 데모 시드 (`app.scripts.seed_demo`) — ko-KR locale 임의 데이터 생성.
+# 데모 컨테이너에서만 호출되지만, 이미지 빌드는 단일이라 prod 에도 포함.
+# 실 RAM 영향 없음 (사용 시점에만 import).
+Faker>=24.0.0

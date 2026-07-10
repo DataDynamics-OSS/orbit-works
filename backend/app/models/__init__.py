@@ -20,6 +20,9 @@ from app.models.developer import (
 from app.models.developer_emergency_contact import DeveloperEmergencyContact
 from app.models.developer_interview import DeveloperInterview
 from app.models.developer_passport import DeveloperPassport
+from app.models.domain import Domain
+from app.models.server_hosting import SERVER_HOSTING_TYPES, ServerHosting
+from app.models.employee_utilization import EmployeeUtilizationCell
 from app.models.project import Project, ProjectAttachment, ProjectQuote, ProjectComment
 from app.models.estimate_item import ProjectEstimateItem
 from app.models.assignment import Assignment
@@ -175,6 +178,19 @@ from app.models.marketing import (
     MarketingEmailUnsubscribe,
     MarketingGoogleAdsMetric,
 )
+from app.models.email import (
+    Email,
+    EmailAccount,
+    EmailAccountMember,
+    EmailAttachment,
+    EmailFolder,
+    EmailLabel,
+    EmailLabelLink,
+    EmailOutbox,
+    EmailPendingAction,
+    EmailSyncRun,
+    EmailUserState,
+)
 
 __all__ = [
     "Base",
@@ -216,6 +232,10 @@ __all__ = [
     "DeveloperPassport",
     "DeveloperProfile",
     "DeveloperResume",
+    "Domain",
+    "ServerHosting",
+    "SERVER_HOSTING_TYPES",
+    "EmployeeUtilizationCell",
     "Project",
     "ProjectAttachment",
     "ProjectEstimateItem",
@@ -340,4 +360,15 @@ __all__ = [
     "MarketingEmailTemplateAsset",
     "MarketingEmailUnsubscribe",
     "MarketingGoogleAdsMetric",
+    "EmailAccount",
+    "EmailAccountMember",
+    "EmailFolder",
+    "Email",
+    "EmailAttachment",
+    "EmailSyncRun",
+    "EmailPendingAction",
+    "EmailOutbox",
+    "EmailUserState",
+    "EmailLabel",
+    "EmailLabelLink",
 ]

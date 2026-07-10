@@ -1,9 +1,15 @@
 "use client";
 
-import { FormEvent, KeyboardEvent, useRef, useState } from "react";
+import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { api, setToken, clearToken } from "@/lib/api";
+
+type AppInfo = {
+  name: string;
+  environment: string;
+  demo_mode: boolean;
+};
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,7 +18,17 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [appInfo, setAppInfo] = useState<AppInfo | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
+
+  // 데모 환경이면 안내 배너 + 계정 자동 채움을 위해 비인증 정보 호출.
+  // 실패해도 로그인 자체에는 영향 없음 (silently ignore).
+  useEffect(() => {
+    api
+      .get<AppInfo>("/public/app-info")
+      .then(({ data }) => setAppInfo(data))
+      .catch(() => setAppInfo(null));
+  }, []);
 
   // 입력 필드에서 Enter 누르면 폼 제출. (HTML 기본 동작이지만 일부 브라우저
   // 확장이 가로채는 경우가 있어 명시적으로 한 번 더 보장.)
@@ -64,6 +80,8 @@ export default function LoginPage() {
     }
   }
 
+  const isDemo = appInfo?.demo_mode === true;
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4">
       <div className="w-full max-w-sm rounded-lg border border-border bg-card text-card-foreground shadow-sm">
@@ -71,6 +89,27 @@ export default function LoginPage() {
           <h1 className="text-2xl font-bold tracking-tight">Orbit Works</h1>
           <p className="text-sm text-muted-foreground">Sign in to your account</p>
         </div>
+
+        {isDemo && (
+          <div className="mx-6 mb-2 rounded-md border border-amber-300 bg-amber-50 px-3 py-3 text-xs text-amber-900 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200">
+            <div className="font-semibold">데모 환경입니다</div>
+            <div className="mt-1 leading-relaxed">
+              매일 03:00 KST 에 모든 데이터가 초기화됩니다.
+              <br />
+              계정: <code className="font-mono">demo@demo.orbit-works.app</code> / <code className="font-mono">demo1234</code>
+            </div>
+            <button
+              type="button"
+              className="mt-2 text-xs underline hover:no-underline"
+              onClick={() => {
+                setUsername("demo@demo.orbit-works.app");
+                setPassword("demo1234");
+              }}
+            >
+              데모 계정으로 자동 채우기
+            </button>
+          </div>
+        )}
         <form ref={formRef} onSubmit={onSubmit} className="flex flex-col gap-4 p-6 pt-0">
           <div className="flex flex-col gap-2">
             <label

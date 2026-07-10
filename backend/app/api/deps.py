@@ -58,6 +58,25 @@ async def require_admin(user: User = Depends(get_current_user)) -> User:
     return user
 
 
+def forbid_in_demo_mode() -> None:
+    """데모 환경(`app.demo_mode: true`)에서 호출 시 403.
+
+    데모 사이트는 매일 03:00 KST 데이터·비밀번호가 reset 되므로 사용자가
+    비밀번호를 변경하면 본인·다른 방문자가 모두 다음 reset 까지 못 들어옴.
+    비밀번호 변경 류 endpoint 에 의존성으로 끼움.
+    """
+    from app.core.config import get_settings
+
+    if get_settings().app.demo_mode:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=(
+                "데모 환경에서는 비밀번호를 변경할 수 없습니다. "
+                "매일 03:00 KST 에 데이터가 초기화됩니다."
+            ),
+        )
+
+
 async def require_super_admin(user: User = Depends(get_current_user)) -> User:
     """SUPER_ADMIN 전용 — 멀티 테넌트 운영자. 도메인 데이터 절대 비노출."""
     if user.role != "SUPER_ADMIN":
