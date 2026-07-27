@@ -42,7 +42,10 @@ services:
       # 운영 환경에서 호스트 PostgreSQL 과 충돌하면 이 블록을 삭제하세요.
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U orbit_super"]
+      # -d 를 빼면 pg_isready 가 dbname 을 user 이름으로 가정해 5 초마다
+      # `FATAL: database "orbit_super" does not exist` 로그를 남긴다
+      # (healthcheck 자체는 통과하지만 로그가 오염됨). POSTGRES_DB 와 맞출 것.
+      test: ["CMD-SHELL", "pg_isready -U orbit_super -d orbit"]
       interval: 5s
       timeout: 5s
       retries: 10

@@ -13,7 +13,10 @@ COPY pnpm-lock.yaml ./
 COPY shared/package.json ./shared/
 COPY frontend/package.json ./frontend/
 # mobile 의 package.json 도 lockfile 해석에 필요 (workspace 전체가 정합).
-COPY mobile/package.json ./mobile/
+# `mobil[e]` 는 "있으면 복사, 없으면 건너뜀" 을 위한 glob. OSS 배포본
+# (DataDynamics-OSS/orbit-works) 에는 mobile/ 이 제외돼 있어 고정 경로로
+# 쓰면 `"/mobile/package.json": not found` 로 빌드가 실패한다.
+COPY mobil[e]/package.json ./mobile/
 # 전체 workspace 설치 — shared 의 peerDep (axios, js-cookie) 을 frontend 의
 # 실제 의존성으로 해석해 shared/src 파일의 타입 체크가 가능하도록.
 # --frozen-lockfile: lockfile 의 정확한 버전을 강제. 재현 가능한 빌드 보장.
