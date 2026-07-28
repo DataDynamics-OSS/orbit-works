@@ -43,7 +43,13 @@ async def _bootstrap_admin() -> None:
             email=admin_cfg.email,
             hashed_password=hash_password(admin_cfg.password),
             name="Administrator",
-            role="ADMIN",
+            # 이 계정은 tenant_id 가 NULL — roles.py / db.sql 의 규약상
+            # tenant_id IS NULL 인 유저는 SUPER_ADMIN 이어야 한다.
+            # "ADMIN" 으로 만들면 tenant_middleware 가 is_super 를 세우지 않아
+            # app.tenant_id GUC 가 빈 값이 되고, RLS 의 tenant_iso 정책이
+            # 자기 자신의 users row 조회부터 막아 (deps.get_current_user)
+            # 모든 인증 요청이 401 "User not found" 로 떨어진다.
+            role="SUPER_ADMIN",
         )
         db.add(admin)
         await db.commit()

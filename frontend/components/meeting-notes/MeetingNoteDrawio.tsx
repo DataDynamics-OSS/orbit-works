@@ -147,7 +147,14 @@ export function MeetingNoteDrawio({
   // splash=0      — 시작 splash 화면 끔 (사내 도구).
   // noExitBtn=1   — embed 모드라 Exit 버튼 의미 없음.
   // prefetchFonts=1 — 폰트 미리 로드 (UX).
-  const src = `/drawio/?embed=1&proto=json&libraries=1&saveAndExit=0&spin=1&ui=atlas&splash=0&noExitBtn=1&prefetchFonts=1${
+  //
+  // ⚠️ `/drawio/index.html` — 끝의 `index.html` 을 빼면 안 된다.
+  // Next.js 는 기본(trailingSlash:false)으로 `/drawio/?...` 를 `/drawio?...` 로
+  // 308 리다이렉트하는데, 그러면 문서 URL 의 base 디렉터리가 `/drawio/` 가 아닌
+  // `/` 가 된다. drawio 의 index.html 은 asset 을 전부 상대경로(js/…, styles/…)
+  // 로 참조하므로 `/js/app.min.js` 를 찾다가 전부 404 → 빈 iframe 이 된다.
+  // 실제 파일명을 마지막 segment 로 두면 리다이렉트도 없고 base 도 맞는다.
+  const src = `/drawio/index.html?embed=1&proto=json&libraries=1&saveAndExit=0&spin=1&ui=atlas&splash=0&noExitBtn=1&prefetchFonts=1${
     readOnly ? "&toolbar=0&editable=0&chrome=0" : ""
   }`;
 

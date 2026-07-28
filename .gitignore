@@ -51,6 +51,12 @@ uploads/
 !backend/app/data/
 !backend/app/data/**
 
+# PostgreSQL 데이터 디렉터리 — docker-compose.yml 의
+# ${PG_DATA_DIR:-./pgdata} 가 레포 안에 bind-mount 로 생성한다.
+# (권한 0700 / postgres uid 소유라 git 이 읽지도 못하고, 수백 MB 규모)
+pgdata/
+/pgdata/
+
 # Backups
 backups/
 

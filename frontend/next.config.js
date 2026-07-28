@@ -31,10 +31,30 @@ const nextConfig = {
     .map((s) => s.trim())
     .filter(Boolean),
   async rewrites() {
+    // ⚠️ rewrites() 는 `next build` 시점에 평가되어 .next/routes-manifest.json
+    // 으로 baked 된다. 게다가 output:"standalone" 산출물에는 next.config.js 가
+    // 포함되지 않으므로 아래 env 들은 **런타임에 주면 효력이 없다**.
+    // Docker 에서는 반드시 build ARG 로 주입할 것 (frontend/Dockerfile 참조).
+    //
     // Default → localhost (local `pnpm dev` 환경). docker compose 에서는
-    // frontend service 의 `API_PROXY_URL=http://backend:4001` env 가 override.
+    // build args 의 API_PROXY_URL=http://backend:4001 이 override.
     const api = process.env.API_PROXY_URL || "http://localhost:4001";
-    return [{ source: "/api/:path*", destination: `${api}/api/:path*` }];
+    // 자체 호스팅 drawio (compose 의 `drawio` 서비스). 회의록 '다이어그램' 탭이
+    // iframe src 를 상대경로 `/drawio/?embed=1...` 로 쓰므로, 별도 리버스 프록시
+    // 없이 Next.js 가 같은 origin 에서 프록시한다.
+    //
+    // 같은 origin 인 것이 중요 — iframe 이 sandbox="... allow-same-origin" 으로
+    // postMessage 핸드셰이크(proto=json)를 하기 때문에 별도 포트(4003)로 직접
+    // 띄우면 cross-origin 이 되어 저장 연동이 깨진다.
+    //
+    // drawio 의 index.html 은 asset 을 상대경로(js/…, styles/…)로 참조하므로
+    // /drawio/ prefix 아래에서 그대로 동작한다 (src 끝의 `/` 필수).
+    const drawio = process.env.DRAWIO_PROXY_URL || "http://localhost:4003";
+    return [
+      { source: "/api/:path*", destination: `${api}/api/:path*` },
+      { source: "/drawio", destination: `${drawio}/` },
+      { source: "/drawio/:path*", destination: `${drawio}/:path*` },
+    ];
   },
   // 구 URL /developers/* 북마크는 영구적으로 /employees/* 로 이동.
   // 백엔드 /api/v1/developers/* 는 영향 없음 (redirects 는 페이지 경로만, /api/* 는 rewrites 가 먼저 처리).
